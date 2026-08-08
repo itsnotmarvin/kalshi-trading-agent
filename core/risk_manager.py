@@ -8,11 +8,12 @@ If ANY check fails, the trade is blocked.
 import json
 import math
 from datetime import datetime, timezone, timedelta
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from pathlib import Path
 
 from adapters.base import Position, Market
 from config.settings import settings
+from core.market_pricing import kalshi_trading_fee, fee_fraction_per_contract
 
 
 CONFIDENCE_EDGE_MULTIPLIERS = {
@@ -70,7 +71,6 @@ class RiskManager:
     """
 
     def __init__(self):
-        self.daily_stats = DailyStats(date=self._today())
         self.max_daily_trades = 20
         self.max_consecutive_losses = 5
         self.max_drawdown_pct = 0.15  # 15% max drawdown from peak
@@ -80,6 +80,11 @@ class RiskManager:
         self.category_stats_file.parent.mkdir(parents=True, exist_ok=True)
         self.category_stats = self._load_category_stats()
         self.paper_positions_file = Path("data/paper_positions.json")
+
+        # Circuit breakers must survive restarts: a crash during a loss
+        # streak must not clear the halt, loss counter, or drawdown peak.
+        self.daily_state_file = Path("data/daily_stats_state.json")
+        self.daily_stats = self._load_daily_state() or DailyStats(date=self._today())
 
     def _load_category_stats(self) -> dict:
         # Baseline from verified fills history (May 27, 2026) — only used if no file exists yet
@@ -231,6 +236,29 @@ class RiskManager:
             # Save yesterday's stats for review
             self._save_daily_stats()
             self.daily_stats = DailyStats(date=today)
+            self._persist_daily_state()
+
+    def _load_daily_state(self) -> "DailyStats | None":
+        """Reload today's circuit-breaker state after a restart; stale days are discarded."""
+        try:
+            if not self.daily_state_file.exists():
+                return None
+            with open(self.daily_state_file, "r") as f:
+                data = json.load(f)
+            if data.get("date") != self._today():
+                return None
+            valid_keys = {f.name for f in DailyStats.__dataclass_fields__.values()}
+            return DailyStats(**{k: v for k, v in data.items() if k in valid_keys})
+        except Exception:
+            return None
+
+    def _persist_daily_state(self):
+        """Write current circuit-breaker state so halts survive a crash or restart."""
+        try:
+            with open(self.daily_state_file, "w") as f:
+                json.dump(asdict(self.daily_stats), f, indent=2)
+        except Exception:
+            pass
 
     def check_trade(
         self,
@@ -264,13 +292,23 @@ class RiskManager:
             failures.append("Confidence too low (LOW) — requires at least MEDIUM")
 
         # This is the app's unique signal: independent probability versus the
-        # executable Kalshi price. Kalshi handles fee/payout/order-preview math.
+        # executable Kalshi price. The gap must clear the required edge AFTER
+        # the Kalshi trading fee — an edge smaller than the fee is not an edge.
         confidence_adjusted_gap = self.calculate_confidence_adjusted_probability_gap(proposal)
         required_edge = 0.12 if proposal.category.lower() == "weather" else settings.min_edge_threshold
-        proposal.execution_metrics["required_probability_gap"] = required_edge
-        if confidence_adjusted_gap < required_edge:
+        entry_fee_fraction = fee_fraction_per_contract(
+            self.get_side_cost(proposal), maker=proposal.post_only
+        )
+        fee_adjusted_gap = confidence_adjusted_gap - entry_fee_fraction
+        proposal.execution_metrics.update({
+            "required_probability_gap": required_edge,
+            "entry_fee_fraction": round(entry_fee_fraction, 6),
+            "fee_adjusted_probability_gap": round(fee_adjusted_gap, 6),
+        })
+        if fee_adjusted_gap < required_edge:
             failures.append(
-                f"Confidence-adjusted probability gap {confidence_adjusted_gap:.1%} "
+                f"Fee-adjusted probability gap {fee_adjusted_gap:.1%} "
+                f"(gap {confidence_adjusted_gap:.1%} minus entry fee {entry_fee_fraction:.1%}) "
                 f"is below the required {required_edge:.1%}."
             )
 
@@ -448,6 +486,11 @@ class RiskManager:
                     f"would exceed {settings.max_category_exposure_pct:.0%} limit "
                     f"(${max_cat_usd:.2f})"
                 )
+
+        if self.daily_stats.is_halted:
+            # A breaker tripped during this check — persist it immediately so
+            # a restart cannot clear the halt.
+            self._persist_daily_state()
 
         approved = len(failures) == 0
         return approved, failures
@@ -651,12 +694,27 @@ class RiskManager:
                 
             roi = (p.current_price - p.avg_price) / p.avg_price
             if roi >= settings.take_profit_threshold:
-                # Extra safety: If ROI is absurdly high (e.g. 1000%+), 
+                # Extra safety: If ROI is absurdly high (e.g. 1000%+),
                 # cross-check that it's not a default price error.
                 if roi > 10.0 and p.current_price == 0.5:
                     continue
 
-                reason = f"Take profit triggered! Value surged +{roi:.1%} (Bought @ ${p.avg_price:.2f}, Selling @ ${p.current_price:.2f})"
+                # Selling early pays the trading fee a second time; only exit
+                # when the gross gain survives the round-trip fees.
+                gross_gain = (p.current_price - p.avg_price) * p.quantity
+                round_trip_fees = (
+                    kalshi_trading_fee(p.quantity, p.avg_price)
+                    + kalshi_trading_fee(p.quantity, p.current_price)
+                )
+                net_gain = gross_gain - round_trip_fees
+                if net_gain <= 0:
+                    continue
+
+                reason = (
+                    f"Take profit triggered! Value surged +{roi:.1%} "
+                    f"(Bought @ ${p.avg_price:.2f}, Selling @ ${p.current_price:.2f}, "
+                    f"net +${net_gain:.2f} after ${round_trip_fees:.2f} fees)"
+                )
                 exits.append((p, reason))
 
         return exits
@@ -666,12 +724,15 @@ class RiskManager:
         Compute realized P&L for a position once its market has RESOLVED.
 
         Every contract of the winning side pays out $1; the losing side pays $0.
-        Returns (pnl_usd, won).
+        Settlement itself is fee-free, but the entry paid a trading fee that
+        belongs in realized P&L — otherwise win-rate and calibration stats are
+        systematically inflated. Returns (pnl_usd, won).
         """
         won = position.side.value == (result or "").lower()
         payout = position.quantity * (1.0 if won else 0.0)
         cost_basis = position.quantity * position.avg_price
-        return round(payout - cost_basis, 4), won
+        entry_fee = kalshi_trading_fee(position.quantity, position.avg_price)
+        return round(payout - cost_basis - entry_fee, 4), won
 
     def calculate_r_score(
         self,
@@ -868,6 +929,7 @@ class RiskManager:
     def record_trade_entry(self, size_usd: float):
         """Record that we entered a trade today to enforce the daily limit."""
         self.daily_stats.trades_placed += 1
+        self._persist_daily_state()
 
     def record_trade_result(self, pnl: float):
         """Record a trade result for circuit breaker tracking."""
@@ -878,6 +940,7 @@ class RiskManager:
         else:
             self.daily_stats.trades_lost += 1
             self.daily_stats.consecutive_losses += 1
+        self._persist_daily_state()
 
     def _save_daily_stats(self):
         """Persist daily stats to log file."""

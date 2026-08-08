@@ -1,12 +1,43 @@
-"""Kalshi quote and probability-comparison helpers.
+"""Kalshi quote, fee, and probability-comparison helpers.
 
-Fee, payout, and checkout calculations are intentionally left to Kalshi.
+Fees are charged by Kalshi on every trade execution (not on settlement):
+fee = ceil_to_cent(rate × contracts × price × (1 − price)), with a lower
+maker rate for resting post-only orders. Both the risk gate and realized
+P&L must account for them — an "edge" smaller than the fee is not an edge.
 """
 from __future__ import annotations
 
-# Retained for offline historical probes that need an explicit simulation
-# assumption. The live recommendation path does not calculate fees.
+import math
+
 TAKER_FEE_RATE = 0.07
+MAKER_FEE_RATE = 0.0175
+
+
+def kalshi_trading_fee(contracts: float, price_dollars: float, *, maker: bool = False) -> float:
+    """
+    Return the Kalshi trading fee in dollars for an order.
+
+    Kalshi charges rate × C × P × (1 − P), rounded UP to the next cent,
+    on execution. Settlement itself is fee-free.
+    """
+    if contracts <= 0 or not (0.0 < price_dollars < 1.0):
+        return 0.0
+    rate = MAKER_FEE_RATE if maker else TAKER_FEE_RATE
+    raw = rate * contracts * price_dollars * (1.0 - price_dollars)
+    return math.ceil(raw * 100.0 - 1e-9) / 100.0
+
+
+def fee_fraction_per_contract(price_dollars: float, *, maker: bool = False) -> float:
+    """
+    Return the expected fee per contract as a fraction of the $1 payout.
+
+    This is the continuous (un-ceiled) form used by the decision gate, where
+    probabilities and edges are already per-$1 fractions.
+    """
+    if not (0.0 < price_dollars < 1.0):
+        return 0.0
+    rate = MAKER_FEE_RATE if maker else TAKER_FEE_RATE
+    return rate * price_dollars * (1.0 - price_dollars)
 
 
 def _cents_to_dollars(cents: float) -> float:

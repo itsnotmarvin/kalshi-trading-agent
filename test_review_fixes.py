@@ -270,14 +270,16 @@ def test_settlement_pnl_scores_yes_and_no_positions_correctly():
     no_pnl, no_won = rm.realized_pnl_on_settlement(no_position, "NO")
     no_loss, no_lost = rm.realized_pnl_on_settlement(no_position, "YES")
 
+    # Realized P&L is net of the entry trading fee:
+    # ceil(0.07 × 10 × 0.30 × 0.70) = ceil(0.07 × 10 × 0.70 × 0.30) = $0.15
     assert yes_won is True
-    assert yes_pnl == 7.0
+    assert yes_pnl == 6.85
     assert yes_lost is False
-    assert yes_loss == -3.0
+    assert yes_loss == -3.15
     assert no_won is True
-    assert no_pnl == 3.0
+    assert no_pnl == 2.85
     assert no_lost is False
-    assert no_loss == -7.0
+    assert no_loss == -7.15
 
 
 def test_category_exposure_cap_uses_position_categories(monkeypatch):

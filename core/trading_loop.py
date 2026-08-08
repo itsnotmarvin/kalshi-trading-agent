@@ -10,8 +10,8 @@ This module receives shared state objects (BotState, RiskManager, etc.)
 from the server module — it does NOT own them.
 """
 import asyncio
+import hashlib
 import os
-import uuid
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
@@ -144,6 +144,90 @@ async def _place_live_order_with_audit(
     return res
 
 
+def _stable_client_order_id(market_id: str, direction: str, side_cost: float) -> str:
+    """
+    Derive an idempotency key that is stable across retries of the same
+    trade thesis on the same UTC day, so an ambiguous network failure
+    (timeout after Kalshi accepted) resubmits under the SAME ID and hits
+    the 409 reconciliation path instead of double-positioning.
+    """
+    day = datetime.now(timezone.utc).strftime("%Y%m%d")
+    thesis = f"{market_id}|{direction}|{round(side_cost * 100)}|{day}"
+    return f"kalshi-{hashlib.sha1(thesis.encode()).hexdigest()[:20]}"
+
+
+def _effective_filled(order, requested_contracts: float) -> float:
+    """
+    Return how many contracts actually filled on an accepted order.
+
+    An accepted order is NOT a completed trade: resting limit orders fill
+    partially or not at all on thin books. Only the adapter-reported fill
+    count (or a definitive FILLED status) counts.
+    """
+    if order is None:
+        return 0.0
+    try:
+        filled = float(getattr(order, "filled_quantity", 0.0) or 0.0)
+    except (TypeError, ValueError):
+        filled = 0.0
+    if filled <= 0 and getattr(order, "status", None) == OrderStatus.FILLED:
+        # Adapter reported a definitive full fill without a count.
+        filled = float(requested_contracts)
+    return max(0.0, min(filled, float(requested_contracts)))
+
+
+def _book_paper_settlement(pos, result: str, agent):
+    """
+    Book a RESOLVED paper position: realized P&L (net of the entry trading
+    fee) into category stats, circuit-breaker stats, the resolution log
+    (calibration) and agent memory.
+    """
+    from core.market_pricing import kalshi_trading_fee  # type: ignore
+
+    pnl, won = risk_manager.realized_pnl_on_settlement(pos, result)
+    risk_manager.record_category_result(pos.category, pnl)
+    risk_manager.record_trade_result(pnl)
+    # Entry debited cost only, so credit payout minus the entry fee to keep
+    # the simulated cash balance consistent with net realized P&L.
+    payout = pos.quantity if won else 0.0
+    state.balance += payout - kalshi_trading_fee(pos.quantity, pos.avg_price)
+    state.resolved_since_last_reflection += 1
+
+    outcome = result.upper()
+    verb = "WON" if won else "LOST"
+    emoji = "✅" if won else "❌"
+
+    logger.log_resolution(
+        market_id=pos.market_id,
+        question=pos.market_question,
+        outcome=outcome,
+        our_estimate=pos.entry_prob if pos.entry_prob > 0 else pos.avg_price,
+        market_price_at_entry=pos.avg_price,
+        pnl=pnl,
+    )
+    state.add_log(
+        "success" if won else "warn",
+        f"{emoji} SETTLED {pos.market_id}: resolved {outcome} — "
+        f"{pos.side.name} position {verb} (P&L ${pnl:+.2f})",
+    )
+    asyncio.create_task(send_telegram_alert(
+        f"{emoji} <b>MARKET SETTLED</b>\n\n"
+        f"<b>Market:</b> {pos.market_question}\n"
+        f"<b>Resolved:</b> {outcome} — our {pos.side.name} bet {verb}\n"
+        f"<b>Realized P&L:</b> ${pnl:+.2f}"
+    ))
+    asyncio.create_task(agent.generate_lesson(
+        market_id=pos.market_id,
+        question=pos.market_question,
+        reasoning=(
+            f"Held {pos.quantity:.0f}x {pos.side.name} @ ${pos.avg_price:.2f} "
+            f"until the market resolved {outcome}."
+        ),
+        outcome_pnl=pnl,
+        outcome_msg=f"Market resolved {outcome}. Position {verb}.",
+    ))
+
+
 async def _refresh_and_settle_paper_positions(adapter, agent):
     """
     Paper-mode position maintenance, run once per cycle.
@@ -171,55 +255,30 @@ async def _refresh_and_settle_paper_positions(adapter, agent):
             state.add_log("warn", f"⚠️ Settlement: could not fetch {pos.market_id}: {e}")
 
         if market is None:
-            # Can't determine status this cycle — leave the position untouched.
-            still_open.append(pos)
+            # Kalshi legitimately 404s expired/settled markets. Ask the
+            # adapter for the settlement result via the event endpoint so
+            # resolved positions get booked instead of staying open forever
+            # at a stale mark (which inflates P&L and win-rate stats).
+            result = None
+            try:
+                if hasattr(adapter, "get_market_result"):
+                    result = await adapter.get_market_result(pos.market_id)
+            except Exception as e:
+                state.add_log("warn", f"⚠️ Settlement: result lookup failed for {pos.market_id}: {e}")
+
+            if result in ("yes", "no"):
+                _book_paper_settlement(pos, result, agent)
+                settled += 1
+            else:
+                # Genuinely can't determine status this cycle — keep it.
+                still_open.append(pos)
             continue
 
         result = str((market.raw or {}).get("result", "")).lower()
 
         if result in ("yes", "no"):
-            # === Market RESOLVED — book the realized P&L ===
-            pnl, won = risk_manager.realized_pnl_on_settlement(pos, result)
-            risk_manager.record_category_result(pos.category, pnl)
-            risk_manager.record_trade_result(pnl)
-            payout = pos.quantity if won else 0.0
-            state.balance += payout
-            state.resolved_since_last_reflection += 1
+            _book_paper_settlement(pos, result, agent)
             settled += 1
-
-            outcome = result.upper()
-            verb = "WON" if won else "LOST"
-            emoji = "✅" if won else "❌"
-
-            logger.log_resolution(
-                market_id=pos.market_id,
-                question=pos.market_question,
-                outcome=outcome,
-                our_estimate=pos.entry_prob if pos.entry_prob > 0 else pos.avg_price,
-                market_price_at_entry=pos.avg_price,
-                pnl=pnl,
-            )
-            state.add_log(
-                "success" if won else "warn",
-                f"{emoji} SETTLED {pos.market_id}: resolved {outcome} — "
-                f"{pos.side.name} position {verb} (P&L ${pnl:+.2f})",
-            )
-            asyncio.create_task(send_telegram_alert(
-                f"{emoji} <b>MARKET SETTLED</b>\n\n"
-                f"<b>Market:</b> {pos.market_question}\n"
-                f"<b>Resolved:</b> {outcome} — our {pos.side.name} bet {verb}\n"
-                f"<b>Realized P&L:</b> ${pnl:+.2f}"
-            ))
-            asyncio.create_task(agent.generate_lesson(
-                market_id=pos.market_id,
-                question=pos.market_question,
-                reasoning=(
-                    f"Held {pos.quantity:.0f}x {pos.side.name} @ ${pos.avg_price:.2f} "
-                    f"until the market resolved {outcome}."
-                ),
-                outcome_pnl=pnl,
-                outcome_msg=f"Market resolved {outcome}. Position {verb}.",
-            ))
             continue
 
         # === Still open — refresh mark-to-market for this side ===
@@ -264,7 +323,15 @@ async def _process_trade_proposal(
             state.add_log("warn", f"{mode_name} orderbook fetch failed for {market.id}: {e}")
 
     if not proposal.client_order_id and is_executable_direction(proposal.direction):
-        proposal.client_order_id = f"kalshi-{market.id}-{uuid.uuid4().hex[:16]}"
+        # Deterministic per trade thesis (market + direction + price + day),
+        # NOT a fresh UUID per cycle: after a timeout-after-acceptance, the
+        # retry re-derives the same ID, Kalshi answers 409, and the dedup
+        # path reconciles instead of double-positioning.
+        proposal.client_order_id = _stable_client_order_id(
+            market.id,
+            proposal.direction,
+            risk_manager.get_side_cost(proposal),
+        )
 
     proposal_dict = {
         "market_id": market.id,
@@ -339,17 +406,44 @@ async def _process_trade_proposal(
                     adapter, market.id, side, price, contracts, proposal
                 )
                 if res.success:
-                    state.add_log("success", f"\U0001f4b0 {mode_name} LIVE TRADE: {market.id}")
-                    risk_manager.record_trade_entry(proposal.position_size_usd)
-                    state.balance -= proposal.position_size_usd
-                    msg = (
-                        f"{mode_emoji} <b>{telegram_title}</b> {mode_emoji}\n\n"
-                        f"<b>Market:</b> {market.question}\n"
-                        f"<b>Action:</b> {proposal.direction} @ ${price:.2f}\n"
-                        f"<b>Size:</b> ${proposal.position_size_usd:.2f}\n\n"
-                        f"<b>Logic:</b>\n<i>{proposal.reasoning}</i>"
-                    )
-                    asyncio.create_task(send_telegram_alert(msg))
+                    # An accepted order is not a completed trade — only the
+                    # contracts that actually filled count toward balance,
+                    # the daily trade limit, and the trade alert.
+                    filled = _effective_filled(res.order, contracts)
+                    filled_cost = round(filled * price, 2)
+                    proposal.execution_metrics.update({
+                        "requested_contracts_live": contracts,
+                        "filled_contracts": filled,
+                        "filled_cost_usd": filled_cost,
+                    })
+                    if filled <= 0:
+                        executed = False
+                        state.add_log(
+                            "info",
+                            f"⏳ {mode_name} order RESTING on {market.id}: accepted but "
+                            f"0 of {contracts:.0f} filled — not counted as a trade",
+                        )
+                    else:
+                        from core.market_pricing import kalshi_trading_fee  # type: ignore
+                        fill_note = (
+                            "" if filled >= contracts
+                            else f" (partial: {filled:.0f}/{contracts:.0f})"
+                        )
+                        state.add_log(
+                            "success",
+                            f"\U0001f4b0 {mode_name} LIVE TRADE: {market.id}{fill_note}",
+                        )
+                        risk_manager.record_trade_entry(filled_cost)
+                        state.balance -= filled_cost + kalshi_trading_fee(filled, price)
+                        msg = (
+                            f"{mode_emoji} <b>{telegram_title}</b> {mode_emoji}\n\n"
+                            f"<b>Market:</b> {market.question}\n"
+                            f"<b>Action:</b> {proposal.direction} @ ${price:.2f}\n"
+                            f"<b>Filled:</b> {filled:.0f}/{contracts:.0f} contracts "
+                            f"(${filled_cost:.2f})\n\n"
+                            f"<b>Logic:</b>\n<i>{proposal.reasoning}</i>"
+                        )
+                        asyncio.create_task(send_telegram_alert(msg))
                 else:
                     failure = f"{mode_name} order failed: {res.error}"
                     execution_blockers.append(failure)
@@ -676,24 +770,41 @@ async def trading_loop():
                             executed_snipes.append(m_id)
                         else:
                             contracts = proposal.position_size_usd / current_price if current_price > 0 else 0
-                            
+
                             if proposal.position_size_usd <= state.balance:
                                 if not proposal.client_order_id:
-                                    proposal.client_order_id = f"kalshi-{m_id}-{uuid.uuid4().hex[:16]}"
+                                    # Stable across retries so an ambiguous
+                                    # failure dedupes via 409 instead of
+                                    # double-positioning.
+                                    proposal.client_order_id = _stable_client_order_id(
+                                        m_id,
+                                        proposal.entry_direction or proposal.direction,
+                                        current_price,
+                                    )
                                 res = await _place_live_order_with_audit(
                                     adapter, m_id, side, current_price, contracts, proposal
                                 )
                                 if res.success:
+                                    filled = _effective_filled(res.order, contracts)
+                                    if filled <= 0:
+                                        state.add_log(
+                                            "info",
+                                            f"⏳ Snipe order RESTING on {m_id}: accepted but "
+                                            f"0 of {contracts:.0f} filled — not counted as a trade",
+                                        )
+                                        continue
+                                    from core.market_pricing import kalshi_trading_fee  # type: ignore
+                                    filled_cost = round(filled * current_price, 2)
                                     state.add_log("success", f"💰 LIVE SNIPE: {m_id}")
-                                    risk_manager.record_trade_entry(proposal.position_size_usd)
-                                    state.balance -= proposal.position_size_usd
+                                    risk_manager.record_trade_entry(filled_cost)
+                                    state.balance -= filled_cost + kalshi_trading_fee(filled, current_price)
                                     executed_snipes.append(m_id)
-                                    
+
                                     msg = f"🎯 <b>SMART ENTRY SNIPE</b> 🎯\n\n"
                                     msg += f"<b>Market:</b> {market.question}\n"
                                     msg += f"<b>Action:</b> {proposal.entry_direction or proposal.direction} @ ${current_price:.2f}\n"
                                     msg += f"<b>Target Was:</b> ${proposal.target_entry_price:.2f}\n"
-                                    msg += f"<b>Size:</b> ${proposal.position_size_usd:.2f}\n"
+                                    msg += f"<b>Filled:</b> {filled:.0f}/{contracts:.0f} contracts (${filled_cost:.2f})\n"
                                     asyncio.create_task(send_telegram_alert(msg))
                                 else:
                                     state.add_log("error", f"Snipe failed: {res.error}")

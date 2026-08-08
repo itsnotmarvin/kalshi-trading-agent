@@ -117,10 +117,17 @@ probability_gap = model_side_probability - market_side_probability
 confidence_adjusted_gap = probability_gap * confidence_multiplier
 ```
 
-The app intentionally does not reproduce Kalshi's fee, payout, expected-value,
-breakeven, cash-out, or Kelly-sizing calculations. It uses a configured fixed
-stake plus hard safety limits, and asks the user to verify the final checkout
-numbers in Kalshi.
+The app models the Kalshi trading fee — `ceil_to_cent(rate × C × P × (1 − P))`,
+taker 7% / maker 1.75% — in both the decision gate and realized P&L, because an
+"edge" smaller than the fee is not an edge:
+
+```text
+fee_adjusted_gap = confidence_adjusted_gap - fee_fraction(side_cost)
+```
+
+It still uses a configured fixed stake plus hard safety limits rather than
+reproducing Kalshi's payout/breakeven/cash-out/Kelly checkout math, and asks
+the user to verify final checkout numbers in Kalshi.
 
 For grouped singles, show every leg separately and do not multiply leg
 probabilities. Same-match or correlated legs require explicit correlation notes.
@@ -131,6 +138,29 @@ Track calibration over time. Bin predictions by probability and compare
 predicted frequency to observed frequency. Long-shot bins are especially
 important, because tail probabilities create attractive payouts and the easiest
 fake edges.
+
+## Scoreboard Integrity
+
+Paper validation is only as honest as the numbers feeding it, so the
+measurement layer enforces five invariants (regression-tested in
+`test_scoreboard_integrity.py`):
+
+- **Fees in every path** — the edge gate subtracts the entry fee from the
+  probability gap, settlement P&L is net of the entry fee, and take-profit
+  exits must clear round-trip fees before firing.
+- **404s still settle** — Kalshi legitimately 404s expired/settled markets;
+  the adapter falls back to the event endpoint so resolved positions book
+  P&L instead of staying open at a stale mark.
+- **Only fills count** — an accepted order is not a trade. Balance, daily
+  trade counters, and alerts reflect the adapter-reported fill count, with
+  partial fills counted for exactly the filled contracts.
+- **Idempotency survives retries** — `client_order_id` is derived from the
+  trade thesis (market + direction + price + day), not a per-cycle UUID, so
+  a timeout-after-acceptance retry hits the 409 dedup path instead of
+  double-positioning.
+- **Circuit breakers survive restarts** — halt state, loss streaks, and
+  daily P&L persist to disk and reload on startup, so a crash cannot clear
+  a tripped breaker.
 
 ## Architecture
 

@@ -425,6 +425,36 @@ class KalshiAdapter(PlatformAdapter):
             return None
         return self._parse_market(resp["market"])
 
+    async def get_market_result(self, market_id: str) -> str | None:
+        """
+        Fetch a market's settlement result ("yes"/"no"), surviving the 404
+        that expired/settled markets return from /markets/{ticker}.
+
+        On 404 the event endpoint still lists the market with its result, so
+        resolved positions can be settled instead of staying open forever.
+        Returns None when the result is unknown or the failure is transient.
+        """
+        resp = await self._request("GET", f"/markets/{market_id}", silent=True)
+        if isinstance(resp, dict) and isinstance(resp.get("market"), dict):
+            result = str(resp["market"].get("result") or "").lower()
+            return result or None
+
+        # Only fall back on a definitive 404 — a transient error must not
+        # be mistaken for "market gone, go look at the event".
+        if not (isinstance(resp, dict) and resp.get("status_code") == 404):
+            return None
+
+        event_ticker = market_id.rsplit("-", 1)[0]
+        if not event_ticker or event_ticker == market_id:
+            return None
+        resp = await self._request("GET", f"/events/{event_ticker}", silent=True)
+        markets = resp.get("markets") if isinstance(resp, dict) else None
+        for market_data in markets or []:
+            if market_data.get("ticker") == market_id:
+                result = str(market_data.get("result") or "").lower()
+                return result or None
+        return None
+
     async def get_orderbook(self, market_id: str) -> dict:
         """Fetch order book for a Kalshi market."""
         resp = await self._request("GET", f"/markets/{market_id}/orderbook")

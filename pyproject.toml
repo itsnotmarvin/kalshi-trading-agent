@@ -25,6 +25,7 @@ python_files = [
     "test_forecast_scoring.py",
     "test_probability_math.py",
     "test_review_fixes.py",
+    "test_scoreboard_integrity.py",
     "test_sizing_engine.py",
     "test_skill_scripts.py",
     "test_soccer_path.py",
