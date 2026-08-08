@@ -29,6 +29,7 @@ python_files = [
     "test_sizing_engine.py",
     "test_skill_scripts.py",
     "test_soccer_path.py",
+    "test_weather_forecast_log.py",
     "test_weather_learning.py",
     "test_weather_live_gate.py",
     "test_world_cup_api.py",

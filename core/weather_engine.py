@@ -11,10 +11,12 @@ Key insights (validated via r/algotrading):
   - High model disagreement = low confidence → skip
   - Thin order books → keep position sizes small ($5 max)
 """
+import json
 import re
 import httpx
 from datetime import datetime, timezone, timedelta
 from dataclasses import dataclass
+from pathlib import Path
 from core.forecaster import ForecasterInsight
 
 
@@ -166,6 +168,11 @@ class WeatherEngine:
         self.client = httpx.Client(timeout=15.0)
         self.lessons = lessons or []
         self.forecaster = ForecasterInsight()
+
+        # Every analyzed market gets logged here, traded or not. Scoring only
+        # traded markets selection-biases the calibration curve; the engine
+        # produces ~20× more forecasts than trades, and they're all evidence.
+        self.forecast_log_path = Path("data/weather_forecast_log.jsonl")
         
         # Kept for dashboard compatibility. Probability is no longer moved by
         # an arbitrary lesson-derived percentage; calibration must come from
@@ -716,7 +723,7 @@ class WeatherEngine:
         if hrrr_msg:
             reasoning = f"({hrrr_msg}). " + reasoning
 
-        return {
+        result = {
             "probability": final_prob,
             "raw_probability": raw_prob,
             "ensemble_probability": ensemble_prob,
@@ -734,16 +741,58 @@ class WeatherEngine:
             "market_price": market_price,
             "executable_price": executable_price,
             "member_count": member_count,
+            "hrrr_veto": hrrr_veto,
+            "hours_to_target": round(hours_to_target, 1),
             "probability_method": "member-wise daily extreme with Jeffreys smoothing" if (is_daily_high or is_daily_low) else "ensemble fraction with Jeffreys smoothing",
             "forecaster_probability_adjustment": 0.0,
             "forecaster_insight": reasoning,
         }
+        self._log_forecast(market, parsed, result)
+        return result
+
+    def _log_forecast(self, market, parsed: ParsedWeatherMarket, result: dict):
+        """
+        Append this forecast to the forecast log, whether or not it trades.
+
+        One JSONL line per analysis; the scorer joins these against Kalshi
+        settlement results to measure calibration and skill versus the market
+        without selection bias.
+        """
+        try:
+            record = {
+                "ts": datetime.now(timezone.utc).isoformat(),
+                "market_id": market.id,
+                "question": getattr(market, "question", ""),
+                "city": parsed.city,
+                "variable": parsed.variable,
+                "threshold": parsed.threshold,
+                "above": parsed.above,
+                "target_date": parsed.target_date.isoformat() if parsed.target_date else None,
+                "probability": result.get("probability"),
+                "raw_probability": result.get("raw_probability"),
+                "confidence": result.get("confidence"),
+                "market_yes_price": market.yes_price,
+                "market_no_price": market.no_price,
+                "direction": result.get("direction"),
+                "edge": result.get("edge"),
+                "should_trade": result.get("should_trade"),
+                "hrrr_veto": result.get("hrrr_veto", False),
+                "hours_to_target": result.get("hours_to_target"),
+                "member_count": result.get("member_count"),
+                "probability_method": result.get("probability_method"),
+            }
+            self.forecast_log_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.forecast_log_path, "a") as f:
+                f.write(json.dumps(record) + "\n")
+        except Exception:
+            # Logging must never break the analysis path.
+            pass
 
     def _build_override_result(self, parsed: ParsedWeatherMarket, market, final_prob: float, direction: str, logic: str):
         market_price = market.yes_price
         edge = final_prob - market.yes_price if direction == "BUY_YES" else (1 - final_prob) - market.no_price
         executable_price = market.yes_price if direction == "BUY_YES" else market.no_price
-        return {
+        result = {
             "probability": final_prob,
             "raw_probability": final_prob,
             "ensemble_probability": final_prob,
@@ -761,7 +810,11 @@ class WeatherEngine:
             "market_price": market_price,
             "executable_price": executable_price,
             "member_count": 0,
+            "hrrr_veto": False,
+            "hours_to_target": 0.0,
             "probability_method": "observed threshold override",
             "forecaster_probability_adjustment": 0.0,
             "forecaster_insight": logic,
         }
+        self._log_forecast(market, parsed, result)
+        return result
