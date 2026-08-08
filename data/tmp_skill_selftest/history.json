@@ -1,0 +1,41 @@
+{
+  "explanatory_only": {
+    "summary": {
+      "change_24h": 0.1,
+      "change_30d": null,
+      "change_7d": null,
+      "current": 0.7,
+      "inflection_points": [],
+      "largest_drop": 0.05,
+      "largest_spike": 0.15,
+      "realized_range": 0.3,
+      "trend_label": "up"
+    }
+  },
+  "points": [
+    {
+      "ts": "2026-01-01T00:00:00+00:00",
+      "yes_dollars": 0.4
+    },
+    {
+      "ts": "2026-01-02T00:00:00+00:00",
+      "yes_dollars": 0.45
+    },
+    {
+      "ts": "2026-01-03T00:00:00+00:00",
+      "yes_dollars": 0.6
+    },
+    {
+      "ts": "2026-01-04T00:00:00+00:00",
+      "yes_dollars": 0.7
+    }
+  ],
+  "source": {
+    "csv_path": "data/tmp_skill_selftest/synthetic_history.csv",
+    "input_type": "csv",
+    "price_column": "Target",
+    "raw_rows": 4,
+    "timestamp_column": "timestamp"
+  },
+  "ticker": "SELFTEST"
+}

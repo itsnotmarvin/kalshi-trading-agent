@@ -1,0 +1,1664 @@
+{
+  "generated_at": "2026-06-29T01:50:20.227457+00:00",
+  "read_only": true,
+  "market_count": 7048,
+  "candidate_count": 7041,
+  "available_categories": [
+    "entertainment / awards",
+    "general",
+    "macro / financial",
+    "politics / elections",
+    "sports",
+    "sports / basketball",
+    "sports / soccer / world cup"
+  ],
+  "available_statuses": [
+    "active",
+    "initialized"
+  ],
+  "tested_statuses": [
+    "open",
+    "preopen",
+    "all"
+  ],
+  "tested_horizons": [
+    "short",
+    "medium",
+    "long"
+  ],
+  "diagnostics": {
+    "batches": [
+      {
+        "status": "default",
+        "count": 100,
+        "added": 100
+      },
+      {
+        "status": "default",
+        "count": 100,
+        "added": 100
+      },
+      {
+        "status": "open",
+        "count": 100,
+        "added": 100
+      },
+      {
+        "status": "open",
+        "count": 100,
+        "added": 100
+      },
+      {
+        "status": "unopened",
+        "count": 100,
+        "added": 100
+      },
+      {
+        "status": "unopened",
+        "count": 100,
+        "added": 100
+      },
+      {
+        "status": "active",
+        "count": 0,
+        "error": {
+          "error": {
+            "code": "bad_request",
+            "message": "bad request",
+            "details": "invalid status filter"
+          },
+          "status_code": 400
+        }
+      },
+      {
+        "endpoint": "events",
+        "status": "open",
+        "events": 100,
+        "nested_markets": 640,
+        "added": 640
+      },
+      {
+        "endpoint": "events",
+        "status": "open",
+        "events": 100,
+        "nested_markets": 574,
+        "added": 574
+      },
+      {
+        "endpoint": "events",
+        "status": "unopened",
+        "events": 100,
+        "nested_markets": 2215,
+        "added": 2199
+      },
+      {
+        "endpoint": "events",
+        "status": "unopened",
+        "events": 100,
+        "nested_markets": 3054,
+        "added": 3035
+      }
+    ]
+  },
+  "category_results": [
+    {
+      "category": "entertainment / awards",
+      "chosen_status": "open",
+      "chosen_horizon": "long",
+      "clean_candidate": true,
+      "ticker": "KXACTORSONNYCROCKETT-35-OSC",
+      "market": "Will Oscar Isaac be casted in the next Miami Vice?",
+      "placement": "Oscar Isaac",
+      "market_status": "active",
+      "probe_status": "Catalyst setup",
+      "rank_score": 57.6,
+      "recommended_placement_dollars": 68.45,
+      "yes_ask_cents": 6.0,
+      "expected_repricing_roi": 35.0,
+      "days_to_resolution": 3108.5493410875233,
+      "claude_decision": "Watch only",
+      "claude_why": "I believe the Oscar Isaac casting contract can drift toward the low teens if credible casting or production reporting emerges, because entertainment markets reprice hard on a single trade-press leak. The risk facts that break it: the resolution is over 3,000 days out, liquidity is zero with only 140 cumulative contracts, the spread is 3 cents, and the 'oscar' term match is a coincidental keyword (the actor's first name), not a real awards signal. Without enrichment this is a thin watch.",
+      "market_knows_check": "Volume of 140 with zero in 24h and no price move gives no sharp signal. There is nothing in flow to suggest the market knows anything yet. Holder identity and holding duration are unavailable, so I make no informed-trader claim.",
+      "candidate": {
+        "ticker": "KXACTORSONNYCROCKETT-35-OSC",
+        "title": "Will Oscar Isaac be casted in the next Miami Vice?",
+        "display_name": "Oscar Isaac",
+        "display_title": "Next Miami Vice film: Cast - Oscar Isaac",
+        "category": "Entertainment",
+        "category_path": [
+          "entertainment",
+          "awards"
+        ],
+        "model_key": "entertainment_awards",
+        "model_name": "Entertainment / Awards",
+        "status": "active",
+        "yes_ask": 0.06,
+        "no_ask": 0.97,
+        "yes_bid": 0.03,
+        "no_bid": 0.94,
+        "last_price": 0.07,
+        "previous_price": 0.07,
+        "volume": 140.0,
+        "volume_24h": 0.0,
+        "liquidity": 0.0,
+        "spread": 0.03,
+        "end_date": "2035-01-01T15:00:00+00:00",
+        "days_to_resolution": 3108.5493410875233,
+        "settlement_source": "Kalshi market metadata",
+        "catalyst_score": 28.0,
+        "liquidity_score": 35.8,
+        "runway_score": 100.0,
+        "attention_score": 64.0,
+        "source_score": 45.0,
+        "spread_score": 62.5,
+        "momentum_score": 50.0,
+        "price_anchor_score": 100.0,
+        "domain_signal_score": 26.0,
+        "flow_signal_score": 25.6,
+        "directionless_penalty": 12.0,
+        "rank_score": 57.6,
+        "bull_probability": 43.4,
+        "base_probability": 24.8,
+        "bear_probability": 31.8,
+        "bull_price": 0.1427,
+        "base_price": 0.0748,
+        "bear_price": 0.0545,
+        "expected_future_price": 0.0978,
+        "expected_repricing_roi": 35.0,
+        "entry_limit": 0.081,
+        "recommended_placement_dollars": 68.45,
+        "estimated_contracts": 1140,
+        "estimated_position_cost": 68.4,
+        "estimated_target_value": 111.5,
+        "estimated_target_profit": 43.1,
+        "placement_sizing_basis": {
+          "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+          "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+          "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+          "min_placement_dollars": 20.0,
+          "max_placement_dollars": 100.0,
+          "sizing_score": 60.6,
+          "raw_roi_still_reported_uncapped": true,
+          "roi_influence": 70.0,
+          "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+        },
+        "next_catalyst": {
+          "label": "Nomination shortlist, voting window, award ceremony, or public ranking update",
+          "date_status": "needs source enrichment",
+          "days_proxy": 3108.5493410875233,
+          "matched_terms": [
+            "oscar"
+          ],
+          "why_it_matters": "Awards markets can reprice as nominations and consensus lists make attention less scattered."
+        },
+        "domain_signals": {
+          "score": 26.0,
+          "signals": [
+            {
+              "name": "nomination path",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "ceremony timing",
+              "score": 38.0,
+              "matched_terms": [
+                "oscar"
+              ],
+              "note": "Matched in market metadata."
+            },
+            {
+              "name": "attention concentration",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            }
+          ],
+          "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+        },
+        "flow_signal": {
+          "score": 25.6,
+          "warning_score": 11.3,
+          "public_data_level": "quote, spread, volume, and liquidity only",
+          "holder_identity_available": false,
+          "holding_duration_available": false,
+          "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+          "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+          "inputs": {
+            "volume": 140.0,
+            "volume_24h": 0.0,
+            "liquidity": 0.0,
+            "recent_move_pct": 0.0
+          }
+        },
+        "scenario_weight_basis": {
+          "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+          "raw_bull_probability": 43.43,
+          "raw_bear_probability": 31.82,
+          "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+          "model_profile": "Entertainment / Awards",
+          "category_path": [
+            "entertainment",
+            "awards"
+          ],
+          "bull_components_pct": {
+            "base": 10.0,
+            "next_catalyst": 4.48,
+            "attention_growth": 7.04,
+            "time_runway": 7.0,
+            "source_backing": 2.7,
+            "liquidity_exit": 1.79,
+            "spread_quality": 2.5,
+            "price_anchor": 6.0,
+            "domain_model_fit": 2.34,
+            "flow_support": 1.02,
+            "momentum": 0.0,
+            "pre_open_structure": 0.0,
+            "directionless_or_short_runway_penalty": -1.44
+          },
+          "bear_components_pct": {
+            "base": 16.0,
+            "directionless_or_short_runway_penalty": 2.16,
+            "thin_liquidity": 6.42,
+            "wide_spread": 3.0,
+            "negative_momentum": 0.0,
+            "missing_domain_facts": 5.92,
+            "flow_warning": 0.56,
+            "source_backing_offset": -2.25
+          }
+        },
+        "price_scenario_basis": {
+          "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+          "entry_price": 0.06,
+          "friction": 0.0168,
+          "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+          "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+          "bear_price_formula": "entry - downside_delta scaled by entry price",
+          "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+          "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+          "model_profile": "Entertainment / Awards"
+        },
+        "probe_status": "Catalyst setup"
+      }
+    },
+    {
+      "category": "general",
+      "chosen_status": "open",
+      "chosen_horizon": "long",
+      "clean_candidate": true,
+      "ticker": "STARSHIPMARS-29DEC31",
+      "market": "Manned Starship mission to Mars before 2030?",
+      "placement": "Before 2030",
+      "market_status": "active",
+      "probe_status": "Catalyst setup",
+      "rank_score": 63.0,
+      "recommended_placement_dollars": 72.56,
+      "yes_ask_cents": 19.0,
+      "expected_repricing_roi": 16.0,
+      "days_to_resolution": 1281.1326734487616,
+      "claude_decision": "Catalyst setup",
+      "claude_why": "I believe the Before 2030 Mars contract can reprice toward the mid-20s because it carries the second-best liquidity in this set, a 2-cent spread, and a long runway that lets test-flight news swing sentiment. Each high-profile launch event tends to generate attention-driven repricing even when the final outcome stays uncertain. The risk facts that break it: a crewed Mars mission before 2030 is extremely ambitious, repeated slipping timelines pull the price down, and the 24h volume of only 4 contracts shows current interest is thin despite a large cumulative total. I view this as a catalyst-driven swing trade, not a settlement bet.",
+      "market_knows_check": "Cumulative volume is large (~46.5K) but 24h volume is only 4 and there is no recent price move, so there is no current sharp signal. The flow warning score is low. Holder identity and holding duration are unavailable, so I cannot infer informed positioning.",
+      "candidate": {
+        "ticker": "STARSHIPMARS-29DEC31",
+        "title": "Manned Starship mission to Mars before 2030?",
+        "display_name": "Before 2030",
+        "display_title": "Starship launches humans to Mars before 2030?",
+        "category": "Companies",
+        "category_path": [
+          "general"
+        ],
+        "model_key": "general_event",
+        "model_name": "General Event",
+        "status": "active",
+        "yes_ask": 0.19,
+        "no_ask": 0.83,
+        "yes_bid": 0.17,
+        "no_bid": 0.81,
+        "last_price": 0.19,
+        "previous_price": 0.19,
+        "volume": 46543.42,
+        "volume_24h": 4.0,
+        "liquidity": 0.0,
+        "spread": 0.02,
+        "end_date": "2029-12-31T05:00:00+00:00",
+        "days_to_resolution": 1281.1326734487616,
+        "settlement_source": "Kalshi market metadata",
+        "catalyst_score": 36.0,
+        "liquidity_score": 77.8,
+        "runway_score": 100.0,
+        "attention_score": 58.0,
+        "source_score": 45.0,
+        "spread_score": 75.0,
+        "momentum_score": 50.0,
+        "price_anchor_score": 100.0,
+        "domain_signal_score": 38.0,
+        "flow_signal_score": 47.5,
+        "directionless_penalty": 0.0,
+        "rank_score": 63.0,
+        "bull_probability": 52.3,
+        "base_probability": 24.3,
+        "bear_probability": 23.4,
+        "bull_price": 0.2785,
+        "base_price": 0.2029,
+        "bear_price": 0.1762,
+        "expected_future_price": 0.2362,
+        "expected_repricing_roi": 16.0,
+        "entry_limit": 0.2205,
+        "recommended_placement_dollars": 72.56,
+        "estimated_contracts": 381,
+        "estimated_position_cost": 72.39,
+        "estimated_target_value": 89.98,
+        "estimated_target_profit": 17.59,
+        "placement_sizing_basis": {
+          "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+          "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+          "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+          "min_placement_dollars": 20.0,
+          "max_placement_dollars": 100.0,
+          "sizing_score": 65.7,
+          "raw_roi_still_reported_uncapped": true,
+          "roi_influence": 32.1,
+          "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+        },
+        "next_catalyst": {
+          "label": "Next public fact, market open, or settlement-source update",
+          "date_status": "needs source enrichment",
+          "days_proxy": 1281.1326734487616,
+          "matched_terms": [
+            "launch"
+          ],
+          "why_it_matters": "Generic markets need a source-backed event before an early setup becomes actionable."
+        },
+        "domain_signals": {
+          "score": 38.0,
+          "signals": [
+            {
+              "name": "future fact path",
+              "score": 38.0,
+              "matched_terms": [
+                "launch"
+              ],
+              "note": "Matched in market metadata."
+            }
+          ],
+          "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+        },
+        "flow_signal": {
+          "score": 47.5,
+          "warning_score": 9.3,
+          "public_data_level": "quote, spread, volume, and liquidity only",
+          "holder_identity_available": false,
+          "holding_duration_available": false,
+          "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+          "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+          "inputs": {
+            "volume": 46543.42,
+            "volume_24h": 4.0,
+            "liquidity": 0.0,
+            "recent_move_pct": 0.0
+          }
+        },
+        "scenario_weight_basis": {
+          "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+          "raw_bull_probability": 52.29,
+          "raw_bear_probability": 23.4,
+          "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+          "model_profile": "General Event",
+          "category_path": [
+            "general"
+          ],
+          "bull_components_pct": {
+            "base": 10.0,
+            "next_catalyst": 5.76,
+            "attention_growth": 6.38,
+            "time_runway": 10.0,
+            "source_backing": 2.7,
+            "liquidity_exit": 3.89,
+            "spread_quality": 3.0,
+            "price_anchor": 6.0,
+            "domain_model_fit": 2.66,
+            "flow_support": 1.9,
+            "momentum": 0.0,
+            "pre_open_structure": 0.0,
+            "directionless_or_short_runway_penalty": -0.0
+          },
+          "bear_components_pct": {
+            "base": 16.0,
+            "directionless_or_short_runway_penalty": 0.0,
+            "thin_liquidity": 2.22,
+            "wide_spread": 2.0,
+            "negative_momentum": 0.0,
+            "missing_domain_facts": 4.96,
+            "flow_warning": 0.47,
+            "source_backing_offset": -2.25
+          }
+        },
+        "price_scenario_basis": {
+          "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+          "entry_price": 0.19,
+          "friction": 0.0157,
+          "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+          "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+          "bear_price_formula": "entry - downside_delta scaled by entry price",
+          "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+          "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+          "model_profile": "General Event"
+        },
+        "probe_status": "Catalyst setup"
+      }
+    },
+    {
+      "category": "macro / financial",
+      "chosen_status": "open",
+      "chosen_horizon": "long",
+      "clean_candidate": true,
+      "ticker": "KXNEXTTRILLIONAIRE-33-WB",
+      "market": "Will Warren Buffett be the world's second trillionaire?",
+      "placement": "Warren Buffett",
+      "market_status": "active",
+      "probe_status": "Catalyst setup",
+      "rank_score": 49.6,
+      "recommended_placement_dollars": 71.12,
+      "yes_ask_cents": 4.0,
+      "expected_repricing_roi": 51.1,
+      "days_to_resolution": 2378.549341061574,
+      "claude_decision": "Too directionless",
+      "claude_why": "I believe the Warren Buffett second-trillionaire contract is too directionless to position because it carries a heavy directionless penalty, no near-term scheduled catalyst, and a structurally implausible path \u2014 reaching a trillion-dollar net worth would require an extreme, unprecedented asset move over the runway. The 1-cent spread looks attractive but liquidity is thin and 24h volume is zero. The risk facts: the headline ROI is a longshot percentage artifact at a 3-4 cent price, and there is no realistic catalyst to drive resale appreciation.",
+      "market_knows_check": "Volume of ~1,213 with zero in 24h and no price move shows no sharp signal. Nothing in flow suggests the market knows something. Holder identity and holding duration are unavailable, so no informed-trader inference is possible.",
+      "candidate": {
+        "ticker": "KXNEXTTRILLIONAIRE-33-WB",
+        "title": "Will Warren Buffett be the world's second trillionaire?",
+        "display_name": "Warren Buffett",
+        "display_title": "Who will be the world's second trillionaire? - Warren Buffett",
+        "category": "Economics",
+        "category_path": [
+          "macro",
+          "financial"
+        ],
+        "model_key": "macro_financial",
+        "model_name": "Macro / Financial",
+        "status": "active",
+        "yes_ask": 0.04,
+        "no_ask": 0.97,
+        "yes_bid": 0.03,
+        "no_bid": 0.96,
+        "last_price": 0.03,
+        "previous_price": 0.03,
+        "volume": 1213.0,
+        "volume_24h": 0.0,
+        "liquidity": 0.0,
+        "spread": 0.01,
+        "end_date": "2033-01-01T15:00:00+00:00",
+        "days_to_resolution": 2378.549341061574,
+        "settlement_source": "Kalshi market metadata",
+        "catalyst_score": 16.0,
+        "liquidity_score": 51.4,
+        "runway_score": 100.0,
+        "attention_score": 64.0,
+        "source_score": 45.0,
+        "spread_score": 87.5,
+        "momentum_score": 50.0,
+        "price_anchor_score": 100.0,
+        "domain_signal_score": 20.0,
+        "flow_signal_score": 36.3,
+        "directionless_penalty": 47.0,
+        "rank_score": 49.6,
+        "bull_probability": 36.5,
+        "base_probability": 26.5,
+        "bear_probability": 37.1,
+        "bull_price": 0.1165,
+        "base_price": 0.0554,
+        "bear_price": 0.0359,
+        "expected_future_price": 0.0704,
+        "expected_repricing_roi": 51.1,
+        "entry_limit": 0.0604,
+        "recommended_placement_dollars": 71.12,
+        "estimated_contracts": 1778,
+        "estimated_position_cost": 71.12,
+        "estimated_target_value": 125.23,
+        "estimated_target_profit": 54.11,
+        "placement_sizing_basis": {
+          "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+          "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+          "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+          "min_placement_dollars": 20.0,
+          "max_placement_dollars": 100.0,
+          "sizing_score": 63.9,
+          "raw_roi_still_reported_uncapped": true,
+          "roi_influence": 100.0,
+          "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+        },
+        "next_catalyst": {
+          "label": "Scheduled data release, rate decision, earnings, ETF, or regulatory update",
+          "date_status": "needs source enrichment",
+          "days_proxy": 2378.549341061574,
+          "matched_terms": [],
+          "why_it_matters": "Macro and financial contracts need date-specific public releases because surprises get priced quickly."
+        },
+        "domain_signals": {
+          "score": 20.0,
+          "signals": [
+            {
+              "name": "scheduled release",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "regulatory path",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "market attention",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            }
+          ],
+          "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+        },
+        "flow_signal": {
+          "score": 36.3,
+          "warning_score": 3.8,
+          "public_data_level": "quote, spread, volume, and liquidity only",
+          "holder_identity_available": false,
+          "holding_duration_available": false,
+          "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+          "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+          "inputs": {
+            "volume": 1213.0,
+            "volume_24h": 0.0,
+            "liquidity": 0.0,
+            "recent_move_pct": 0.0
+          }
+        },
+        "scenario_weight_basis": {
+          "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+          "raw_bull_probability": 36.46,
+          "raw_bear_probability": 37.06,
+          "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+          "model_profile": "Macro / Financial",
+          "category_path": [
+            "macro",
+            "financial"
+          ],
+          "bull_components_pct": {
+            "base": 10.0,
+            "next_catalyst": 2.24,
+            "attention_growth": 7.04,
+            "time_runway": 5.0,
+            "source_backing": 2.7,
+            "liquidity_exit": 2.57,
+            "spread_quality": 3.5,
+            "price_anchor": 6.0,
+            "domain_model_fit": 1.6,
+            "flow_support": 1.45,
+            "momentum": 0.0,
+            "pre_open_structure": 0.0,
+            "directionless_or_short_runway_penalty": -5.64
+          },
+          "bear_components_pct": {
+            "base": 16.0,
+            "directionless_or_short_runway_penalty": 8.46,
+            "thin_liquidity": 4.86,
+            "wide_spread": 1.0,
+            "negative_momentum": 0.0,
+            "missing_domain_facts": 8.8,
+            "flow_warning": 0.19,
+            "source_backing_offset": -2.25
+          }
+        },
+        "price_scenario_basis": {
+          "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+          "entry_price": 0.04,
+          "friction": 0.01,
+          "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+          "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+          "bear_price_formula": "entry - downside_delta scaled by entry price",
+          "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+          "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+          "model_profile": "Macro / Financial"
+        },
+        "probe_status": "Catalyst setup"
+      }
+    },
+    {
+      "category": "politics / elections",
+      "chosen_status": "open",
+      "chosen_horizon": "long",
+      "clean_candidate": true,
+      "ticker": "KXPRESPERSON-28-JSHA",
+      "market": "Who will win the next presidential election?",
+      "placement": "Josh Shapiro",
+      "market_status": "active",
+      "probe_status": "Catalyst setup",
+      "rank_score": 84.7,
+      "recommended_placement_dollars": 94.61,
+      "yes_ask_cents": 3.1,
+      "expected_repricing_roi": 234.8,
+      "days_to_resolution": 937.5493399150116,
+      "claude_decision": "Market knows something",
+      "claude_why": "I believe the Josh Shapiro contract can drift toward the low teens because this is the single most-traded, most-liquid name in the set, the spread is razor thin, and the price already ticked from 2.7 to 3.2 cents on heavy 24h volume. Early-cycle election futures reprice up as a candidate becomes less theoretical, and a 937-day runway gives plenty of room for that story. The risk facts that break it: he has not declared, the field is wide open, and a single negative news cycle or a stronger frontrunner consolidating support could stall a 3-cent longshot. The expected resale math here is largely a longshot percentage illusion, so I treat the giant ROI number with suspicion.",
+      "market_knows_check": "Volume of ~1.65M with ~12.5K in 24h and a recent move of ~18.5% on a 2-3 cent contract is exactly the kind of behavior that triggers a market-knows flag. The flow warning score of 53.8 is the highest in the set. Holder identity and holding duration are not available, so I cannot say who is buying or whether they are informed \u2014 I can only say the activity is unusual for a longshot.",
+      "candidate": {
+        "ticker": "KXPRESPERSON-28-JSHA",
+        "title": "Who will win the next presidential election?",
+        "display_name": "Josh Shapiro",
+        "display_title": "2028 U.S. Presidential Election winner? - Josh Shapiro",
+        "category": "Elections",
+        "category_path": [
+          "politics",
+          "elections"
+        ],
+        "model_key": "politics_election",
+        "model_name": "Politics / Elections",
+        "status": "active",
+        "yes_ask": 0.031,
+        "no_ask": 0.971,
+        "yes_bid": 0.029,
+        "no_bid": 0.969,
+        "last_price": 0.032,
+        "previous_price": 0.027,
+        "volume": 1652666.87,
+        "volume_24h": 12560.26,
+        "liquidity": 0.0,
+        "spread": 0.002,
+        "end_date": "2029-01-21T15:00:00+00:00",
+        "days_to_resolution": 937.5493399150116,
+        "settlement_source": "Kalshi market metadata",
+        "catalyst_score": 64.0,
+        "liquidity_score": 100.0,
+        "runway_score": 100.0,
+        "attention_score": 86.0,
+        "source_score": 45.0,
+        "spread_score": 97.5,
+        "momentum_score": 68.5,
+        "price_anchor_score": 100.0,
+        "domain_signal_score": 33.5,
+        "flow_signal_score": 90.6,
+        "directionless_penalty": 0.0,
+        "rank_score": 84.7,
+        "bull_probability": 62.0,
+        "base_probability": 14.7,
+        "bear_probability": 23.3,
+        "bull_price": 0.161,
+        "base_price": 0.0496,
+        "bear_price": 0.0287,
+        "expected_future_price": 0.1138,
+        "expected_repricing_roi": 234.8,
+        "entry_limit": 0.1038,
+        "recommended_placement_dollars": 94.61,
+        "estimated_contracts": 3051,
+        "estimated_position_cost": 94.58,
+        "estimated_target_value": 347.17,
+        "estimated_target_profit": 252.59,
+        "placement_sizing_basis": {
+          "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+          "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+          "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+          "min_placement_dollars": 20.0,
+          "max_placement_dollars": 100.0,
+          "sizing_score": 93.3,
+          "raw_roi_still_reported_uncapped": true,
+          "roi_influence": 100.0,
+          "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+        },
+        "next_catalyst": {
+          "label": "Polling, filing, ballot-access, debate, endorsement, or fundraising update",
+          "date_status": "needs source enrichment",
+          "days_proxy": 937.5493399150116,
+          "matched_terms": [
+            "election",
+            "president"
+          ],
+          "why_it_matters": "Election futures reprice when candidate viability becomes less theoretical and public signals narrow the field."
+        },
+        "domain_signals": {
+          "score": 33.5,
+          "signals": [
+            {
+              "name": "candidate viability",
+              "score": 38.0,
+              "matched_terms": [
+                "president"
+              ],
+              "note": "Matched in market metadata."
+            },
+            {
+              "name": "public signal path",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "legal ballot access",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "field narrowing",
+              "score": 56.0,
+              "matched_terms": [
+                "winner",
+                "election"
+              ],
+              "note": "Matched in market metadata."
+            }
+          ],
+          "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+        },
+        "flow_signal": {
+          "score": 90.6,
+          "warning_score": 53.8,
+          "public_data_level": "quote, spread, volume, and liquidity only",
+          "holder_identity_available": false,
+          "holding_duration_available": false,
+          "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+          "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+          "inputs": {
+            "volume": 1652666.87,
+            "volume_24h": 12560.26,
+            "liquidity": 0.0,
+            "recent_move_pct": 18.52
+          }
+        },
+        "scenario_weight_basis": {
+          "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+          "raw_bull_probability": 64.74,
+          "raw_bear_probability": 23.29,
+          "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+          "model_profile": "Politics / Elections",
+          "category_path": [
+            "politics",
+            "elections"
+          ],
+          "bull_components_pct": {
+            "base": 10.0,
+            "next_catalyst": 9.6,
+            "attention_growth": 9.46,
+            "time_runway": 10.0,
+            "source_backing": 2.7,
+            "liquidity_exit": 5.0,
+            "spread_quality": 3.9,
+            "price_anchor": 6.0,
+            "domain_model_fit": 3.35,
+            "flow_support": 3.62,
+            "momentum": 1.11,
+            "pre_open_structure": 0.0,
+            "directionless_or_short_runway_penalty": -0.0
+          },
+          "bear_components_pct": {
+            "base": 16.0,
+            "directionless_or_short_runway_penalty": 0.0,
+            "thin_liquidity": 0.0,
+            "wide_spread": 0.2,
+            "negative_momentum": 0.0,
+            "missing_domain_facts": 6.65,
+            "flow_warning": 2.69,
+            "source_backing_offset": -2.25
+          }
+        },
+        "price_scenario_basis": {
+          "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+          "entry_price": 0.031,
+          "friction": 0.01,
+          "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+          "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+          "bear_price_formula": "entry - downside_delta scaled by entry price",
+          "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+          "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+          "model_profile": "Politics / Elections"
+        },
+        "probe_status": "Catalyst setup"
+      }
+    },
+    {
+      "category": "sports",
+      "chosen_status": "open",
+      "chosen_horizon": "long",
+      "clean_candidate": true,
+      "ticker": "KXCITYCHAMPS-BAY30JUL01W4GS-4",
+      "market": "Golden State Pro Basketball team, San Francisco Pro Football team, San Francisco Pro Baseball team, and the San Jose Sharks: At least 4 championships after Jun 9, 2026 and before Jul 1, 2030",
+      "placement": "4+ championships",
+      "market_status": "active",
+      "probe_status": "Catalyst setup",
+      "rank_score": 63.9,
+      "recommended_placement_dollars": 70.83,
+      "yes_ask_cents": 5.0,
+      "expected_repricing_roi": 45.2,
+      "days_to_resolution": 1463.090312697882,
+      "claude_decision": "Watch only",
+      "claude_why": "I believe the 4-or-more championships contract could reprice toward the high single digits if any one of the four Bay Area franchises makes a deep playoff run, because attention concentration alone can lift a multi-team parlay-style market. The risk facts that break it: requiring four titles across four leagues in the window is a steep bar, the spread is 4 cents wide, liquidity is essentially absent (volume of just 8 contracts), and exits could be hard to fill. I keep this as watch-only until liquidity or a concrete playoff catalyst appears.",
+      "market_knows_check": "Volume of 8 and no recent move means there is no sharp signal to read. The wide spread and near-zero liquidity make any price move noisy rather than informative. Holder identity and duration are unavailable, so no informed-flow inference is possible.",
+      "candidate": {
+        "ticker": "KXCITYCHAMPS-BAY30JUL01W4GS-4",
+        "title": "Golden State Pro Basketball team, San Francisco Pro Football team, San Francisco Pro Baseball team, and the San Jose Sharks: At least 4 championships after Jun 9, 2026 and before Jul 1, 2030",
+        "display_name": "4+ championships",
+        "display_title": "Bay Area Sports: Championships before Jul 1, 2030 - 4+ championships",
+        "category": "Sports",
+        "category_path": [
+          "sports",
+          "basketball"
+        ],
+        "model_key": "sports_basketball",
+        "model_name": "Sports / Basketball",
+        "status": "active",
+        "yes_ask": 0.05,
+        "no_ask": 0.99,
+        "yes_bid": 0.01,
+        "no_bid": 0.95,
+        "last_price": 0.05,
+        "previous_price": 0.05,
+        "volume": 8.0,
+        "volume_24h": 0.0,
+        "liquidity": 0.0,
+        "spread": 0.04,
+        "end_date": "2030-07-01T03:59:00+00:00",
+        "days_to_resolution": 1463.090312697882,
+        "settlement_source": "Kalshi market metadata",
+        "catalyst_score": 36.0,
+        "liquidity_score": 15.1,
+        "runway_score": 100.0,
+        "attention_score": 86.0,
+        "source_score": 45.0,
+        "spread_score": 50.0,
+        "momentum_score": 50.0,
+        "price_anchor_score": 100.0,
+        "domain_signal_score": 29.0,
+        "flow_signal_score": 15.0,
+        "directionless_penalty": 0.0,
+        "rank_score": 63.9,
+        "bull_probability": 47.5,
+        "base_probability": 19.9,
+        "bear_probability": 32.7,
+        "bull_price": 0.1394,
+        "base_price": 0.0663,
+        "bear_price": 0.0452,
+        "expected_future_price": 0.0941,
+        "expected_repricing_roi": 45.2,
+        "entry_limit": 0.0726,
+        "recommended_placement_dollars": 70.83,
+        "estimated_contracts": 1416,
+        "estimated_position_cost": 70.8,
+        "estimated_target_value": 133.25,
+        "estimated_target_profit": 62.45,
+        "placement_sizing_basis": {
+          "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+          "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+          "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+          "min_placement_dollars": 20.0,
+          "max_placement_dollars": 100.0,
+          "sizing_score": 63.5,
+          "raw_roi_still_reported_uncapped": true,
+          "roi_influence": 90.4,
+          "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+        },
+        "next_catalyst": {
+          "label": "Schedule, seeding, injury, trade, roster, or playoff-path update",
+          "date_status": "needs source enrichment",
+          "days_proxy": 1463.090312697882,
+          "matched_terms": [
+            "basketball"
+          ],
+          "why_it_matters": "Basketball futures can reprice when rotations, injuries, trades, seeding, or matchup path change the resale story."
+        },
+        "domain_signals": {
+          "score": 29.0,
+          "signals": [
+            {
+              "name": "seeding path",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "roster injury",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "player quality",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "team quality context",
+              "score": 56.0,
+              "matched_terms": [
+                "team",
+                "champion"
+              ],
+              "note": "Matched in market metadata."
+            }
+          ],
+          "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+        },
+        "flow_signal": {
+          "score": 15.0,
+          "warning_score": 15.0,
+          "public_data_level": "quote, spread, volume, and liquidity only",
+          "holder_identity_available": false,
+          "holding_duration_available": false,
+          "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+          "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+          "inputs": {
+            "volume": 8.0,
+            "volume_24h": 0.0,
+            "liquidity": 0.0,
+            "recent_move_pct": 0.0
+          }
+        },
+        "scenario_weight_basis": {
+          "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+          "raw_bull_probability": 47.46,
+          "raw_bear_probability": 32.67,
+          "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+          "model_profile": "Sports / Basketball",
+          "category_path": [
+            "sports",
+            "basketball"
+          ],
+          "bull_components_pct": {
+            "base": 10.0,
+            "next_catalyst": 5.76,
+            "attention_growth": 9.46,
+            "time_runway": 7.0,
+            "source_backing": 2.7,
+            "liquidity_exit": 0.75,
+            "spread_quality": 2.0,
+            "price_anchor": 6.0,
+            "domain_model_fit": 3.19,
+            "flow_support": 0.6,
+            "momentum": 0.0,
+            "pre_open_structure": 0.0,
+            "directionless_or_short_runway_penalty": -0.0
+          },
+          "bear_components_pct": {
+            "base": 16.0,
+            "directionless_or_short_runway_penalty": 0.0,
+            "thin_liquidity": 8.49,
+            "wide_spread": 4.0,
+            "negative_momentum": 0.0,
+            "missing_domain_facts": 5.68,
+            "flow_warning": 0.75,
+            "source_backing_offset": -2.25
+          }
+        },
+        "price_scenario_basis": {
+          "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+          "entry_price": 0.05,
+          "friction": 0.0215,
+          "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+          "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+          "bear_price_formula": "entry - downside_delta scaled by entry price",
+          "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+          "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+          "model_profile": "Sports / Basketball"
+        },
+        "probe_status": "Catalyst setup"
+      }
+    },
+    {
+      "category": "sports / basketball",
+      "chosen_status": "open",
+      "chosen_horizon": "long",
+      "clean_candidate": true,
+      "ticker": "KXCITYCHAMPS-BAY30JUL01W4GS-4",
+      "market": "Golden State Pro Basketball team, San Francisco Pro Football team, San Francisco Pro Baseball team, and the San Jose Sharks: At least 4 championships after Jun 9, 2026 and before Jul 1, 2030",
+      "placement": "4+ championships",
+      "market_status": "active",
+      "probe_status": "Catalyst setup",
+      "rank_score": 63.9,
+      "recommended_placement_dollars": 70.83,
+      "yes_ask_cents": 5.0,
+      "expected_repricing_roi": 45.2,
+      "days_to_resolution": 1463.090312697882,
+      "claude_decision": "Watch only",
+      "claude_why": "I believe the 4-or-more championships contract could reprice toward the high single digits if any one of the four Bay Area franchises makes a deep playoff run, because attention concentration alone can lift a multi-team parlay-style market. The risk facts that break it: requiring four titles across four leagues in the window is a steep bar, the spread is 4 cents wide, liquidity is essentially absent (volume of just 8 contracts), and exits could be hard to fill. I keep this as watch-only until liquidity or a concrete playoff catalyst appears.",
+      "market_knows_check": "Volume of 8 and no recent move means there is no sharp signal to read. The wide spread and near-zero liquidity make any price move noisy rather than informative. Holder identity and duration are unavailable, so no informed-flow inference is possible.",
+      "candidate": {
+        "ticker": "KXCITYCHAMPS-BAY30JUL01W4GS-4",
+        "title": "Golden State Pro Basketball team, San Francisco Pro Football team, San Francisco Pro Baseball team, and the San Jose Sharks: At least 4 championships after Jun 9, 2026 and before Jul 1, 2030",
+        "display_name": "4+ championships",
+        "display_title": "Bay Area Sports: Championships before Jul 1, 2030 - 4+ championships",
+        "category": "Sports",
+        "category_path": [
+          "sports",
+          "basketball"
+        ],
+        "model_key": "sports_basketball",
+        "model_name": "Sports / Basketball",
+        "status": "active",
+        "yes_ask": 0.05,
+        "no_ask": 0.99,
+        "yes_bid": 0.01,
+        "no_bid": 0.95,
+        "last_price": 0.05,
+        "previous_price": 0.05,
+        "volume": 8.0,
+        "volume_24h": 0.0,
+        "liquidity": 0.0,
+        "spread": 0.04,
+        "end_date": "2030-07-01T03:59:00+00:00",
+        "days_to_resolution": 1463.090312697882,
+        "settlement_source": "Kalshi market metadata",
+        "catalyst_score": 36.0,
+        "liquidity_score": 15.1,
+        "runway_score": 100.0,
+        "attention_score": 86.0,
+        "source_score": 45.0,
+        "spread_score": 50.0,
+        "momentum_score": 50.0,
+        "price_anchor_score": 100.0,
+        "domain_signal_score": 29.0,
+        "flow_signal_score": 15.0,
+        "directionless_penalty": 0.0,
+        "rank_score": 63.9,
+        "bull_probability": 47.5,
+        "base_probability": 19.9,
+        "bear_probability": 32.7,
+        "bull_price": 0.1394,
+        "base_price": 0.0663,
+        "bear_price": 0.0452,
+        "expected_future_price": 0.0941,
+        "expected_repricing_roi": 45.2,
+        "entry_limit": 0.0726,
+        "recommended_placement_dollars": 70.83,
+        "estimated_contracts": 1416,
+        "estimated_position_cost": 70.8,
+        "estimated_target_value": 133.25,
+        "estimated_target_profit": 62.45,
+        "placement_sizing_basis": {
+          "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+          "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+          "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+          "min_placement_dollars": 20.0,
+          "max_placement_dollars": 100.0,
+          "sizing_score": 63.5,
+          "raw_roi_still_reported_uncapped": true,
+          "roi_influence": 90.4,
+          "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+        },
+        "next_catalyst": {
+          "label": "Schedule, seeding, injury, trade, roster, or playoff-path update",
+          "date_status": "needs source enrichment",
+          "days_proxy": 1463.090312697882,
+          "matched_terms": [
+            "basketball"
+          ],
+          "why_it_matters": "Basketball futures can reprice when rotations, injuries, trades, seeding, or matchup path change the resale story."
+        },
+        "domain_signals": {
+          "score": 29.0,
+          "signals": [
+            {
+              "name": "seeding path",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "roster injury",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "player quality",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "team quality context",
+              "score": 56.0,
+              "matched_terms": [
+                "team",
+                "champion"
+              ],
+              "note": "Matched in market metadata."
+            }
+          ],
+          "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+        },
+        "flow_signal": {
+          "score": 15.0,
+          "warning_score": 15.0,
+          "public_data_level": "quote, spread, volume, and liquidity only",
+          "holder_identity_available": false,
+          "holding_duration_available": false,
+          "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+          "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+          "inputs": {
+            "volume": 8.0,
+            "volume_24h": 0.0,
+            "liquidity": 0.0,
+            "recent_move_pct": 0.0
+          }
+        },
+        "scenario_weight_basis": {
+          "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+          "raw_bull_probability": 47.46,
+          "raw_bear_probability": 32.67,
+          "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+          "model_profile": "Sports / Basketball",
+          "category_path": [
+            "sports",
+            "basketball"
+          ],
+          "bull_components_pct": {
+            "base": 10.0,
+            "next_catalyst": 5.76,
+            "attention_growth": 9.46,
+            "time_runway": 7.0,
+            "source_backing": 2.7,
+            "liquidity_exit": 0.75,
+            "spread_quality": 2.0,
+            "price_anchor": 6.0,
+            "domain_model_fit": 3.19,
+            "flow_support": 0.6,
+            "momentum": 0.0,
+            "pre_open_structure": 0.0,
+            "directionless_or_short_runway_penalty": -0.0
+          },
+          "bear_components_pct": {
+            "base": 16.0,
+            "directionless_or_short_runway_penalty": 0.0,
+            "thin_liquidity": 8.49,
+            "wide_spread": 4.0,
+            "negative_momentum": 0.0,
+            "missing_domain_facts": 5.68,
+            "flow_warning": 0.75,
+            "source_backing_offset": -2.25
+          }
+        },
+        "price_scenario_basis": {
+          "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+          "entry_price": 0.05,
+          "friction": 0.0215,
+          "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+          "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+          "bear_price_formula": "entry - downside_delta scaled by entry price",
+          "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+          "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+          "model_profile": "Sports / Basketball"
+        },
+        "probe_status": "Catalyst setup"
+      }
+    },
+    {
+      "category": "sports / soccer / world cup",
+      "chosen_status": "open",
+      "chosen_horizon": "long",
+      "clean_candidate": true,
+      "ticker": "KXWCHOST-2038-CAM",
+      "market": "Will Cambodia be announced as a host for the 2038 Men's FIFA World Cup?",
+      "placement": "Cambodia",
+      "market_status": "active",
+      "probe_status": "Catalyst setup",
+      "rank_score": 52.4,
+      "recommended_placement_dollars": 58.85,
+      "yes_ask_cents": 5.0,
+      "expected_repricing_roi": 35.9,
+      "days_to_resolution": 2743.1319799668054,
+      "claude_decision": "Too directionless",
+      "claude_why": "I believe this Cambodia host contract is not actionable right now because there is literally no traded volume, a 5-cent spread, a zero last price, and no liquidity, so any resale thesis would rest on nothing I can verify. Host selection for 2038 is years away and Cambodia is not a publicly prominent bid candidate, which keeps the realistic bull case low. The risk facts are the whole structure: no price discovery, no flow, and no enrichment on the bid path.",
+      "market_knows_check": "There is no volume and no price history, so there is nothing for a market-knows check to read. The flow warning is the kind that simply reflects a dead, untraded market \u2014 not informed positioning. Holder identity and duration are unavailable.",
+      "candidate": {
+        "ticker": "KXWCHOST-2038-CAM",
+        "title": "Will Cambodia be announced as a host for the 2038 Men's FIFA World Cup?",
+        "display_name": "Cambodia",
+        "display_title": "Who will host the 2038 World Soccer Cup? - Cambodia",
+        "category": "Sports",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "model_key": "sports_soccer_worldcup",
+        "model_name": "Sports / Soccer / World Cup",
+        "status": "active",
+        "yes_ask": 0.05,
+        "no_ask": 1.0,
+        "yes_bid": 0.0,
+        "no_bid": 0.95,
+        "last_price": 0.0,
+        "previous_price": 0.0,
+        "volume": 0.0,
+        "volume_24h": 0.0,
+        "liquidity": 0.0,
+        "spread": 0.05,
+        "end_date": "2034-01-01T04:59:00+00:00",
+        "days_to_resolution": 2743.1319799668054,
+        "settlement_source": "Kalshi market metadata",
+        "catalyst_score": 48.0,
+        "liquidity_score": 0.0,
+        "runway_score": 100.0,
+        "attention_score": 86.0,
+        "source_score": 45.0,
+        "spread_score": 37.5,
+        "momentum_score": 50.0,
+        "price_anchor_score": 100.0,
+        "domain_signal_score": 27.2,
+        "flow_signal_score": 6.7,
+        "directionless_penalty": 24.0,
+        "rank_score": 52.4,
+        "bull_probability": 47.0,
+        "base_probability": 13.9,
+        "bear_probability": 39.1,
+        "bull_price": 0.1446,
+        "base_price": 0.0661,
+        "bear_price": 0.0445,
+        "expected_future_price": 0.0945,
+        "expected_repricing_roi": 35.9,
+        "entry_limit": 0.068,
+        "recommended_placement_dollars": 58.85,
+        "estimated_contracts": 1176,
+        "estimated_position_cost": 58.8,
+        "estimated_target_value": 111.1,
+        "estimated_target_profit": 52.3,
+        "placement_sizing_basis": {
+          "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+          "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+          "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+          "min_placement_dollars": 20.0,
+          "max_placement_dollars": 100.0,
+          "sizing_score": 48.6,
+          "raw_roi_still_reported_uncapped": true,
+          "roi_influence": 71.9,
+          "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+        },
+        "next_catalyst": {
+          "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+          "date_status": "needs source enrichment",
+          "days_proxy": 2743.1319799668054,
+          "matched_terms": [
+            "world cup",
+            "fifa"
+          ],
+          "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+        },
+        "domain_signals": {
+          "score": 27.2,
+          "signals": [
+            {
+              "name": "draw bracket path",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "qualification seeding",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "roster injury",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "team quality context",
+              "score": 20.0,
+              "matched_terms": [],
+              "note": "Needs external source enrichment; using a low baseline."
+            },
+            {
+              "name": "attention timing",
+              "score": 56.0,
+              "matched_terms": [
+                "world cup",
+                "fifa"
+              ],
+              "note": "Matched in market metadata."
+            }
+          ],
+          "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+        },
+        "flow_signal": {
+          "score": 6.7,
+          "warning_score": 18.8,
+          "public_data_level": "quote, spread, volume, and liquidity only",
+          "holder_identity_available": false,
+          "holding_duration_available": false,
+          "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+          "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+          "inputs": {
+            "volume": 0.0,
+            "volume_24h": 0.0,
+            "liquidity": 0.0,
+            "recent_move_pct": 0.0
+          }
+        },
+        "scenario_weight_basis": {
+          "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+          "raw_bull_probability": 46.95,
+          "raw_bear_probability": 39.1,
+          "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+          "model_profile": "Sports / Soccer / World Cup",
+          "category_path": [
+            "sports",
+            "soccer",
+            "world cup"
+          ],
+          "bull_components_pct": {
+            "base": 10.0,
+            "next_catalyst": 8.64,
+            "attention_growth": 9.46,
+            "time_runway": 8.0,
+            "source_backing": 2.7,
+            "liquidity_exit": 0.0,
+            "spread_quality": 1.5,
+            "price_anchor": 6.0,
+            "domain_model_fit": 3.26,
+            "flow_support": 0.27,
+            "momentum": 0.0,
+            "pre_open_structure": 0.0,
+            "directionless_or_short_runway_penalty": -2.88
+          },
+          "bear_components_pct": {
+            "base": 16.0,
+            "directionless_or_short_runway_penalty": 4.32,
+            "thin_liquidity": 10.0,
+            "wide_spread": 5.0,
+            "negative_momentum": 0.0,
+            "missing_domain_facts": 5.1,
+            "flow_warning": 0.94,
+            "source_backing_offset": -2.25
+          }
+        },
+        "price_scenario_basis": {
+          "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+          "entry_price": 0.05,
+          "friction": 0.0265,
+          "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+          "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+          "bear_price_formula": "entry - downside_delta scaled by entry price",
+          "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+          "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+          "model_profile": "Sports / Soccer / World Cup"
+        },
+        "probe_status": "Catalyst setup"
+      }
+    }
+  ],
+  "claude_results": [
+    {
+      "ticker": "KXPRESPERSON-28-JSHA",
+      "decision": "Market knows something",
+      "side": "Watch",
+      "scenario_weights": {
+        "bull": 62.0,
+        "base": 14.7,
+        "bear": 23.3
+      },
+      "scenario_weight_basis": "Bull weight is elevated by the model's strong rank, top liquidity, very tight spread, full time runway, positive momentum, and high flow support; bear is held up by missing domain facts (ballot access, public signal path on low baselines) and a meaningful flow warning component.",
+      "expected_future_price_cents": 11,
+      "entry_limit_cents": 10,
+      "next_catalyst": "Polling, fundraising, endorsement, or field-narrowing update for the 2028 cycle.",
+      "why_i_believe_this": "I believe the Josh Shapiro contract can drift toward the low teens because this is the single most-traded, most-liquid name in the set, the spread is razor thin, and the price already ticked from 2.7 to 3.2 cents on heavy 24h volume. Early-cycle election futures reprice up as a candidate becomes less theoretical, and a 937-day runway gives plenty of room for that story. The risk facts that break it: he has not declared, the field is wide open, and a single negative news cycle or a stronger frontrunner consolidating support could stall a 3-cent longshot. The expected resale math here is largely a longshot percentage illusion, so I treat the giant ROI number with suspicion.",
+      "market_knows_check": "Volume of ~1.65M with ~12.5K in 24h and a recent move of ~18.5% on a 2-3 cent contract is exactly the kind of behavior that triggers a market-knows flag. The flow warning score of 53.8 is the highest in the set. Holder identity and holding duration are not available, so I cannot say who is buying or whether they are informed \u2014 I can only say the activity is unusual for a longshot.",
+      "no_direction_check": "This market has real path direction: it is the most actively traded candidate and has identifiable catalysts (polling, endorsements, field narrowing). Not blank \u2014 it is the clearest watch in the group.",
+      "sources": [
+        {
+          "label": "Kalshi market metadata",
+          "url_or_reference": "Kalshi 2028 U.S. Presidential Election winner market",
+          "why_it_matters": "Provides the quote, spread, volume, and the recent price move that triggered the market-knows check."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "Price reaches low teens (10-12 cents) on continued volume",
+          "action": "Trim into strength; do not chase a longshot past expected resale."
+        },
+        {
+          "trigger": "A stronger 2028 frontrunner consolidates support or he publicly declines",
+          "action": "Exit; the longshot thesis weakens fast."
+        },
+        {
+          "trigger": "Spread widens materially or 24h volume dries up",
+          "action": "Re-evaluate; the liquidity edge is the main reason to hold."
+        }
+      ]
+    },
+    {
+      "ticker": "STARSHIPMARS-29DEC31",
+      "decision": "Catalyst setup",
+      "side": "YES",
+      "scenario_weights": {
+        "bull": 52.3,
+        "base": 24.3,
+        "bear": 23.4
+      },
+      "scenario_weight_basis": "Bull is lifted by the strongest non-election liquidity score, tight spread, full runway, and a modest catalyst term match on 'launch'; bear is restrained but kept alive by missing domain facts and zero quoted liquidity depth despite high cumulative volume.",
+      "expected_future_price_cents": 24,
+      "entry_limit_cents": 22,
+      "next_catalyst": "Next public Starship test flight result, crewed-program milestone, or schedule update.",
+      "why_i_believe_this": "I believe the Before 2030 Mars contract can reprice toward the mid-20s because it carries the second-best liquidity in this set, a 2-cent spread, and a long runway that lets test-flight news swing sentiment. Each high-profile launch event tends to generate attention-driven repricing even when the final outcome stays uncertain. The risk facts that break it: a crewed Mars mission before 2030 is extremely ambitious, repeated slipping timelines pull the price down, and the 24h volume of only 4 contracts shows current interest is thin despite a large cumulative total. I view this as a catalyst-driven swing trade, not a settlement bet.",
+      "market_knows_check": "Cumulative volume is large (~46.5K) but 24h volume is only 4 and there is no recent price move, so there is no current sharp signal. The flow warning score is low. Holder identity and holding duration are unavailable, so I cannot infer informed positioning.",
+      "no_direction_check": "There is enough path direction via recurring public launch catalysts, but the next catalyst date needs source enrichment, so timing is uncertain. Usable but date-blind.",
+      "sources": [
+        {
+          "label": "Kalshi market metadata",
+          "url_or_reference": "Kalshi Starship-to-Mars before 2030 market",
+          "why_it_matters": "Supplies quote, spread, and the volume profile underpinning the liquidity read."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "A successful high-profile Starship milestone lifts price into the mid-20s",
+          "action": "Take partial profit into attention spike."
+        },
+        {
+          "trigger": "Public timeline slip or failed test that pushes Mars crewed plans past 2030",
+          "action": "Exit YES; the bull case decays."
+        },
+        {
+          "trigger": "24h volume stays near zero for an extended period",
+          "action": "Hold smaller; thin current interest limits resale exits."
+        }
+      ]
+    },
+    {
+      "ticker": "KXCITYCHAMPS-BAY30JUL01W4GS-4",
+      "decision": "Watch only",
+      "side": "Watch",
+      "scenario_weights": {
+        "bull": 47.5,
+        "base": 19.9,
+        "bear": 32.7
+      },
+      "scenario_weight_basis": "Bull is supported by high attention score, full runway, and a 'team/champion' domain match; bear is pushed up by very thin liquidity (score 15), a wide 4-cent spread, and missing seeding/roster/injury facts on low baselines.",
+      "expected_future_price_cents": 9,
+      "entry_limit_cents": 7,
+      "next_catalyst": "Playoff seeding, roster/trade moves, or a championship run by any of the four Bay Area franchises.",
+      "why_i_believe_this": "I believe the 4-or-more championships contract could reprice toward the high single digits if any one of the four Bay Area franchises makes a deep playoff run, because attention concentration alone can lift a multi-team parlay-style market. The risk facts that break it: requiring four titles across four leagues in the window is a steep bar, the spread is 4 cents wide, liquidity is essentially absent (volume of just 8 contracts), and exits could be hard to fill. I keep this as watch-only until liquidity or a concrete playoff catalyst appears.",
+      "market_knows_check": "Volume of 8 and no recent move means there is no sharp signal to read. The wide spread and near-zero liquidity make any price move noisy rather than informative. Holder identity and duration are unavailable, so no informed-flow inference is possible.",
+      "no_direction_check": "Direction is mostly theoretical right now \u2014 the catalyst path exists in principle (playoffs across four leagues) but is not date-specific and liquidity is too thin to act on. Closer to too blank than actionable.",
+      "sources": [
+        {
+          "label": "Kalshi market metadata",
+          "url_or_reference": "Kalshi Bay Area Sports championships before Jul 1, 2030 market",
+          "why_it_matters": "Provides the quote, spread, and the thin volume that caps the resale thesis."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "Liquidity improves and price moves to high single digits on a playoff run",
+          "action": "Consider a small watch-to-position step only if fills are realistic."
+        },
+        {
+          "trigger": "One of the four franchises is eliminated early, lowering parlay odds",
+          "action": "Stay out; the multi-title bar gets harder."
+        },
+        {
+          "trigger": "Spread stays at 4 cents with no volume",
+          "action": "Remain watch-only; resale risk too high."
+        }
+      ]
+    },
+    {
+      "ticker": "KXACTORSONNYCROCKETT-35-OSC",
+      "decision": "Watch only",
+      "side": "Watch",
+      "scenario_weights": {
+        "bull": 43.4,
+        "base": 24.8,
+        "bear": 31.8
+      },
+      "scenario_weight_basis": "Bull is helped by full runway, decent attention, and a ceremony-timing term match on 'oscar'; bear is raised by thin liquidity, a 3-cent spread, and missing nomination-path and attention-concentration facts that sit on low baselines.",
+      "expected_future_price_cents": 10,
+      "entry_limit_cents": 8,
+      "next_catalyst": "Casting announcement, studio production news, or trade-press reporting on the next Miami Vice film.",
+      "why_i_believe_this": "I believe the Oscar Isaac casting contract can drift toward the low teens if credible casting or production reporting emerges, because entertainment markets reprice hard on a single trade-press leak. The risk facts that break it: the resolution is over 3,000 days out, liquidity is zero with only 140 cumulative contracts, the spread is 3 cents, and the 'oscar' term match is a coincidental keyword (the actor's first name), not a real awards signal. Without enrichment this is a thin watch.",
+      "market_knows_check": "Volume of 140 with zero in 24h and no price move gives no sharp signal. There is nothing in flow to suggest the market knows anything yet. Holder identity and holding duration are unavailable, so I make no informed-trader claim.",
+      "no_direction_check": "Direction is weak: the only realistic catalyst is a casting leak, which is unscheduled, and the runway is extremely long. Mostly blank until a production catalyst surfaces.",
+      "sources": [
+        {
+          "label": "Kalshi market metadata",
+          "url_or_reference": "Kalshi next Miami Vice casting market",
+          "why_it_matters": "Provides quote, spread, and the thin volume that limits resale confidence."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "Credible casting or production reporting on the film",
+          "action": "Re-evaluate for a quick attention-driven move."
+        },
+        {
+          "trigger": "Project shelved or another actor confirmed for the role",
+          "action": "Exit any watch interest."
+        },
+        {
+          "trigger": "Liquidity stays at zero",
+          "action": "Keep watch-only; resale exits unreliable."
+        }
+      ]
+    },
+    {
+      "ticker": "KXWCHOST-2038-CAM",
+      "decision": "Too directionless",
+      "side": "Watch",
+      "scenario_weights": {
+        "bull": 47.0,
+        "base": 13.9,
+        "bear": 39.1
+      },
+      "scenario_weight_basis": "Bull leans on the attention-timing term match for 'world cup'/'fifa' and full runway; bear is heavily weighted by zero liquidity (score 0), the widest 5-cent spread, no traded volume, and missing bid/qualification facts on low baselines.",
+      "expected_future_price_cents": null,
+      "entry_limit_cents": null,
+      "next_catalyst": "FIFA host-selection process announcements or bid-field reporting for the 2038 tournament.",
+      "why_i_believe_this": "I believe this Cambodia host contract is not actionable right now because there is literally no traded volume, a 5-cent spread, a zero last price, and no liquidity, so any resale thesis would rest on nothing I can verify. Host selection for 2038 is years away and Cambodia is not a publicly prominent bid candidate, which keeps the realistic bull case low. The risk facts are the whole structure: no price discovery, no flow, and no enrichment on the bid path.",
+      "market_knows_check": "There is no volume and no price history, so there is nothing for a market-knows check to read. The flow warning is the kind that simply reflects a dead, untraded market \u2014 not informed positioning. Holder identity and duration are unavailable.",
+      "no_direction_check": "Too blank to be useful. No volume, no last price, no scheduled catalyst with a date \u2014 this fails the path/direction test.",
+      "sources": [
+        {
+          "label": "Kalshi market metadata",
+          "url_or_reference": "Kalshi 2038 World Cup host - Cambodia market",
+          "why_it_matters": "Confirms the absence of volume, liquidity, and price discovery."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "FIFA opens or advances the 2038 host-selection process",
+          "action": "Re-screen only if real volume appears."
+        },
+        {
+          "trigger": "Any genuine two-sided liquidity develops",
+          "action": "Reassess whether a resale path exists."
+        },
+        {
+          "trigger": "Market stays untraded",
+          "action": "Drop from active watch."
+        }
+      ]
+    },
+    {
+      "ticker": "KXNEXTTRILLIONAIRE-33-WB",
+      "decision": "Too directionless",
+      "side": "Watch",
+      "scenario_weights": {
+        "bull": 36.5,
+        "base": 26.5,
+        "bear": 37.1
+      },
+      "scenario_weight_basis": "Bull is modest given a tight 1-cent spread and full runway; bear is pushed up materially by the large directionless penalty (47), missing scheduled-release and regulatory facts on low baselines, and thin liquidity, while a low catalyst score caps upside.",
+      "expected_future_price_cents": null,
+      "entry_limit_cents": null,
+      "next_catalyst": "Berkshire earnings, market moves in Buffett-linked assets, or any concrete wealth-ranking update.",
+      "why_i_believe_this": "I believe the Warren Buffett second-trillionaire contract is too directionless to position because it carries a heavy directionless penalty, no near-term scheduled catalyst, and a structurally implausible path \u2014 reaching a trillion-dollar net worth would require an extreme, unprecedented asset move over the runway. The 1-cent spread looks attractive but liquidity is thin and 24h volume is zero. The risk facts: the headline ROI is a longshot percentage artifact at a 3-4 cent price, and there is no realistic catalyst to drive resale appreciation.",
+      "market_knows_check": "Volume of ~1,213 with zero in 24h and no price move shows no sharp signal. Nothing in flow suggests the market knows something. Holder identity and holding duration are unavailable, so no informed-trader inference is possible.",
+      "no_direction_check": "Too blank. The directionless penalty is the highest in the set and there is no scheduled, date-specific catalyst that would reprice this in a meaningful way.",
+      "sources": [
+        {
+          "label": "Kalshi market metadata",
+          "url_or_reference": "Kalshi world's second trillionaire - Warren Buffett market",
+          "why_it_matters": "Provides the quote, spread, and the directionless profile that drives the no-position call."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "Extraordinary appreciation in Buffett-linked assets",
+          "action": "Re-screen only if a credible path emerges."
+        },
+        {
+          "trigger": "A concrete wealth-ranking catalyst is scheduled",
+          "action": "Reassess for a short-term attention move."
+        },
+        {
+          "trigger": "Continued zero volume",
+          "action": "Keep off the active list."
+        }
+      ]
+    },
+    {
+      "ticker": "KXCITYCHAMPS-BAY30JUL01W4GS-4-DUP",
+      "decision": "Watch only",
+      "side": "Watch",
+      "scenario_weights": {
+        "bull": 47.5,
+        "base": 19.9,
+        "bear": 32.7
+      },
+      "scenario_weight_basis": "This is a duplicate entry of the Bay Area 4-or-more championships market; the same factors apply \u2014 bull on attention and runway, bear on thin liquidity, wide spread, and missing seeding/roster/injury facts. Flagged separately only to note the duplication in the candidate feed.",
+      "expected_future_price_cents": 9,
+      "entry_limit_cents": 7,
+      "next_catalyst": "Playoff seeding, roster/trade moves, or a championship run by any of the four Bay Area franchises.",
+      "why_i_believe_this": "I believe the same thesis as the first Bay Area championships entry: it could drift to the high single digits on a deep playoff run, but it is held back by thin liquidity, a wide spread, and a steep four-title bar. I also flag plainly that this candidate appears twice in the data with identical fields, so I would not double-size it \u2014 the duplication is a feed artifact, not two separate opportunities. The risk facts are identical: hard fills, low volume, and a demanding multi-league outcome.",
+      "market_knows_check": "Identical to the primary entry \u2014 volume of 8, no recent move, wide spread, near-zero liquidity, so no sharp or informative signal. Holder identity and duration unavailable. The duplication itself is not a market signal; it is a data issue.",
+      "no_direction_check": "Same as the primary entry: mostly theoretical direction and too thin to act on. Watch-only, and explicitly deduplicated against the first instance.",
+      "sources": [
+        {
+          "label": "Kalshi market metadata",
+          "url_or_reference": "Kalshi Bay Area Sports championships before Jul 1, 2030 market (duplicate listing)",
+          "why_it_matters": "Confirms the duplicate appears with identical quote and volume, so it should not be treated as a separate position."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "Confirmed it is the same contract as the primary entry",
+          "action": "Treat as one position; do not double-size."
+        },
+        {
+          "trigger": "Liquidity improves on a playoff run",
+          "action": "Defer to the primary entry's monitor."
+        },
+        {
+          "trigger": "Spread stays wide with no volume",
+          "action": "Remain watch-only."
+        }
+      ]
+    }
+  ],
+  "claude_parse_error": null,
+  "claude_raw_text": "Here is my research-only analysis. I deduplicated the two identical Bay Area Sports entries and selected the 7 distinct candidates available.\n\n```json\n[\n  {\n    \"ticker\": \"KXPRESPERSON-28-JSHA\",\n    \"decision\": \"Market knows something\",\n    \"side\": \"Watch\",\n    \"scenario_weights\": {\"bull\": 62.0, \"base\": 14.7, \"bear\": 23.3},\n    \"scenario_weight_basis\": \"Bull weight is elevated by the model's strong rank, top liquidity, very tight spread, full time runway, positive momentum, and high flow support; bear is held up by missing domain facts (ballot access, public signal path on low baselines) and a meaningful flow warning component.\",\n    \"expected_future_price_cents\": 11,\n    \"entry_limit_cents\": 10,\n    \"next_catalyst\": \"Polling, fundraising, endorsement, or field-narrowing update for the 2028 cycle.\",\n    \"why_i_believe_this\": \"I believe the Josh Shapiro contract can drift toward the low teens because this is the single most-traded, most-liquid name in the set, the spread is razor thin, and the price already ticked from 2.7 to 3.2 cents on heavy 24h volume. Early-cycle election futures reprice up as a candidate becomes less theoretical, and a 937-day runway gives plenty of room for that story. The risk facts that break it: he has not declared, the field is wide open, and a single negative news cycle or a stronger frontrunner consolidating support could stall a 3-cent longshot. The expected resale math here is largely a longshot percentage illusion, so I treat the giant ROI number with suspicion.\",\n    \"market_knows_check\": \"Volume of ~1.65M with ~12.5K in 24h and a recent move of ~18.5% on a 2-3 cent contract is exactly the kind of behavior that triggers a market-knows flag. The flow warning score of 53.8 is the highest in the set. Holder identity and holding duration are not available, so I cannot say who is buying or whether they are informed \u2014 I can only say the activity is unusual for a longshot.\",\n    \"no_direction_check\": \"This market has real path direction: it is the most actively traded candidate and has identifiable catalysts (polling, endorsements, field narrowing). Not blank \u2014 it is the clearest watch in the group.\",\n    \"sources\": [\n      {\"label\": \"Kalshi market metadata\", \"url_or_reference\": \"Kalshi 2028 U.S. Presidential Election winner market\", \"why_it_matters\": \"Provides the quote, spread, volume, and the recent price move that triggered the market-knows check.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"Price reaches low teens (10-12 cents) on continued volume\", \"action\": \"Trim into strength; do not chase a longshot past expected resale.\"},\n      {\"trigger\": \"A stronger 2028 frontrunner consolidates support or he publicly declines\", \"action\": \"Exit; the longshot thesis weakens fast.\"},\n      {\"trigger\": \"Spread widens materially or 24h volume dries up\", \"action\": \"Re-evaluate; the liquidity edge is the main reason to hold.\"}\n    ]\n  },\n  {\n    \"ticker\": \"STARSHIPMARS-29DEC31\",\n    \"decision\": \"Catalyst setup\",\n    \"side\": \"YES\",\n    \"scenario_weights\": {\"bull\": 52.3, \"base\": 24.3, \"bear\": 23.4},\n    \"scenario_weight_basis\": \"Bull is lifted by the strongest non-election liquidity score, tight spread, full runway, and a modest catalyst term match on 'launch'; bear is restrained but kept alive by missing domain facts and zero quoted liquidity depth despite high cumulative volume.\",\n    \"expected_future_price_cents\": 24,\n    \"entry_limit_cents\": 22,\n    \"next_catalyst\": \"Next public Starship test flight result, crewed-program milestone, or schedule update.\",\n    \"why_i_believe_this\": \"I believe the Before 2030 Mars contract can reprice toward the mid-20s because it carries the second-best liquidity in this set, a 2-cent spread, and a long runway that lets test-flight news swing sentiment. Each high-profile launch event tends to generate attention-driven repricing even when the final outcome stays uncertain. The risk facts that break it: a crewed Mars mission before 2030 is extremely ambitious, repeated slipping timelines pull the price down, and the 24h volume of only 4 contracts shows current interest is thin despite a large cumulative total. I view this as a catalyst-driven swing trade, not a settlement bet.\",\n    \"market_knows_check\": \"Cumulative volume is large (~46.5K) but 24h volume is only 4 and there is no recent price move, so there is no current sharp signal. The flow warning score is low. Holder identity and holding duration are unavailable, so I cannot infer informed positioning.\",\n    \"no_direction_check\": \"There is enough path direction via recurring public launch catalysts, but the next catalyst date needs source enrichment, so timing is uncertain. Usable but date-blind.\",\n    \"sources\": [\n      {\"label\": \"Kalshi market metadata\", \"url_or_reference\": \"Kalshi Starship-to-Mars before 2030 market\", \"why_it_matters\": \"Supplies quote, spread, and the volume profile underpinning the liquidity read.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"A successful high-profile Starship milestone lifts price into the mid-20s\", \"action\": \"Take partial profit into attention spike.\"},\n      {\"trigger\": \"Public timeline slip or failed test that pushes Mars crewed plans past 2030\", \"action\": \"Exit YES; the bull case decays.\"},\n      {\"trigger\": \"24h volume stays near zero for an extended period\", \"action\": \"Hold smaller; thin current interest limits resale exits.\"}\n    ]\n  },\n  {\n    \"ticker\": \"KXCITYCHAMPS-BAY30JUL01W4GS-4\",\n    \"decision\": \"Watch only\",\n    \"side\": \"Watch\",\n    \"scenario_weights\": {\"bull\": 47.5, \"base\": 19.9, \"bear\": 32.7},\n    \"scenario_weight_basis\": \"Bull is supported by high attention score, full runway, and a 'team/champion' domain match; bear is pushed up by very thin liquidity (score 15), a wide 4-cent spread, and missing seeding/roster/injury facts on low baselines.\",\n    \"expected_future_price_cents\": 9,\n    \"entry_limit_cents\": 7,\n    \"next_catalyst\": \"Playoff seeding, roster/trade moves, or a championship run by any of the four Bay Area franchises.\",\n    \"why_i_believe_this\": \"I believe the 4-or-more championships contract could reprice toward the high single digits if any one of the four Bay Area franchises makes a deep playoff run, because attention concentration alone can lift a multi-team parlay-style market. The risk facts that break it: requiring four titles across four leagues in the window is a steep bar, the spread is 4 cents wide, liquidity is essentially absent (volume of just 8 contracts), and exits could be hard to fill. I keep this as watch-only until liquidity or a concrete playoff catalyst appears.\",\n    \"market_knows_check\": \"Volume of 8 and no recent move means there is no sharp signal to read. The wide spread and near-zero liquidity make any price move noisy rather than informative. Holder identity and duration are unavailable, so no informed-flow inference is possible.\",\n    \"no_direction_check\": \"Direction is mostly theoretical right now \u2014 the catalyst path exists in principle (playoffs across four leagues) but is not date-specific and liquidity is too thin to act on. Closer to too blank than actionable.\",\n    \"sources\": [\n      {\"label\": \"Kalshi market metadata\", \"url_or_reference\": \"Kalshi Bay Area Sports championships before Jul 1, 2030 market\", \"why_it_matters\": \"Provides the quote, spread, and the thin volume that caps the resale thesis.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"Liquidity improves and price moves to high single digits on a playoff run\", \"action\": \"Consider a small watch-to-position step only if fills are realistic.\"},\n      {\"trigger\": \"One of the four franchises is eliminated early, lowering parlay odds\", \"action\": \"Stay out; the multi-title bar gets harder.\"},\n      {\"trigger\": \"Spread stays at 4 cents with no volume\", \"action\": \"Remain watch-only; resale risk too high.\"}\n    ]\n  },\n  {\n    \"ticker\": \"KXACTORSONNYCROCKETT-35-OSC\",\n    \"decision\": \"Watch only\",\n    \"side\": \"Watch\",\n    \"scenario_weights\": {\"bull\": 43.4, \"base\": 24.8, \"bear\": 31.8},\n    \"scenario_weight_basis\": \"Bull is helped by full runway, decent attention, and a ceremony-timing term match on 'oscar'; bear is raised by thin liquidity, a 3-cent spread, and missing nomination-path and attention-concentration facts that sit on low baselines.\",\n    \"expected_future_price_cents\": 10,\n    \"entry_limit_cents\": 8,\n    \"next_catalyst\": \"Casting announcement, studio production news, or trade-press reporting on the next Miami Vice film.\",\n    \"why_i_believe_this\": \"I believe the Oscar Isaac casting contract can drift toward the low teens if credible casting or production reporting emerges, because entertainment markets reprice hard on a single trade-press leak. The risk facts that break it: the resolution is over 3,000 days out, liquidity is zero with only 140 cumulative contracts, the spread is 3 cents, and the 'oscar' term match is a coincidental keyword (the actor's first name), not a real awards signal. Without enrichment this is a thin watch.\",\n    \"market_knows_check\": \"Volume of 140 with zero in 24h and no price move gives no sharp signal. There is nothing in flow to suggest the market knows anything yet. Holder identity and holding duration are unavailable, so I make no informed-trader claim.\",\n    \"no_direction_check\": \"Direction is weak: the only realistic catalyst is a casting leak, which is unscheduled, and the runway is extremely long. Mostly blank until a production catalyst surfaces.\",\n    \"sources\": [\n      {\"label\": \"Kalshi market metadata\", \"url_or_reference\": \"Kalshi next Miami Vice casting market\", \"why_it_matters\": \"Provides quote, spread, and the thin volume that limits resale confidence.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"Credible casting or production reporting on the film\", \"action\": \"Re-evaluate for a quick attention-driven move.\"},\n      {\"trigger\": \"Project shelved or another actor confirmed for the role\", \"action\": \"Exit any watch interest.\"},\n      {\"trigger\": \"Liquidity stays at zero\", \"action\": \"Keep watch-only; resale exits unreliable.\"}\n    ]\n  },\n  {\n    \"ticker\": \"KXWCHOST-2038-CAM\",\n    \"decision\": \"Too directionless\",\n    \"side\": \"Watch\",\n    \"scenario_weights\": {\"bull\": 47.0, \"base\": 13.9, \"bear\": 39.1},\n    \"scenario_weight_basis\": \"Bull leans on the attention-timing term match for 'world cup'/'fifa' and full runway; bear is heavily weighted by zero liquidity (score 0), the widest 5-cent spread, no traded volume, and missing bid/qualification facts on low baselines.\",\n    \"expected_future_price_cents\": null,\n    \"entry_limit_cents\": null,\n    \"next_catalyst\": \"FIFA host-selection process announcements or bid-field reporting for the 2038 tournament.\",\n    \"why_i_believe_this\": \"I believe this Cambodia host contract is not actionable right now because there is literally no traded volume, a 5-cent spread, a zero last price, and no liquidity, so any resale thesis would rest on nothing I can verify. Host selection for 2038 is years away and Cambodia is not a publicly prominent bid candidate, which keeps the realistic bull case low. The risk facts are the whole structure: no price discovery, no flow, and no enrichment on the bid path.\",\n    \"market_knows_check\": \"There is no volume and no price history, so there is nothing for a market-knows check to read. The flow warning is the kind that simply reflects a dead, untraded market \u2014 not informed positioning. Holder identity and duration are unavailable.\",\n    \"no_direction_check\": \"Too blank to be useful. No volume, no last price, no scheduled catalyst with a date \u2014 this fails the path/direction test.\",\n    \"sources\": [\n      {\"label\": \"Kalshi market metadata\", \"url_or_reference\": \"Kalshi 2038 World Cup host - Cambodia market\", \"why_it_matters\": \"Confirms the absence of volume, liquidity, and price discovery.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"FIFA opens or advances the 2038 host-selection process\", \"action\": \"Re-screen only if real volume appears.\"},\n      {\"trigger\": \"Any genuine two-sided liquidity develops\", \"action\": \"Reassess whether a resale path exists.\"},\n      {\"trigger\": \"Market stays untraded\", \"action\": \"Drop from active watch.\"}\n    ]\n  },\n  {\n    \"ticker\": \"KXNEXTTRILLIONAIRE-33-WB\",\n    \"decision\": \"Too directionless\",\n    \"side\": \"Watch\",\n    \"scenario_weights\": {\"bull\": 36.5, \"base\": 26.5, \"bear\": 37.1},\n    \"scenario_weight_basis\": \"Bull is modest given a tight 1-cent spread and full runway; bear is pushed up materially by the large directionless penalty (47), missing scheduled-release and regulatory facts on low baselines, and thin liquidity, while a low catalyst score caps upside.\",\n    \"expected_future_price_cents\": null,\n    \"entry_limit_cents\": null,\n    \"next_catalyst\": \"Berkshire earnings, market moves in Buffett-linked assets, or any concrete wealth-ranking update.\",\n    \"why_i_believe_this\": \"I believe the Warren Buffett second-trillionaire contract is too directionless to position because it carries a heavy directionless penalty, no near-term scheduled catalyst, and a structurally implausible path \u2014 reaching a trillion-dollar net worth would require an extreme, unprecedented asset move over the runway. The 1-cent spread looks attractive but liquidity is thin and 24h volume is zero. The risk facts: the headline ROI is a longshot percentage artifact at a 3-4 cent price, and there is no realistic catalyst to drive resale appreciation.\",\n    \"market_knows_check\": \"Volume of ~1,213 with zero in 24h and no price move shows no sharp signal. Nothing in flow suggests the market knows something. Holder identity and holding duration are unavailable, so no informed-trader inference is possible.\",\n    \"no_direction_check\": \"Too blank. The directionless penalty is the highest in the set and there is no scheduled, date-specific catalyst that would reprice this in a meaningful way.\",\n    \"sources\": [\n      {\"label\": \"Kalshi market metadata\", \"url_or_reference\": \"Kalshi world's second trillionaire - Warren Buffett market\", \"why_it_matters\": \"Provides the quote, spread, and the directionless profile that drives the no-position call.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"Extraordinary appreciation in Buffett-linked assets\", \"action\": \"Re-screen only if a credible path emerges.\"},\n      {\"trigger\": \"A concrete wealth-ranking catalyst is scheduled\", \"action\": \"Reassess for a short-term attention move.\"},\n      {\"trigger\": \"Continued zero volume\", \"action\": \"Keep off the active list.\"}\n    ]\n  },\n  {\n    \"ticker\": \"KXCITYCHAMPS-BAY30JUL01W4GS-4-DUP\",\n    \"decision\": \"Watch only\",\n    \"side\": \"Watch\",\n    \"scenario_weights\": {\"bull\": 47.5, \"base\": 19.9, \"bear\": 32.7},\n    \"scenario_weight_basis\": \"This is a duplicate entry of the Bay Area 4-or-more championships market; the same factors apply \u2014 bull on attention and runway, bear on thin liquidity, wide spread, and missing seeding/roster/injury facts. Flagged separately only to note the duplication in the candidate feed.\",\n    \"expected_future_price_cents\": 9,\n    \"entry_limit_cents\": 7,\n    \"next_catalyst\": \"Playoff seeding, roster/trade moves, or a championship run by any of the four Bay Area franchises.\",\n    \"why_i_believe_this\": \"I believe the same thesis as the first Bay Area championships entry: it could drift to the high single digits on a deep playoff run, but it is held back by thin liquidity, a wide spread, and a steep four-title bar. I also flag plainly that this candidate appears twice in the data with identical fields, so I would not double-size it \u2014 the duplication is a feed artifact, not two separate opportunities. The risk facts are identical: hard fills, low volume, and a demanding multi-league outcome.\",\n    \"market_knows_check\": \"Identical to the primary entry \u2014 volume of 8, no recent move, wide spread, near-zero liquidity, so no sharp or informative signal. Holder identity and duration unavailable. The duplication itself is not a market signal; it is a data issue.\",\n    \"no_direction_check\": \"Same as the primary entry: mostly theoretical direction and too thin to act on. Watch-only, and explicitly deduplicated against the first instance.\",\n    \"sources\": [\n      {\"label\": \"Kalshi market metadata\", \"url_or_reference\": \"Kalshi Bay Area Sports championships before Jul 1, 2030 market (duplicate listing)\", \"why_it_matters\": \"Confirms the duplicate appears with identical quote and volume, so it should not be treated as a separate position.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"Confirmed it is the same contract as the primary entry\", \"action\": \"Treat as one position; do not double-size.\"},\n      {\"trigger\": \"Liquidity improves on a playoff run\", \"action\": \"Defer to the primary entry's monitor.\"},\n      {\"trigger\": \"Spread stays wide with no volume\", \"action\": \"Remain watch-only.\"}\n    ]\n  }\n]\n```\n\nNotes on source depth and method:\n- Public source depth is thin across all seven. Every candidate's settlement source is \"Kalshi market metadata,\" and nearly all domain signals sit on low baselines marked \"needs external source enrichment.\" Treat the directional theses as model-driven hypotheses, not source-confirmed.\n- Holder identity and holding duration are unavailable for every market. Where I flag a market-knows check (most notably Josh Shapiro), I can only point to unusual price/volume behavior \u2014 I cannot prove who traded or whether they were informed.\n- The candidate feed contained the Bay Area championships market twice with identical fields. I deduplicated it for the analysis and used the seventh slot to explicitly document that duplication rather than imply a second opportunity.\n- Large headline ROI figures on sub-5-"
+}

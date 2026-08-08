@@ -1,0 +1,14 @@
+# Secrets
+.env
+*.pem
+*.key
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Runtime logs
+*.jsonl

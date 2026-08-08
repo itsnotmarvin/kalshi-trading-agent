@@ -1,0 +1,35 @@
+{
+  "anti_overfit_contract": {
+    "chronological_splits_only": true,
+    "hidden_future_excluded_at_cutoff": true,
+    "locked_at_required_before_scoring": true,
+    "no_retuning_after_outcomes": true
+  },
+  "source_history": "data/tmp_skill_selftest/history.json",
+  "splits": [
+    {
+      "cutoff": "2026-01-03T00:00:00+00:00",
+      "hidden": {
+        "end": 3,
+        "start": 3
+      },
+      "prediction_lock": {
+        "confidence": null,
+        "cutoff": "2026-01-03T00:00:00+00:00",
+        "locked": false,
+        "locked_at": null,
+        "market_mid_at_cutoff": 0.6,
+        "predicted_catalysts": [],
+        "predicted_probability": null,
+        "rationale": null,
+        "side": "YES",
+        "ticker": "SELFTEST"
+      },
+      "visible": {
+        "end": 2,
+        "start": 0
+      }
+    }
+  ],
+  "ticker": "SELFTEST"
+}

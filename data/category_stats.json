@@ -1,0 +1,38 @@
+{
+  "Economics": {
+    "trades": 15,
+    "won": 3,
+    "lost": 12,
+    "pnl": -45.0
+  },
+  "Politics": {
+    "trades": 5,
+    "won": 2,
+    "lost": 3,
+    "pnl": -5.0
+  },
+  "Sports": {
+    "trades": 12,
+    "won": 9,
+    "lost": 3,
+    "pnl": 35.0
+  },
+  "Entertainment": {
+    "trades": 8,
+    "won": 6,
+    "lost": 2,
+    "pnl": 20.0
+  },
+  "Crypto": {
+    "trades": 10,
+    "won": 5,
+    "lost": 5,
+    "pnl": 2.0
+  },
+  "unknown": {
+    "trades": 0,
+    "won": 0,
+    "lost": 0,
+    "pnl": 0.0
+  }
+}

@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Cup Kalshi Assistant</title>
+    <style>
+        :root {
+            --bg: #f6f7f9;
+            --surface: #ffffff;
+            --surface-soft: #eef2f6;
+            --border: #d8dee8;
+            --text: #182230;
+            --muted: #667085;
+            --blue: #2563eb;
+            --green: #16803c;
+            --amber: #b86b00;
+            --red: #c24135;
+            --ink: #111827;
+            --focus: #0ea5e9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            letter-spacing: 0;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button:focus-visible,
+        select:focus-visible,
+        input:focus-visible,
+        summary:focus-visible {
+            outline: 3px solid rgba(14, 165, 233, 0.35);
+            outline-offset: 2px;
+        }
+
+        .shell {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 220px;
+        }
+
+        .brand strong {
+            font-size: 18px;
+            color: var(--ink);
+        }
+
+        .brand span {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .status-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            padding: 4px 9px;
+            font-size: 12px;
+            font-weight: 700;
+            background: var(--surface);
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .badge.connected {
+            color: var(--green);
+            border-color: rgba(22, 128, 60, 0.32);
+            background: #edf8f0;
+        }
+
+        .badge.degraded {
+            color: var(--amber);
+            border-color: rgba(184, 107, 0, 0.32);
+            background: #fff6e8;
+        }
+
+        .badge.unavailable,
+        .badge.blocked {
+            color: var(--red);
+            border-color: rgba(194, 65, 53, 0.32);
+            background: #fff0ef;
+        }
+
+        .badge.ready {
+            color: var(--blue);
+            border-color: rgba(37, 99, 235, 0.32);
+            background: #eef4ff;
+        }
+
+        .badge.loading {
+            color: var(--blue);
+            border-color: rgba(37, 99, 235, 0.24);
+            background: #f0f7ff;
+        }
+
+        .workspace {
+            width: min(1480px, 100%);
+            margin: 0 auto;
+            padding: 18px;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 420px;
+            gap: 18px;
+            flex: 1;
+        }
+
+        .main-flow,
+        .side-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .band,
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .band {
+            padding: 14px;
+        }
+
+        .panel-header {
+            padding: 13px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .panel-header h2,
+        .panel-header h3 {
+            margin: 0;
+            font-size: 15px;
+            color: var(--ink);
+        }
+
+        .panel-body {
+            padding: 14px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            min-height: 36px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            padding: 7px 11px;
+            cursor: pointer;
+            font-weight: 650;
+        }
+
+        .btn:hover:not(:disabled) {
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .btn.primary {
+            border-color: var(--blue);
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .icon-btn,
+        .info {
+            width: 32px;
+            height: 32px;
+            display: inline-grid;
+            place-items: center;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--muted);
+            cursor: pointer;
+            position: relative;
+            flex: 0 0 auto;
+        }
+
+        .info::after {
+            content: attr(data-tip);
+            position: absolute;
+            right: 0;
+            top: 36px;
+            width: min(280px, 70vw);
+            padding: 9px 10px;
+            border: 1px solid var(--border);
+            background: var(--ink);
+            color: #fff;
+            border-radius: 6px;
+            box-shadow: 0 12px 30px rgba(16, 24, 40, 0.18);
+            font-size: 12px;
+            line-height: 1.35;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-4px);
+            transition: opacity 120ms ease, transform 120ms ease;
+            z-index: 40;
+        }
+
+        .info:hover::after,
+        .info:focus::after,
+        .info.open::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .settings-grid,
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .metric {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            background: #fbfcfe;
+            min-height: 70px;
+        }
+
+        .metric span {
+            color: var(--muted);
+            font-size: 12px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .match-card,
+        .trade-card,
+        .leg-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .match-card.selected,
+        .trade-card.selected {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .match-title {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .match-title h3,
+        .ticket-title {
+            margin: 0;
+            font-size: 16px;
+            color: var(--ink);
+            line-height: 1.25;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .market-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .market-row {
+            border: 1px solid var(--border);
+            background: #fbfcfe;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 13px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .ticket-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .slip-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fbfcfe;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .slip-total {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .slip-leg {
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: var(--surface);
+            padding: 10px;
+        }
+
+        .slip-leg + .slip-leg {
+            margin-top: 8px;
+        }
+
+        .slip-controls {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fbfcfe;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: minmax(85px, 1fr) minmax(85px, 1fr) minmax(120px, 1.2fr) auto;
+            gap: 9px;
+            align-items: end;
+            margin-bottom: 12px;
+        }
+
+        .scan-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .slip-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ticket-metric {
+            border-bottom: 1px solid var(--border);
+            padding: 6px 0;
+        }
+
+        .ticket-metric span {
+            color: var(--muted);
+            font-size: 12px;
+            display: block;
+        }
+
+        .ticket-metric strong {
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        details {
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 750;
+            color: var(--ink);
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .trace-section {
+            padding: 9px 0;
+            border-top: 1px solid #edf0f4;
+        }
+
+        .trace-section h4 {
+            margin: 0 0 6px;
+            font-size: 13px;
+        }
+
+        .trace-section pre {
+            margin: 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .empty {
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            padding: 18px;
+            color: var(--muted);
+            background: #fbfcfe;
+        }
+
+        .empty strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--ink);
+        }
+
+        .empty p {
+            margin: 0 0 10px;
+        }
+
+        .empty .btn {
+            margin-top: 4px;
+        }
+
+        .warning {
+            color: var(--red);
+            font-weight: 700;
+        }
+
+        .graph-box {
+            min-height: 64px;
+            display: grid;
+            place-items: center;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: 12px;
+            background: #fbfcfe;
+        }
+
+        .wizard {
+            display: none;
+            gap: 10px;
+            flex-direction: column;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .wizard.open {
+            display: flex;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field label {
+            font-size: 12px;
+            font-weight: 750;
+            color: var(--muted);
+        }
+
+        select,
+        input {
+            min-height: 36px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            padding: 7px 9px;
+            background: #fff;
+            color: var(--text);
+        }
+
+        .compare-table {
+            width: 100%;
+            min-width: 680px;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        .compare-table th,
+        .compare-table td {
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            padding: 8px;
+            vertical-align: top;
+        }
+
+        .compare-table th {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 1100px) {
+            .workspace {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .main-flow,
+            .side-flow {
+                display: contents;
+            }
+
+            .matchday-panel {
+                order: 1;
+            }
+
+            .selected-panel {
+                order: 2;
+            }
+
+            .basket-panel {
+                order: 3;
+            }
+
+            .compare-panel {
+                order: 4;
+            }
+
+            .settings-panel {
+                order: 5;
+            }
+
+            .summary-grid,
+            .settings-grid {
+                grid-template-columns: repeat(2, minmax(120px, 1fr));
+            }
+        }
+
+        @media (max-width: 620px) {
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .status-row {
+                justify-content: flex-start;
+            }
+
+            .workspace {
+                padding: 12px;
+            }
+
+            .summary-grid,
+            .settings-grid,
+            .ticket-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .market-row {
+                grid-template-columns: 1fr;
+            }
+
+            .slip-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shell">
+        <header class="topbar">
+            <div class="brand">
+                <strong>World Cup Kalshi Assistant</strong>
+                <span>Real-data trading dashboard</span>
+            </div>
+            <div class="status-row">
+                <a class="btn" href="/early-marks">Early Marks</a>
+                <span class="badge loading" id="dataStatus">LOADING LIVE DATA</span>
+                <span class="badge" id="providerStatus">Provider: checking</span>
+                <span class="badge loading" id="routeReason">Fetching schedule and markets</span>
+                <button class="icon-btn" id="refreshBtn" aria-label="Refresh dashboard" title="Refresh">R</button>
+            </div>
+        </header>
+
+        <main class="workspace">
+            <section class="main-flow">
+                <section class="panel matchday-panel">
+                    <div class="panel-header">
+                        <h2>Matchday Dashboard</h2>
+                        <div class="toolbar">
+                            <span class="badge" id="dashboardDay">Checking schedule</span>
+                            <button class="info" aria-label="Matchday info" data-tip="The dashboard uses the app/user timezone day boundary, stores kickoff in UTC, and displays venue-local plus user-local times.">i</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="matchGrid" class="match-grid"></div>
+                    </div>
+                </section>
+
+                <section class="band settings-panel" aria-labelledby="settingsTitle">
+                    <div class="panel-header" style="padding:0 0 12px;border-bottom:0">
+                        <h2 id="settingsTitle">Settings Summary</h2>
+                        <button class="info" aria-label="Settings help" data-tip="These settings control what the assistant scans, how strict it is, and what it is allowed to recommend. They do not allow the model to invent probabilities or bypass safety gates.">i</button>
+                    </div>
+                    <div class="summary-grid" id="settingsSummary"></div>
+                    <div class="toolbar" id="providerOptions" aria-label="Provider selector" style="margin-top:12px"></div>
+                    <div class="toolbar" style="margin-top:12px">
+                        <button class="btn" id="safeSettingsBtn">Use recommended safe settings</button>
+                        <button class="btn" id="wizardBtn">Help me choose settings</button>
+                    </div>
+                    <div class="wizard" id="wizard">
+                        <div class="settings-grid">
+                            <div class="field">
+                                <label for="intentSelect">Goal</label>
+                                <select id="intentSelect">
+                                    <option>Exploring live data</option>
+                                    <option>Paper testing</option>
+                                    <option>Preparing for live trading</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="tradeShapeSelect">Trade shape</label>
+                                <select id="tradeShapeSelect">
+                                    <option>One best trade</option>
+                                    <option>Basket across today's games</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="scopeSelect">Matchday scope</label>
+                                <select id="scopeSelect">
+                                    <option value="today-or-next-matchday">Today or next matchday</option>
+                                    <option value="today-only">Today only</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="blockedSelect">Blocked trades</label>
+                                <select id="blockedSelect">
+                                    <option>Show blocked trades with reasons</option>
+                                    <option>Only approval-eligible trades</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="riskInput">Risk per trade or basket</label>
+                                <input id="riskInput" value="Conservative" aria-label="Risk per trade or basket">
+                            </div>
+                            <div class="field">
+                                <label for="slipStrategySelect">Slip strategy</label>
+                                <select id="slipStrategySelect">
+                                    <option value="big-payout">Big payout</option>
+                                    <option value="player-props">Player props</option>
+                                    <option value="balanced">Balanced</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="traceSelect">Explanation depth</label>
+                                <select id="traceSelect">
+                                    <option>Full calculation traces</option>
+                                    <option>Simple explanations</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="toolbar" style="margin-top:12px">
+                            <button class="btn" id="applySettingsBtn">Apply settings</button>
+                        </div>
+                        <div class="empty" id="wizardSummary">Recommended safe settings will keep real data only, Conservative style, today-or-next-matchday scope, blocked trades visible, manual-per-leg approval, fresh quotes, sourced factors, and no live order placement.</div>
+                    </div>
+                </section>
+
+                <section class="panel compare-panel">
+                    <div class="panel-header">
+                        <h2>Compare Mode</h2>
+                        <span class="badge">Blocked demoted below eligible</span>
+                    </div>
+                    <div class="panel-body" id="compareBody"></div>
+                </section>
+            </section>
+
+            <aside class="side-flow">
+                <section class="panel selected-panel">
+                    <div class="panel-header">
+                        <h2>Selected Card</h2>
+                        <button class="info" aria-label="Trade card info" data-tip="Every number on the trade ticket traces to the research drawer. Approval remains disabled unless all real-data, quote, mapping, calibration, and safety gates pass.">i</button>
+                    </div>
+                    <div class="panel-body" id="selectedTrade">
+                        <div class="empty">No trade selected.</div>
+                    </div>
+                </section>
+
+                <section class="panel basket-panel">
+                    <div class="panel-header">
+                        <h2>Research Slip Groups</h2>
+                        <span class="badge">Paper only</span>
+                    </div>
+                    <div class="panel-body" id="basketPanel"></div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script>
+        const API_TOKEN = "__API_TOKEN__";
+        let dashboardData = null;
+        let selectedCandidateId = null;
+
+        const money = (value) => Number.isFinite(Number(value)) ? `$${Number(value).toFixed(2)}` : "Unavailable";
+        const pct = (value) => Number.isFinite(Number(value)) ? `${(Number(value) * 100).toFixed(1)}%` : "Unavailable";
+        const num = (value) => Number.isFinite(Number(value)) ? Number(value).toFixed(3) : "Unavailable";
+        const text = (value) => value === null || value === undefined || value === "" ? "Unavailable" : String(value);
+        const DEFAULT_SLIP_STRATEGY = "big-payout";
+
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[ch]));
+        }
+
+        async function api(path, options = {}) {
+            const headers = { ...(options.headers || {}) };
+            if (options.method && options.method !== "GET") {
+                headers["Content-Type"] = "application/json";
+                headers["X-Agent-Token"] = API_TOKEN;
+            }
+            const resp = await fetch(path, { ...options, headers });
+            const data = await resp.json();
+            if (!resp.ok) throw new Error(data.error || resp.statusText);
+            return data;
+        }
+
+        function statusClass(label) {
+            if (label === "LIVE DATA CONNECTED") return "connected";
+            if (label === "LIVE DATA DEGRADED") return "degraded";
+            return "unavailable";
+        }
+
+        function renderStatus(status) {
+            const dataStatus = document.getElementById("dataStatus");
+            dataStatus.textContent = status.label || "LIVE DATA UNAVAILABLE";
+            dataStatus.className = `badge ${statusClass(status.label)}`;
+
+            const provider = status.provider || {};
+            const claude = provider.claude || {};
+            document.getElementById("providerStatus").textContent = claude.active
+                ? `Claude active: ${claude.model}`
+                : "Claude unavailable";
+            document.getElementById("routeReason").textContent = (status.blocked_reasons && status.blocked_reasons[0]) || "All gates clear";
+            document.getElementById("routeReason").className = status.blocked_reasons && status.blocked_reasons.length
+                ? `badge ${statusClass(status.label)}`
+                : "badge ready";
+            renderSettings(status.settings_summary || {});
+            renderProviderOptions(provider);
+        }
+
+        function renderProviderOptions(provider) {
+            const claude = provider.claude || {};
+            const openai = provider.openai || {};
+            const both = provider.both || {};
+            document.getElementById("providerOptions").innerHTML = `
+                <span class="badge ${claude.active ? "ready" : "blocked"}">Claude${claude.active ? ` active: ${escapeHtml(claude.model)}` : " unavailable"}</span>
+                <span class="badge blocked">${escapeHtml(openai.disabled_reason || "OpenAI — disabled until configured.")}</span>
+                <span class="badge blocked">${escapeHtml(both.disabled_reason || "Both / Sync Mode — planned.")}</span>
+            `;
+        }
+
+        function metric(label, value) {
+            return `<div class="metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`;
+        }
+
+        function renderSettings(summary) {
+            const rows = [
+                ["Data status", summary.data_status],
+                ["Provider", summary.provider],
+                ["Recommendation style", summary.recommendation_style],
+                ["Scope", summary.scope],
+                ["Market categories", (summary.market_categories_enabled || []).join(", ")],
+                ["Max legs", summary.max_legs],
+                ["Max legs per match", summary.max_legs_per_match],
+                ["Minimum confidence", summary.minimum_confidence],
+                ["Blocked trades", summary.blocked_trades],
+                ["Basket placement", summary.basket_placement],
+                ["Slip strategy", summary.slip_strategy_label || summary.slip_strategy],
+                ["Max slips", summary.max_slips],
+                ["Data warning", summary.blocked_reason || "None"]
+            ];
+            document.getElementById("settingsSummary").innerHTML = rows.map(([label, value]) => metric(label, text(value))).join("");
+            const scopeSelect = document.getElementById("scopeSelect");
+            if (scopeSelect && summary.scope_value) scopeSelect.value = summary.scope_value;
+            const blockedSelect = document.getElementById("blockedSelect");
+            if (blockedSelect && summary.blocked_trades) {
+                blockedSelect.value = summary.blocked_trades === "shown" ? "Show blocked trades with reasons" : "Only approval-eligible trades";
+            }
+            setSlipInputs(summary);
+        }
+
+        function setSlipInputs(summary = {}) {
+            ["slipStrategySelect", "slipFinderStrategy"].forEach((id) => {
+                const el = document.getElementById(id);
+                if (el && document.activeElement !== el) el.value = summary.slip_strategy || DEFAULT_SLIP_STRATEGY;
+            });
+        }
+
+        function currentSlipSettings() {
+            const summary = dashboardData?.status?.settings_summary || {};
+            const strategyEl = document.getElementById("slipFinderStrategy") || document.getElementById("slipStrategySelect");
+            return {
+                slip_strategy: strategyEl?.value || summary.slip_strategy || DEFAULT_SLIP_STRATEGY,
+                max_slips: Number(summary.max_slips || 6)
+            };
+        }
+
+        function blockedTradesHidden(data) {
+            return (data.status?.settings_summary?.blocked_trades || "").toLowerCase() === "hidden";
+        }
+
+        function primaryBlockedReason(data) {
+            return data.message || data.status?.blocked_reasons?.[0] || "No approval-ready trade is available under the current safety gates.";
+        }
+
+        function emptyState(title, body, action = "") {
+            return `<div class="empty">
+                <strong>${escapeHtml(title)}</strong>
+                <p>${escapeHtml(body)}</p>
+                ${action}
+            </div>`;
+        }
+
+        function noTradeEmpty(data) {
+            if (blockedTradesHidden(data) && (data.markets || []).length) {
+                return emptyState(
+                    "No approval-ready trade yet.",
+                    "Live World Cup markets were found, but blocked cards are hidden. Show blocked reasons to inspect why the assistant is standing down.",
+                    `<button class="btn" data-show-blocked="true">Show blocked reasons</button>`
+                );
+            }
+            return emptyState(
+                "No trade selected.",
+                "Select a card from Compare Mode after the live scan finishes. If no card appears, the current gates are blocking approval."
+            );
+        }
+
+        async function setBlockedTradesVisible(show) {
+            const scopeSelect = document.getElementById("scopeSelect");
+            const data = await api("/api/world-cup/settings", {
+                method: "POST",
+                body: JSON.stringify({
+                    scope: scopeSelect?.value || dashboardData?.status?.settings_summary?.scope_value || "today-or-next-matchday",
+                    show_blocked_trades: show,
+                    recommendation_style: "Conservative",
+                    basket_placement: "manual-per-leg",
+                    ...currentSlipSettings()
+                })
+            });
+            renderSettings(data.settings_summary || {});
+            await loadDashboard();
+        }
+
+        function wireEmptyActions(root = document) {
+            root.querySelectorAll("[data-show-blocked]").forEach((btn) => {
+                btn.addEventListener("click", () => setBlockedTradesVisible(true));
+            });
+        }
+
+        function renderMatches(data) {
+            document.getElementById("dashboardDay").textContent = data.dashboard_day ? `Dashboard day ${data.dashboard_day}` : "No schedule";
+            const grid = document.getElementById("matchGrid");
+            if (!data.matches || data.matches.length === 0) {
+                grid.innerHTML = `<div class="empty">${escapeHtml(data.message || "Schedule data unavailable — recommendations disabled.")}</div>`;
+                return;
+            }
+            grid.innerHTML = data.matches.map((match) => {
+                const markets = match.linked_kalshi_markets || [];
+                const visibleMarkets = markets.slice(0, 6);
+                const rows = visibleMarkets.length ? visibleMarkets.map((market) => `
+                    <div class="market-row">
+                        <span>${escapeHtml(market.title)}</span>
+                        <span>${pct(market.midpoint)}</span>
+                    </div>
+                `).join("") : `<div class="empty">Market mapping unavailable — recommendation disabled.</div>`;
+                const more = markets.length > visibleMarkets.length
+                    ? `<div class="market-row"><span>${markets.length - visibleMarkets.length} more linked markets</span><span>Compare below</span></div>`
+                    : "";
+                return `<article class="match-card" data-match-id="${escapeHtml(match.id)}">
+                    <div class="match-title">
+                        <h3>${escapeHtml(match.away_team)} at ${escapeHtml(match.home_team)}</h3>
+                        <span class="badge ${match.evaluation_status === "skipped" ? "blocked" : "ready"}">${escapeHtml(match.evaluation_status)}</span>
+                    </div>
+                    <div class="meta">
+                        <span>UTC ${escapeHtml(match.kickoff_utc)}</span>
+                        <span>Venue ${escapeHtml(match.venue_local_time)}</span>
+                        <span>User ${escapeHtml(match.user_local_time)}</span>
+                    </div>
+                    <div class="meta">
+                        <span>${escapeHtml(match.venue || "Venue unavailable")}</span>
+                        <span>Lineups: ${escapeHtml(match.lineup_status)}</span>
+                        <span>${markets.length} linked markets</span>
+                    </div>
+                    <div class="graph-box">Graph unavailable</div>
+                    <div class="market-list">${rows}${more}</div>
+                </article>`;
+            }).join("");
+        }
+
+        function renderCompare(data) {
+            const body = document.getElementById("compareBody");
+            const candidates = data.candidates || [];
+            if (!candidates.length) {
+                if (blockedTradesHidden(data) && (data.markets || []).length) {
+                    body.innerHTML = emptyState(
+                        "No approval-ready trades under current settings.",
+                        "The scan found live World Cup markets, but every card is blocked and blocked cards are hidden. For a small $10 paper test, inspect the blockers before considering any trade.",
+                        `<button class="btn" data-show-blocked="true">Show blocked reasons</button>`
+                    );
+                    wireEmptyActions(body);
+                    return;
+                }
+                body.innerHTML = emptyState("No comparable cards.", primaryBlockedReason(data));
+                return;
+            }
+            body.innerHTML = `<div class="table-wrap"><table class="compare-table">
+                <caption style="text-align:left;padding:0 0 8px;color:var(--muted);caption-side:top">
+                    ${(data.candidate_count ?? candidates.length)} candidate cards found. The detail rail shows one selected card at a time; grouped research cards appear below.
+                </caption>
+                <thead><tr><th>Market</th><th>Status</th><th>Price</th><th>Probability gap</th><th>Hit probability</th><th>Warnings</th></tr></thead>
+                <tbody>${candidates.map((candidate) => `
+                    <tr>
+                        <td><button class="btn" data-select="${escapeHtml(candidate.id)}">${escapeHtml(candidate.trade.title)}</button></td>
+                        <td><span class="badge ${candidate.approval_eligible ? "ready" : "blocked"}">${escapeHtml(candidate.status)}</span></td>
+                        <td>${pct(candidate.trade.price)}</td>
+                        <td>${pct(candidate.trade.confidence_adjusted_probability_gap)}</td>
+                        <td>${pct(candidate.trade.hit_probability)}</td>
+                        <td>${escapeHtml(candidate.disabled_reason || (candidate.warnings || candidate.trade.warnings || []).slice(0, 2).join(" ") || "Paper-ready")}</td>
+                    </tr>
+                `).join("")}</tbody>
+            </table></div>`;
+            body.querySelectorAll("[data-select]").forEach((btn) => {
+                btn.addEventListener("click", () => selectCandidate(btn.getAttribute("data-select")));
+            });
+        }
+
+        function ticketMetric(label, value) {
+            return `<div class="ticket-metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`;
+        }
+
+        function slipTotal(label, value) {
+            return `<div><span class="meta">${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`;
+        }
+
+        function warningList(items = []) {
+            const clean = [...new Set((items || []).filter(Boolean))];
+            if (!clean.length) return "";
+            return `<div class="empty"><strong>Warnings</strong><p>${escapeHtml(clean.join(" "))}</p></div>`;
+        }
+
+        function playerContextBox(context) {
+            if (!context) return "";
+            if (context.status !== "available") {
+                return `<div class="empty"><strong>Player context</strong><p>${escapeHtml(context.reason || "Player context unavailable from the configured public source.")}</p></div>`;
+            }
+            const facts = [
+                context.player_name,
+                context.position,
+                context.team ? `Club: ${context.team}` : "",
+                context.national_team ? `National team: ${context.national_team}` : "",
+                context.nationality ? `Nationality: ${context.nationality}` : "",
+                context.status_text ? `Status: ${context.status_text}` : "",
+                context.performance_stats_status ? `Performance stats: ${context.performance_stats_status}` : ""
+            ].filter(Boolean);
+            const links = (context.links || []).slice(0, 3).map((link) =>
+                `<a href="${escapeHtml(link.url)}" target="_blank" rel="noreferrer">${escapeHtml(link.label)}</a>`
+            ).join(" · ");
+            return `<div class="empty">
+                <strong>Player context</strong>
+                <p>${escapeHtml(facts.join(" | "))}</p>
+                ${context.history_excerpt ? `<p>${escapeHtml(context.history_excerpt)}</p>` : ""}
+                ${context.probability_use ? `<p>${escapeHtml(context.probability_use)}</p>` : ""}
+                ${links ? `<p>${links}</p>` : ""}
+            </div>`;
+        }
+
+        function renderTrade(candidate) {
+            const root = document.getElementById("selectedTrade");
+            if (!candidate) {
+                root.innerHTML = noTradeEmpty(dashboardData || {});
+                wireEmptyActions(root);
+                return;
+            }
+            const t = candidate.trade;
+            root.innerHTML = `<article class="trade-card selected">
+                <div class="match-title">
+                    <h3 class="ticket-title">Paper Trade Slip</h3>
+                    <span class="badge ${t.approval_eligible ? "ready" : "blocked"}">${escapeHtml(t.status)}</span>
+                </div>
+                <div class="slip-card">
+                    <strong>${escapeHtml(t.title)}</strong>
+                    <div class="meta">
+                        <span>${escapeHtml(t.side)} at ${pct(t.price)}</span>
+                        <span>Hit probability ${pct(t.hit_probability)}</span>
+                        <span>One-contract quote</span>
+                        <span>${escapeHtml(t.execution_mode || "paper")} only</span>
+                    </div>
+                    <div class="slip-total">
+                        ${slipTotal("Stake placed", money(t.cost))}
+                        ${slipTotal("Gross payout", money(t.max_payout))}
+                        ${slipTotal("Hit probability", pct(t.hit_probability))}
+                        ${slipTotal("Probability gap", pct(t.confidence_adjusted_probability_gap))}
+                    </div>
+                </div>
+                <div class="ticket-grid">
+                    ${ticketMetric("Market", t.market)}
+                    ${ticketMetric("Side", t.side)}
+                    ${ticketMetric("Price", pct(t.price))}
+                    ${ticketMetric("Hit probability", pct(t.hit_probability))}
+                    ${ticketMetric("Cost", money(t.cost))}
+                    ${ticketMetric("Max payout", money(t.max_payout))}
+                    ${ticketMetric("Market probability", pct(t.market_implied_probability))}
+                    ${ticketMetric("Probability gap", pct(t.probability_gap))}
+                    ${ticketMetric("Confidence-adjusted gap", pct(t.confidence_adjusted_probability_gap))}
+                    ${ticketMetric("Approval", t.approval_state)}
+                </div>
+                <button class="btn primary" id="approveSingle" ${t.approval_eligible ? "" : "disabled"}>Paper Approve Single</button>
+                ${t.disabled_reason ? `<div class="warning">${escapeHtml(t.disabled_reason)}</div>` : ""}
+                ${warningList(candidate.warnings || t.warnings)}
+                <div class="empty"><strong>Live placement disabled</strong><p>This page can lock and paper-approve a card for tracking. It will not submit a live Kalshi order.</p></div>
+                <div class="empty"><strong>Kalshi owns the trade math</strong><p>${escapeHtml(t.pricing_source || "Confirm final fees, total cost, and payout in Kalshi before placing.")}</p></div>
+                ${playerContextBox(t.player_context)}
+                ${renderResearch(candidate.research)}
+            </article>`;
+            document.getElementById("approveSingle").addEventListener("click", () => lockAndApprove(t));
+        }
+
+        function renderResearch(research) {
+            if (!research) return "";
+            const sections = [
+                ["Summary", research.summary],
+                ["Inputs", research.inputs],
+                ["Probability calculation", research.probability_calculation],
+                ["Market/price calculation", research.market_price_calculation],
+                ["Calibration", research.calibration],
+                ["Sources", research.sources],
+                ["Risk notes", research.risk_notes],
+                ["Why not approved?", research.why_not_approved],
+                ["Warnings", research.warnings],
+                ["What would change this?", research.what_would_change_this]
+            ];
+            return `<details>
+                <summary>Research drawer</summary>
+                ${sections.map(([title, content]) => `<div class="trace-section">
+                    <h4>${escapeHtml(title)}</h4>
+                    <pre>${escapeHtml(typeof content === "string" ? content : JSON.stringify(content, null, 2))}</pre>
+                </div>`).join("")}
+            </details>`;
+        }
+
+        async function lockAndApprove(card) {
+            const locked = await api("/api/world-cup/approval-lock", {
+                method: "POST",
+                body: JSON.stringify({ card })
+            });
+            const approved = await api("/api/world-cup/paper-approve", {
+                method: "POST",
+                body: JSON.stringify({ lock_id: locked.lock.lock_id, card })
+            });
+            alert(approved.status === "paper_approved" ? "Paper approval recorded. No live order was placed." : approved.error);
+        }
+
+        function selectCandidate(id) {
+            selectedCandidateId = id;
+            const groupedLegs = (dashboardData?.slips || []).flatMap((slip) => slip.legs || []);
+            const candidate = groupedLegs.find((item) => item.id === id)
+                || (dashboardData?.candidates || []).find((item) => item.id === id);
+            renderTrade(candidate);
+        }
+
+        function renderSlipFinder(data) {
+            const panel = document.getElementById("basketPanel");
+            const slips = data.slips || [];
+            const summary = data.status?.settings_summary || {};
+            const controls = `<div class="slip-controls">
+                <div class="field">
+                    <label for="slipFinderStrategy">Strategy</label>
+                    <select id="slipFinderStrategy">
+                        <option value="big-payout" ${(summary.slip_strategy || DEFAULT_SLIP_STRATEGY) === "big-payout" ? "selected" : ""}>Big payout</option>
+                        <option value="player-props" ${(summary.slip_strategy || DEFAULT_SLIP_STRATEGY) === "player-props" ? "selected" : ""}>Player props</option>
+                        <option value="balanced" ${(summary.slip_strategy || DEFAULT_SLIP_STRATEGY) === "balanced" ? "selected" : ""}>Balanced</option>
+                    </select>
+                </div>
+                <button class="btn primary" id="applySlipSettingsBtn">Refresh Groups</button>
+            </div>
+            <div class="scan-summary">
+                <span class="badge ready">${escapeHtml(data.candidate_count ?? (data.candidates || []).length)} candidates found</span>
+                <span class="badge ${slips.length ? "ready" : "blocked"}">${escapeHtml(data.slip_count ?? slips.length)} research groups found</span>
+                <span class="badge">${escapeHtml(summary.slip_strategy_label || "Big payout")}</span>
+            </div>`;
+
+            if (!slips.length) {
+                if (blockedTradesHidden(data) && (data.markets || []).length) {
+                    panel.innerHTML = controls + emptyState(
+                        "No basket can be built yet.",
+                        "All candidate legs are blocked under the current safety gates, and blocked cards are hidden.",
+                        `<button class="btn" data-show-blocked="true">Show blocked reasons</button>`
+                    );
+                    wireSlipSettingsAction(panel);
+                    wireEmptyActions(panel);
+                    return;
+                }
+                panel.innerHTML = controls + emptyState("No research groups can be built yet.", data.message || "No current-matchday-only Kalshi World Cup markets available.");
+                wireSlipSettingsAction(panel);
+                return;
+            }
+            panel.innerHTML = controls + `<div class="slip-stack">${slips.map((basket, slipIndex) => {
+                const legs = basket.legs || [];
+                return `<div class="trade-card">
+                <div class="match-title">
+                    <h3 class="ticket-title">${escapeHtml(basket.title || "Kalshi-Style Parlay Slip")}</h3>
+                    <span class="badge ${basket.approval_eligible ? "ready" : "blocked"}">${escapeHtml(basket.status)}</span>
+                </div>
+                <div class="slip-card">
+                    <div class="meta">
+                        <span>Paper-only basket of singles</span>
+                        <span>One-contract quote per leg</span>
+                        <span>Live order placement ${escapeHtml(basket.live_order_placement || "disabled")}</span>
+                    </div>
+                    <div class="slip-total">
+                        ${slipTotal("Total placed", money(basket.totals?.cost))}
+                        ${slipTotal("Gross payout", money(basket.totals?.max_payout))}
+                    </div>
+                    <div class="empty"><strong>Full payout condition</strong><p>${escapeHtml(basket.full_payout_requires || "Every leg must win to receive the full gross payout shown.")}</p></div>
+                    <div>
+                    ${legs.map((leg, index) => `<div class="slip-leg">
+                        <div class="match-title">
+                            <strong>Leg ${index + 1}</strong>
+                            <span class="badge ${leg.approval_eligible ? "ready" : "blocked"}">${escapeHtml(leg.status)}</span>
+                        </div>
+                        <div><strong>${escapeHtml(leg.trade.title)}</strong></div>
+                        <div class="meta">
+                            <span>${escapeHtml(leg.trade.side)} at ${pct(leg.trade.price)}</span>
+                            <span>Hit probability ${pct(leg.trade.hit_probability)}</span>
+                            <span>Placed ${money(leg.trade.cost)}</span>
+                            <span>Contracts ${escapeHtml(leg.trade.contracts)}</span>
+                            <span>Gross payout ${money(leg.trade.max_payout)}</span>
+                            <span>Probability gap ${pct(leg.trade.confidence_adjusted_probability_gap)}</span>
+                            <span>Category: ${escapeHtml(leg.mapping?.type || "unmapped")}</span>
+                        </div>
+                        ${playerContextBox(leg.trade.player_context)}
+                        <button class="btn" data-select="${escapeHtml(leg.id)}">View leg</button>
+                        ${leg.disabled_reason ? `<div class="warning">${escapeHtml(leg.disabled_reason)}</div>` : ""}
+                    </div>`).join("")}
+                    </div>
+                </div>
+                <div class="empty"><strong>Execution</strong><p>${escapeHtml(basket.partial_fill_risk || "")}</p></div>
+                <div class="empty"><strong>Correlation / blockers</strong><p>${escapeHtml((basket.correlation_notes || []).join(" "))}</p></div>
+                <div class="empty"><strong>Kalshi owns the trade math</strong><p>${escapeHtml(basket.pricing_source || "Confirm final fees, totals, and payout in Kalshi.")}</p></div>
+                ${warningList(basket.warnings)}
+                <button class="btn primary" data-approve-slip="${slipIndex}" ${basket.approval_eligible ? "" : "disabled"}>${escapeHtml(basket.approval_label || "Paper Approve Slip")}</button>
+                ${basket.disabled_reason ? `<div class="warning">${escapeHtml(basket.disabled_reason)}</div>` : ""}
+            </div>`;
+            }).join("")}</div>`;
+            wireSlipSettingsAction(panel);
+            panel.querySelectorAll("[data-approve-slip]").forEach((btn) => {
+                const index = Number(btn.getAttribute("data-approve-slip"));
+                btn.addEventListener("click", () => lockAndApprove(slips[index]));
+            });
+            panel.querySelectorAll("[data-select]").forEach((btn) => {
+                btn.addEventListener("click", () => selectCandidate(btn.getAttribute("data-select")));
+            });
+        }
+
+        function wireSlipSettingsAction(root = document) {
+            const btn = root.querySelector("#applySlipSettingsBtn");
+            if (btn) btn.addEventListener("click", applySlipSettings);
+        }
+
+        async function loadDashboard() {
+            try {
+                const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York";
+                const data = await api(`/api/world-cup/matchday?user_timezone=${encodeURIComponent(tz)}`);
+                dashboardData = data;
+                renderStatus(data.status || {});
+                renderMatches(data);
+                renderCompare(data);
+                renderSlipFinder(data);
+                const first = (data.slips?.[0]?.legs || [])[0] || (data.candidates || [])[0];
+                renderTrade(first);
+                selectedCandidateId = first?.id || null;
+            } catch (err) {
+                renderStatus({ label: "LIVE DATA UNAVAILABLE", blocked_reasons: [err.message], settings_summary: {} });
+                document.getElementById("matchGrid").innerHTML = `<div class="empty">${escapeHtml(err.message)}</div>`;
+                document.getElementById("compareBody").innerHTML = `<div class="empty">${escapeHtml(err.message)}</div>`;
+                document.getElementById("basketPanel").innerHTML = `<div class="empty">${escapeHtml(err.message)}</div>`;
+            }
+        }
+
+        async function applySafeSettings() {
+            const data = await api("/api/world-cup/settings", {
+                method: "POST",
+                body: JSON.stringify({
+                    recommendation_style: "Conservative",
+                    scope: "today-or-next-matchday",
+                    max_legs: 4,
+                    max_legs_per_match: 1,
+                    show_blocked_trades: true,
+                    basket_placement: "manual-per-leg",
+                    slip_strategy: DEFAULT_SLIP_STRATEGY,
+                    max_slips: 6
+                })
+            });
+            renderSettings(data.settings_summary || {});
+            await loadDashboard();
+        }
+
+        async function applyWizardSettings() {
+            const data = await api("/api/world-cup/settings", {
+                method: "POST",
+                body: JSON.stringify({
+                    scope: document.getElementById("scopeSelect").value,
+                    show_blocked_trades: document.getElementById("blockedSelect").value === "Show blocked trades with reasons",
+                    recommendation_style: "Conservative",
+                    basket_placement: "manual-per-leg",
+                    ...currentSlipSettings()
+                })
+            });
+            renderSettings(data.settings_summary || {});
+            await loadDashboard();
+        }
+
+        async function applySlipSettings() {
+            const scopeSelect = document.getElementById("scopeSelect");
+            const blockedSelect = document.getElementById("blockedSelect");
+            const data = await api("/api/world-cup/settings", {
+                method: "POST",
+                body: JSON.stringify({
+                    scope: scopeSelect?.value || dashboardData?.status?.settings_summary?.scope_value || "today-or-next-matchday",
+                    show_blocked_trades: blockedSelect?.value !== "Only approval-eligible trades",
+                    recommendation_style: "Conservative",
+                    basket_placement: "manual-per-leg",
+                    ...currentSlipSettings()
+                })
+            });
+            renderSettings(data.settings_summary || {});
+            await loadDashboard();
+        }
+
+        document.getElementById("refreshBtn").addEventListener("click", loadDashboard);
+        document.getElementById("safeSettingsBtn").addEventListener("click", applySafeSettings);
+        document.getElementById("applySettingsBtn").addEventListener("click", applyWizardSettings);
+        document.getElementById("wizardBtn").addEventListener("click", () => {
+            document.getElementById("wizard").classList.toggle("open");
+        });
+        document.querySelectorAll(".info").forEach((btn) => {
+            btn.addEventListener("click", () => btn.classList.toggle("open"));
+        });
+
+        loadDashboard();
+    </script>
+</body>
+
+</html>

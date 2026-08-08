@@ -1,0 +1,8 @@
+[
+  {
+    "market_id": "SYSTEM_RESET",
+    "question": "Memory reset — April 16, 2026",
+    "outcome": "Cleared 16 duplicate entries that all said the same thing about fees eating profits. The $0 P&L was a tracking bug (Kalshi API returning 0 for unrealized_pnl), not actual fee destruction.",
+    "lesson": "Previous P&L data was unreliable due to a tracking bug. All future trade outcomes now use calculated cost-basis P&L. Focus on weather markets where ensemble data provides a genuine informational edge."
+  }
+]

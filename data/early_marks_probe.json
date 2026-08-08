@@ -1,0 +1,4033 @@
+{
+  "generated_at": "2026-07-03T12:27:03.946372+00:00",
+  "read_only": true,
+  "diagnostics": {
+    "batches": [
+      {
+        "status": "default",
+        "count": 100,
+        "added": 100
+      },
+      {
+        "status": "default",
+        "count": 100,
+        "added": 100
+      },
+      {
+        "status": "open",
+        "count": 100,
+        "added": 0
+      },
+      {
+        "status": "open",
+        "count": 100,
+        "added": 36
+      },
+      {
+        "status": "unopened",
+        "count": 100,
+        "added": 100
+      },
+      {
+        "status": "unopened",
+        "count": 100,
+        "added": 100
+      },
+      {
+        "status": "active",
+        "count": 0,
+        "error": {
+          "error": {
+            "code": "bad_request",
+            "message": "bad request",
+            "details": "invalid status filter"
+          },
+          "status_code": 400
+        }
+      },
+      {
+        "endpoint": "events",
+        "status": "open",
+        "events": 100,
+        "nested_markets": 627,
+        "added": 627
+      },
+      {
+        "endpoint": "events",
+        "status": "open",
+        "events": 100,
+        "nested_markets": 596,
+        "added": 596
+      },
+      {
+        "endpoint": "events",
+        "status": "unopened",
+        "events": 100,
+        "nested_markets": 2074,
+        "added": 1996
+      },
+      {
+        "endpoint": "events",
+        "status": "unopened",
+        "events": 100,
+        "nested_markets": 6463,
+        "added": 6365
+      }
+    ],
+    "live_series_topup": [
+      {
+        "series": "KXMENWORLDCUP",
+        "added": 19
+      }
+    ]
+  },
+  "market_count": 10039,
+  "candidate_count": 10024,
+  "eligible_candidate_count": 32,
+  "available_categories": [
+    "entertainment / awards",
+    "general",
+    "macro / financial",
+    "politics / elections",
+    "sports",
+    "sports / basketball",
+    "sports / soccer / world cup"
+  ],
+  "available_statuses": [
+    "active",
+    "initialized"
+  ],
+  "available_horizons": [
+    "short",
+    "medium",
+    "long"
+  ],
+  "selection_policy": {
+    "shortlist": 18,
+    "max_per_market": 3,
+    "unreleased_slots": 4,
+    "min_placement_dollars": 20.0,
+    "max_placement_dollars": 100.0,
+    "category": "soccer",
+    "market_status": "all",
+    "horizon": "all",
+    "market_groups_selected": 16,
+    "pre_open_selected": 0
+  },
+  "top_candidates": [
+    {
+      "ticker": "KXWCHOST-2038-CAM",
+      "title": "Will Cambodia be announced as a host for the 2038 Men's FIFA World Cup?",
+      "display_name": "Cambodia",
+      "display_title": "Who will host the 2038 World Soccer Cup? - Cambodia",
+      "category": "Sports",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.05,
+      "no_ask": 1.0,
+      "yes_bid": 0.0,
+      "no_bid": 0.95,
+      "last_price": 0.0,
+      "previous_price": 0.0,
+      "volume": 0.0,
+      "volume_24h": 0.0,
+      "liquidity": 0.0,
+      "spread": 0.05,
+      "crossed_book": false,
+      "end_date": "2034-01-01T04:59:00+00:00",
+      "days_to_resolution": 2738.6898890837388,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 48.0,
+      "liquidity_score": 0.0,
+      "exitability_score": 40.0,
+      "runway_score": 100.0,
+      "attention_score": 86.0,
+      "source_score": 45.0,
+      "spread_score": 37.5,
+      "momentum_score": 50.0,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 27.2,
+      "flow_signal_score": 6.7,
+      "directionless_penalty": 12.0,
+      "rank_score": 57.9,
+      "bull_probability": 50.4,
+      "base_probability": 16.7,
+      "bear_probability": 32.9,
+      "bull_price": 0.1446,
+      "base_price": 0.0661,
+      "bear_price": 0.0447,
+      "expected_future_price": 0.0986,
+      "expected_repricing_roi": 28.1,
+      "entry_limit": 0.064,
+      "recommended_placement_dollars": 64.69,
+      "estimated_contracts": 1293,
+      "estimated_position_cost": 64.65,
+      "estimated_target_value": 127.46,
+      "estimated_target_profit": 62.81,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 55.9,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 56.1,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 2738.6898890837388,
+        "matched_terms": [
+          "world cup",
+          "fifa"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 27.2,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 56.0,
+            "matched_terms": [
+              "world cup",
+              "fifa"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 6.7,
+        "warning_score": 18.8,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 0.0,
+          "volume_24h": 0.0,
+          "liquidity": 0.0,
+          "recent_move_pct": 0.0
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 50.39,
+        "raw_bear_probability": 32.94,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 8.64,
+          "attention_growth": 9.46,
+          "time_runway": 8.0,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 1.5,
+          "price_anchor": 6.0,
+          "domain_model_fit": 3.26,
+          "flow_support": 0.27,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -1.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 2.16,
+          "thin_liquidity": 6.0,
+          "wide_spread": 5.0,
+          "negative_momentum": 0.0,
+          "missing_domain_facts": 5.1,
+          "flow_warning": 0.94,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.05,
+        "friction": 0.0345,
+        "friction_breakdown": {
+          "entry_fee": 0.0033,
+          "exit_fee_at_expected_price": 0.0062,
+          "exit_half_spread": 0.025,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 4.9,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": null
+    },
+    {
+      "ticker": "KXWCHOST-2038-BCP",
+      "title": "Will Brazil, Colombia or Peru be announced as hosts for the 2038 Men's FIFA World Cup?",
+      "display_name": "Brazil, Colombia or Peru",
+      "display_title": "Who will host the 2038 World Soccer Cup? - Brazil, Colombia or Peru",
+      "category": "Sports",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.15,
+      "no_ask": 0.88,
+      "yes_bid": 0.12,
+      "no_bid": 0.85,
+      "last_price": 0.17,
+      "previous_price": 0.17,
+      "volume": 5.0,
+      "volume_24h": 0.0,
+      "liquidity": 0.0,
+      "spread": 0.03,
+      "crossed_book": false,
+      "end_date": "2034-01-01T04:59:00+00:00",
+      "days_to_resolution": 2738.689889070162,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 48.0,
+      "liquidity_score": 11.6,
+      "exitability_score": 40.0,
+      "runway_score": 100.0,
+      "attention_score": 86.0,
+      "source_score": 45.0,
+      "spread_score": 62.5,
+      "momentum_score": 50.0,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 27.2,
+      "flow_signal_score": 15.9,
+      "directionless_penalty": 12.0,
+      "rank_score": 56.2,
+      "bull_probability": 51.8,
+      "base_probability": 17.7,
+      "bear_probability": 30.6,
+      "bull_price": 0.2374,
+      "base_price": 0.165,
+      "bear_price": 0.1352,
+      "expected_future_price": 0.1933,
+      "expected_repricing_roi": 5.7,
+      "entry_limit": 0.1585,
+      "recommended_placement_dollars": 60.08,
+      "estimated_contracts": 400,
+      "estimated_position_cost": 60.0,
+      "estimated_target_value": 77.34,
+      "estimated_target_profit": 17.34,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 50.1,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 11.3,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 2738.689889070162,
+        "matched_terms": [
+          "world cup",
+          "fifa"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 27.2,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 56.0,
+            "matched_terms": [
+              "world cup",
+              "fifa"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 15.9,
+        "warning_score": 11.3,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 5.0,
+          "volume_24h": 0.0,
+          "liquidity": 0.0,
+          "recent_move_pct": 0.0
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 51.76,
+        "raw_bear_probability": 30.57,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 8.64,
+          "attention_growth": 9.46,
+          "time_runway": 8.0,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 2.5,
+          "price_anchor": 6.0,
+          "domain_model_fit": 3.26,
+          "flow_support": 0.64,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -1.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 2.16,
+          "thin_liquidity": 6.0,
+          "wide_spread": 3.0,
+          "negative_momentum": 0.0,
+          "missing_domain_facts": 5.1,
+          "flow_warning": 0.56,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.15,
+        "friction": 0.0348,
+        "friction_breakdown": {
+          "entry_fee": 0.0089,
+          "exit_fee_at_expected_price": 0.0109,
+          "exit_half_spread": 0.015,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 4.3,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": null
+    },
+    {
+      "ticker": "KXWCHOST-2038-FBN",
+      "title": "Will France, Belgium or the Netherlands be announced as hosts for the 2038 Men's FIFA World Cup?",
+      "display_name": "France, Belgium or the Netherlands",
+      "display_title": "Who will host the 2038 World Soccer Cup? - France, Belgium or the Netherlands",
+      "category": "Sports",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.13,
+      "no_ask": 0.91,
+      "yes_bid": 0.09,
+      "no_bid": 0.87,
+      "last_price": 0.15,
+      "previous_price": 0.15,
+      "volume": 58.0,
+      "volume_24h": 0.0,
+      "liquidity": 0.0,
+      "spread": 0.04,
+      "crossed_book": false,
+      "end_date": "2034-01-01T04:59:00+00:00",
+      "days_to_resolution": 2738.689889071736,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 48.0,
+      "liquidity_score": 29.4,
+      "exitability_score": 40.0,
+      "runway_score": 100.0,
+      "attention_score": 86.0,
+      "source_score": 45.0,
+      "spread_score": 50.0,
+      "momentum_score": 50.0,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 27.2,
+      "flow_signal_score": 20.8,
+      "directionless_penalty": 12.0,
+      "rank_score": 55.5,
+      "bull_probability": 51.5,
+      "base_probability": 16.8,
+      "bear_probability": 31.8,
+      "bull_price": 0.2229,
+      "base_price": 0.145,
+      "bear_price": 0.1174,
+      "expected_future_price": 0.1763,
+      "expected_repricing_roi": 6.4,
+      "entry_limit": 0.1383,
+      "recommended_placement_dollars": 58.85,
+      "estimated_contracts": 452,
+      "estimated_position_cost": 58.76,
+      "estimated_target_value": 79.71,
+      "estimated_target_profit": 20.95,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 48.6,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 12.7,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 2738.689889071736,
+        "matched_terms": [
+          "world cup",
+          "fifa"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 27.2,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 56.0,
+            "matched_terms": [
+              "world cup",
+              "fifa"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 20.8,
+        "warning_score": 15.0,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 58.0,
+          "volume_24h": 0.0,
+          "liquidity": 0.0,
+          "recent_move_pct": 0.0
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 51.45,
+        "raw_bear_probability": 31.76,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 8.64,
+          "attention_growth": 9.46,
+          "time_runway": 8.0,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 2.0,
+          "price_anchor": 6.0,
+          "domain_model_fit": 3.26,
+          "flow_support": 0.83,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -1.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 2.16,
+          "thin_liquidity": 6.0,
+          "wide_spread": 4.0,
+          "negative_momentum": 0.0,
+          "missing_domain_facts": 5.1,
+          "flow_warning": 0.75,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.13,
+        "friction": 0.0381,
+        "friction_breakdown": {
+          "entry_fee": 0.0079,
+          "exit_fee_at_expected_price": 0.0102,
+          "exit_half_spread": 0.02,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 4.6,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": null
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-US",
+      "title": "Will the USA win the 2026 Men's World Cup?",
+      "display_name": "USA",
+      "display_title": "Will the USA win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.035,
+      "no_ask": 0.967,
+      "yes_bid": 0.033,
+      "no_bid": 0.965,
+      "last_price": 0.035,
+      "previous_price": 0.043,
+      "volume": 66766006.06,
+      "volume_24h": 2644131.45,
+      "liquidity": 0.0,
+      "spread": 0.002,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.06557108613426,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 97.5,
+      "momentum_score": 31.4,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 94.9,
+      "directionless_penalty": 37.0,
+      "rank_score": 48.3,
+      "bull_probability": 42.5,
+      "base_probability": 21.5,
+      "bear_probability": 35.9,
+      "bull_price": 0.1335,
+      "base_price": 0.0426,
+      "bear_price": 0.0318,
+      "expected_future_price": 0.0774,
+      "expected_repricing_roi": 97.2,
+      "entry_limit": 0.069,
+      "recommended_placement_dollars": 71.15,
+      "estimated_contracts": 2032,
+      "estimated_position_cost": 71.12,
+      "estimated_target_value": 157.21,
+      "estimated_target_profit": 86.09,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 63.9,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 100.0,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.06557108613426,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 94.9,
+        "warning_score": 56.7,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 66766006.06,
+          "volume_24h": 2644131.45,
+          "liquidity": 0.0,
+          "recent_move_pct": -18.6
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 42.54,
+        "raw_bear_probability": 35.91,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.9,
+          "price_anchor": 6.0,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.8,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.2,
+          "negative_momentum": 1.12,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 2.83,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.035,
+        "friction": 0.0084,
+        "friction_breakdown": {
+          "entry_fee": 0.0024,
+          "exit_fee_at_expected_price": 0.005,
+          "exit_half_spread": 0.001,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 4.2,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 3.3,
+        "path_implied_pct": 1.2,
+        "consistency_gap_pct": -2.1,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 1.7,
+            "model_beta_pts": 3.6,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 0.8,
+            "model_beta_pts": 0.5,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-MX",
+      "title": "Will the Mexico win the 2026 Men's World Cup?",
+      "display_name": "Mexico",
+      "display_title": "Will the Mexico win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.051,
+      "no_ask": 0.952,
+      "yes_bid": 0.048,
+      "no_bid": 0.949,
+      "last_price": 0.051,
+      "previous_price": 0.06,
+      "volume": 66179611.51,
+      "volume_24h": 3655044.7,
+      "liquidity": 0.0,
+      "spread": 0.003,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.065571092314816,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 96.3,
+      "momentum_score": 35.0,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 92.1,
+      "directionless_penalty": 37.0,
+      "rank_score": 48.2,
+      "bull_probability": 42.4,
+      "base_probability": 22.2,
+      "bear_probability": 35.4,
+      "bull_price": 0.1476,
+      "base_price": 0.0584,
+      "bear_price": 0.0464,
+      "expected_future_price": 0.0919,
+      "expected_repricing_roi": 59.2,
+      "entry_limit": 0.0812,
+      "recommended_placement_dollars": 71.02,
+      "estimated_contracts": 1392,
+      "estimated_position_cost": 70.99,
+      "estimated_target_value": 127.98,
+      "estimated_target_profit": 56.99,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 63.8,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 100.0,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.065571092314816,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 92.1,
+        "warning_score": 49.1,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 66179611.51,
+          "volume_24h": 3655044.7,
+          "liquidity": 0.0,
+          "recent_move_pct": -15.0
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 42.38,
+        "raw_bear_probability": 35.41,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.85,
+          "price_anchor": 6.0,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.69,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.3,
+          "negative_momentum": 0.9,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 2.46,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.051,
+        "friction": 0.0107,
+        "friction_breakdown": {
+          "entry_fee": 0.0034,
+          "exit_fee_at_expected_price": 0.0058,
+          "exit_half_spread": 0.0015,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 4.1,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 4.8,
+        "path_implied_pct": 4.5,
+        "consistency_gap_pct": -0.3,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 1.1,
+            "model_beta_pts": 2.5,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 2.5,
+            "model_beta_pts": 2.3,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-BR",
+      "title": "Will the Brazil win the 2026 Men's World Cup?",
+      "display_name": "Brazil",
+      "display_title": "Will the Brazil win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.063,
+      "no_ask": 0.938,
+      "yes_bid": 0.062,
+      "no_bid": 0.937,
+      "last_price": 0.063,
+      "previous_price": 0.067,
+      "volume": 23313039.2,
+      "volume_24h": 1274858.77,
+      "liquidity": 0.0,
+      "spread": 0.001,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.06557108236111,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 98.8,
+      "momentum_score": 44.0,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 86.1,
+      "directionless_penalty": 37.0,
+      "rank_score": 47.9,
+      "bull_probability": 42.2,
+      "base_probability": 24.1,
+      "bear_probability": 33.6,
+      "bull_price": 0.1578,
+      "base_price": 0.0704,
+      "bear_price": 0.0576,
+      "expected_future_price": 0.103,
+      "expected_repricing_roi": 45.9,
+      "entry_limit": 0.0919,
+      "recommended_placement_dollars": 69.97,
+      "estimated_contracts": 1110,
+      "estimated_position_cost": 69.93,
+      "estimated_target_value": 114.35,
+      "estimated_target_profit": 44.42,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 62.5,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 91.8,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.06557108236111,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 86.1,
+        "warning_score": 28.5,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 23313039.2,
+          "volume_24h": 1274858.77,
+          "liquidity": 0.0,
+          "recent_move_pct": -5.97
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 42.24,
+        "raw_bear_probability": 33.64,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.95,
+          "price_anchor": 6.0,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.44,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.1,
+          "negative_momentum": 0.36,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 1.43,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.063,
+        "friction": 0.0111,
+        "friction_breakdown": {
+          "entry_fee": 0.0041,
+          "exit_fee_at_expected_price": 0.0065,
+          "exit_half_spread": 0.0005,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 4.0,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 6.1,
+        "path_implied_pct": 6.3,
+        "consistency_gap_pct": 0.2,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 1.4,
+            "model_beta_pts": 3.3,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 3.1,
+            "model_beta_pts": 2.8,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-PT",
+      "title": "Will the Portugal win the 2026 Men's World Cup?",
+      "display_name": "Portugal",
+      "display_title": "Will the Portugal win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.078,
+      "no_ask": 0.927,
+      "yes_bid": 0.073,
+      "no_bid": 0.922,
+      "last_price": 0.078,
+      "previous_price": 0.065,
+      "volume": 43049958.63,
+      "volume_24h": 3610577.6,
+      "liquidity": 0.0,
+      "spread": 0.005,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.065571084861112,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 93.7,
+      "momentum_score": 70.0,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 95.3,
+      "directionless_penalty": 37.0,
+      "rank_score": 47.1,
+      "bull_probability": 43.6,
+      "base_probability": 21.1,
+      "bear_probability": 35.3,
+      "bull_price": 0.1758,
+      "base_price": 0.0859,
+      "bear_price": 0.071,
+      "expected_future_price": 0.1199,
+      "expected_repricing_roi": 34.5,
+      "entry_limit": 0.1049,
+      "recommended_placement_dollars": 65.95,
+      "estimated_contracts": 845,
+      "estimated_position_cost": 65.91,
+      "estimated_target_value": 101.28,
+      "estimated_target_profit": 35.37,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 57.4,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 69.1,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.065571084861112,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 95.3,
+        "warning_score": 60.9,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 43049958.63,
+          "volume_24h": 3610577.6,
+          "liquidity": 0.0,
+          "recent_move_pct": 20.0
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 43.61,
+        "raw_bear_probability": 35.3,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.75,
+          "price_anchor": 6.0,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.81,
+          "momentum": 1.2,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.5,
+          "negative_momentum": 0.0,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 3.04,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.078,
+        "friction": 0.0149,
+        "friction_breakdown": {
+          "entry_fee": 0.005,
+          "exit_fee_at_expected_price": 0.0074,
+          "exit_half_spread": 0.0025,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 4.2,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 7.4,
+        "path_implied_pct": 4.8,
+        "consistency_gap_pct": -2.6,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 3.8,
+            "model_beta_pts": 8.4,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 1.7,
+            "model_beta_pts": 1.5,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-GB",
+      "title": "Will the England win the 2026 Men's World Cup?",
+      "display_name": "England",
+      "display_title": "Will the England win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.073,
+      "no_ask": 0.928,
+      "yes_bid": 0.072,
+      "no_bid": 0.927,
+      "last_price": 0.072,
+      "previous_price": 0.078,
+      "volume": 23021895.98,
+      "volume_24h": 480178.06,
+      "liquidity": 0.0,
+      "spread": 0.001,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.06557108361111,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 98.7,
+      "momentum_score": 42.3,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 87.3,
+      "directionless_penalty": 37.0,
+      "rank_score": 46.3,
+      "bull_probability": 42.3,
+      "base_probability": 23.8,
+      "bear_probability": 33.9,
+      "bull_price": 0.1669,
+      "base_price": 0.0803,
+      "bear_price": 0.0667,
+      "expected_future_price": 0.1123,
+      "expected_repricing_roi": 37.1,
+      "entry_limit": 0.1001,
+      "recommended_placement_dollars": 66.89,
+      "estimated_contracts": 916,
+      "estimated_position_cost": 66.87,
+      "estimated_target_value": 102.88,
+      "estimated_target_profit": 36.01,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 58.6,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 74.2,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.06557108361111,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 87.3,
+        "warning_score": 32.3,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 23021895.98,
+          "volume_24h": 480178.06,
+          "liquidity": 0.0,
+          "recent_move_pct": -7.69
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 42.29,
+        "raw_bear_probability": 33.93,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.95,
+          "price_anchor": 6.0,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.49,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.1,
+          "negative_momentum": 0.46,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 1.61,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.073,
+        "friction": 0.0122,
+        "friction_breakdown": {
+          "entry_fee": 0.0047,
+          "exit_fee_at_expected_price": 0.007,
+          "exit_half_spread": 0.0005,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 3.9,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 7.1,
+        "path_implied_pct": 7.8,
+        "consistency_gap_pct": 0.7,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 1.7,
+            "model_beta_pts": 3.8,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 3.6,
+            "model_beta_pts": 3.1,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-ES",
+      "title": "Will the Spain win the 2026 Men's World Cup?",
+      "display_name": "Spain",
+      "display_title": "Will the Spain win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.12,
+      "no_ask": 0.881,
+      "yes_bid": 0.119,
+      "no_bid": 0.88,
+      "last_price": 0.12,
+      "previous_price": 0.1,
+      "volume": 26930754.04,
+      "volume_24h": 2238603.23,
+      "liquidity": 0.0,
+      "spread": 0.001,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.065571076979165,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 98.8,
+      "momentum_score": 70.0,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 96.2,
+      "directionless_penalty": 37.0,
+      "rank_score": 44.6,
+      "bull_probability": 43.8,
+      "base_probability": 21.3,
+      "bear_probability": 34.8,
+      "bull_price": 0.2134,
+      "base_price": 0.1277,
+      "bear_price": 0.1094,
+      "expected_future_price": 0.1589,
+      "expected_repricing_roi": 18.1,
+      "entry_limit": 0.1417,
+      "recommended_placement_dollars": 60.83,
+      "estimated_contracts": 506,
+      "estimated_position_cost": 60.72,
+      "estimated_target_value": 80.41,
+      "estimated_target_profit": 19.69,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 51.0,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 36.1,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.065571076979165,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 96.2,
+        "warning_score": 59.4,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 26930754.04,
+          "volume_24h": 2238603.23,
+          "liquidity": 0.0,
+          "recent_move_pct": 20.0
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 43.84,
+        "raw_bear_probability": 34.83,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.95,
+          "price_anchor": 6.0,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.85,
+          "momentum": 1.2,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.1,
+          "negative_momentum": 0.0,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 2.97,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.12,
+        "friction": 0.0172,
+        "friction_breakdown": {
+          "entry_fee": 0.0074,
+          "exit_fee_at_expected_price": 0.0094,
+          "exit_half_spread": 0.0005,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 3.9,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 11.7,
+        "path_implied_pct": 9.2,
+        "consistency_gap_pct": -2.5,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 6.0,
+            "model_beta_pts": 10.9,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 2.7,
+            "model_beta_pts": 2.5,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-NO",
+      "title": "Will the Norway win the 2026 Men's World Cup?",
+      "display_name": "Norway",
+      "display_title": "Will the Norway win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.018,
+      "no_ask": 0.983,
+      "yes_bid": 0.017,
+      "no_bid": 0.982,
+      "last_price": 0.018,
+      "previous_price": 0.017,
+      "volume": 24106964.7,
+      "volume_24h": 1270149.03,
+      "liquidity": 0.0,
+      "spread": 0.001,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.065571093692128,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 98.8,
+      "momentum_score": 55.9,
+      "price_anchor_score": 15.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 86.0,
+      "directionless_penalty": 37.0,
+      "rank_score": 43.3,
+      "bull_probability": 37.5,
+      "base_probability": 29.2,
+      "bear_probability": 33.3,
+      "bull_price": 0.106,
+      "base_price": 0.026,
+      "bear_price": 0.0165,
+      "expected_future_price": 0.0528,
+      "expected_repricing_roi": 164.3,
+      "entry_limit": 0.0476,
+      "recommended_placement_dollars": 69.59,
+      "estimated_contracts": 3866,
+      "estimated_position_cost": 69.59,
+      "estimated_target_value": 204.18,
+      "estimated_target_profit": 134.59,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 62.0,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 100.0,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.065571093692128,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 86.0,
+        "warning_score": 28.3,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 24106964.7,
+          "volume_24h": 1270149.03,
+          "liquidity": 0.0,
+          "recent_move_pct": 5.88
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 37.49,
+        "raw_bear_probability": 33.27,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.95,
+          "price_anchor": 0.9,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.44,
+          "momentum": 0.35,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.1,
+          "negative_momentum": 0.0,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 1.42,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.018,
+        "friction": 0.0052,
+        "friction_breakdown": {
+          "entry_fee": 0.0012,
+          "exit_fee_at_expected_price": 0.0035,
+          "exit_half_spread": 0.0005,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 3.5,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 1.7,
+        "path_implied_pct": 0.6,
+        "consistency_gap_pct": -1.1,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 0.9,
+            "model_beta_pts": 0.5,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 0.4,
+            "model_beta_pts": 0.5,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-CO",
+      "title": "Will the Colombia win the 2026 Men's World Cup?",
+      "display_name": "Colombia",
+      "display_title": "Will the Colombia win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.024,
+      "no_ask": 0.977,
+      "yes_bid": 0.023,
+      "no_bid": 0.976,
+      "last_price": 0.024,
+      "previous_price": 0.024,
+      "volume": 21535320.48,
+      "volume_24h": 938874.18,
+      "liquidity": 0.0,
+      "spread": 0.001,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.065571089710648,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 98.8,
+      "momentum_score": 50.0,
+      "price_anchor_score": 15.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 81.8,
+      "directionless_penalty": 37.0,
+      "rank_score": 42.8,
+      "bull_probability": 37.0,
+      "base_probability": 30.4,
+      "bear_probability": 32.6,
+      "bull_price": 0.1099,
+      "base_price": 0.0317,
+      "bear_price": 0.022,
+      "expected_future_price": 0.0574,
+      "expected_repricing_roi": 114.7,
+      "entry_limit": 0.0515,
+      "recommended_placement_dollars": 69.44,
+      "estimated_contracts": 2893,
+      "estimated_position_cost": 69.43,
+      "estimated_target_value": 166.2,
+      "estimated_target_profit": 96.77,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 61.8,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 100.0,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.065571089710648,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 81.8,
+        "warning_score": 15.4,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 21535320.48,
+          "volume_24h": 938874.18,
+          "liquidity": 0.0,
+          "recent_move_pct": 0.0
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 36.97,
+        "raw_bear_probability": 32.63,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.95,
+          "price_anchor": 0.9,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.27,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.1,
+          "negative_momentum": 0.0,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 0.77,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.024,
+        "friction": 0.0059,
+        "friction_breakdown": {
+          "entry_fee": 0.0016,
+          "exit_fee_at_expected_price": 0.0038,
+          "exit_half_spread": 0.0005,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 3.3,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 2.3,
+        "path_implied_pct": 1.9,
+        "consistency_gap_pct": -0.4,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 1.2,
+            "model_beta_pts": 1.3,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 0.5,
+            "model_beta_pts": 0.8,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-MA",
+      "title": "Will the Morocco win the 2026 Men's World Cup?",
+      "display_name": "Morocco",
+      "display_title": "Will the Morocco win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.024,
+      "no_ask": 0.977,
+      "yes_bid": 0.023,
+      "no_bid": 0.976,
+      "last_price": 0.024,
+      "previous_price": 0.028,
+      "volume": 29072258.3,
+      "volume_24h": 856962.88,
+      "liquidity": 0.0,
+      "spread": 0.001,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.0655710909838,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 98.8,
+      "momentum_score": 35.7,
+      "price_anchor_score": 15.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 92.1,
+      "directionless_penalty": 37.0,
+      "rank_score": 42.5,
+      "bull_probability": 37.4,
+      "base_probability": 27.6,
+      "bear_probability": 35.1,
+      "bull_price": 0.1109,
+      "base_price": 0.0317,
+      "bear_price": 0.0218,
+      "expected_future_price": 0.0578,
+      "expected_repricing_roi": 116.2,
+      "entry_limit": 0.0519,
+      "recommended_placement_dollars": 69.34,
+      "estimated_contracts": 2889,
+      "estimated_position_cost": 69.34,
+      "estimated_target_value": 167.11,
+      "estimated_target_profit": 97.77,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 61.7,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 100.0,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.0655710909838,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 92.1,
+        "warning_score": 46.8,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 29072258.3,
+          "volume_24h": 856962.88,
+          "liquidity": 0.0,
+          "recent_move_pct": -14.29
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 37.38,
+        "raw_bear_probability": 35.06,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.95,
+          "price_anchor": 0.9,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.68,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.1,
+          "negative_momentum": 0.86,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 2.34,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.024,
+        "friction": 0.006,
+        "friction_breakdown": {
+          "entry_fee": 0.0016,
+          "exit_fee_at_expected_price": 0.0038,
+          "exit_half_spread": 0.0005,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 3.4,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 2.3,
+        "path_implied_pct": 0.3,
+        "consistency_gap_pct": -2.0,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 1.2,
+            "model_beta_pts": 2.9,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 0.5,
+            "model_beta_pts": 0.1,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-BE",
+      "title": "Will the Belgium win the 2026 Men's World Cup?",
+      "display_name": "Belgium",
+      "display_title": "Will the Belgium win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.011,
+      "no_ask": 0.99,
+      "yes_bid": 0.01,
+      "no_bid": 0.989,
+      "last_price": 0.011,
+      "previous_price": 0.015,
+      "volume": 19789877.1,
+      "volume_24h": 502830.96,
+      "liquidity": 0.0,
+      "spread": 0.001,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.065571081087963,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 98.8,
+      "momentum_score": 23.3,
+      "price_anchor_score": 15.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 99.8,
+      "directionless_penalty": 37.0,
+      "rank_score": 42.2,
+      "bull_probability": 37.7,
+      "base_probability": 25.3,
+      "bear_probability": 37.0,
+      "bull_price": 0.0998,
+      "base_price": 0.0188,
+      "bear_price": 0.01,
+      "expected_future_price": 0.0461,
+      "expected_repricing_roi": 273.4,
+      "entry_limit": 0.0411,
+      "recommended_placement_dollars": 69.23,
+      "estimated_contracts": 6293,
+      "estimated_position_cost": 69.22,
+      "estimated_target_value": 289.94,
+      "estimated_target_profit": 220.72,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 61.5,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 100.0,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.065571081087963,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 99.8,
+        "warning_score": 70.4,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 19789877.1,
+          "volume_24h": 502830.96,
+          "liquidity": 0.0,
+          "recent_move_pct": -26.67
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 37.69,
+        "raw_bear_probability": 36.98,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.95,
+          "price_anchor": 0.9,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.99,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.1,
+          "negative_momentum": 1.6,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 3.52,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.011,
+        "friction": 0.005,
+        "friction_breakdown": {
+          "entry_fee": 0.0008,
+          "exit_fee_at_expected_price": 0.0031,
+          "exit_half_spread": 0.0005,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 3.5,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 1.0,
+        "path_implied_pct": 0.1,
+        "consistency_gap_pct": -0.9,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 0.5,
+            "model_beta_pts": 0.4,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 0.2,
+            "model_beta_pts": 0.0,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-AR",
+      "title": "Will the Argentina win the 2026 Men's World Cup?",
+      "display_name": "Argentina",
+      "display_title": "Will the Argentina win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.19,
+      "no_ask": 0.818,
+      "yes_bid": 0.182,
+      "no_bid": 0.81,
+      "last_price": 0.182,
+      "previous_price": 0.192,
+      "volume": 35591605.82,
+      "volume_24h": 1744251.06,
+      "liquidity": 0.0,
+      "spread": 0.008,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.065571079837962,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 90.0,
+      "momentum_score": 44.8,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 84.0,
+      "directionless_penalty": 37.0,
+      "rank_score": 39.2,
+      "bull_probability": 41.8,
+      "base_probability": 23.9,
+      "bear_probability": 34.3,
+      "bull_price": 0.2718,
+      "base_price": 0.1962,
+      "bear_price": 0.1736,
+      "expected_future_price": 0.22,
+      "expected_repricing_roi": 1.7,
+      "entry_limit": 0.1932,
+      "recommended_placement_dollars": 53.47,
+      "estimated_contracts": 281,
+      "estimated_position_cost": 53.39,
+      "estimated_target_value": 61.83,
+      "estimated_target_profit": 8.44,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 41.8,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 3.4,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.065571079837962,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 84.0,
+        "warning_score": 29.5,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 35591605.82,
+          "volume_24h": 1744251.06,
+          "liquidity": 0.0,
+          "recent_move_pct": -5.21
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 41.8,
+        "raw_bear_probability": 34.34,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.6,
+          "price_anchor": 6.0,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.36,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.8,
+          "negative_momentum": 0.31,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 1.47,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.19,
+        "friction": 0.0268,
+        "friction_breakdown": {
+          "entry_fee": 0.0108,
+          "exit_fee_at_expected_price": 0.012,
+          "exit_half_spread": 0.004,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 3.0,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Catalyst setup",
+      "soccer_path": {
+        "market_share_pct": 18.2,
+        "path_implied_pct": 23.2,
+        "consistency_gap_pct": 5.0,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 9.3,
+            "model_beta_pts": 3.6,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "England",
+            "expected_rise_cents": 1.5,
+            "model_beta_pts": 2.1,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth.",
+        "rise_floor_pass_via": "elimination scenario"
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-FR",
+      "title": "Will the France win the 2026 Men's World Cup?",
+      "display_name": "France",
+      "display_title": "Will the France win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.338,
+      "no_ask": 0.67,
+      "yes_bid": 0.33,
+      "no_bid": 0.662,
+      "last_price": 0.329,
+      "previous_price": 0.351,
+      "volume": 41268248.3,
+      "volume_24h": 1483318.9,
+      "liquidity": 0.0,
+      "spread": 0.008,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.065571078217594,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 90.0,
+      "momentum_score": 43.7,
+      "price_anchor_score": 100.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 84.7,
+      "directionless_penalty": 37.0,
+      "rank_score": 38.0,
+      "bull_probability": 41.8,
+      "base_probability": 23.6,
+      "bear_probability": 34.5,
+      "bull_price": 0.4049,
+      "base_price": 0.3431,
+      "bear_price": 0.3086,
+      "expected_future_price": 0.357,
+      "expected_repricing_roi": -4.9,
+      "entry_limit": 0.3213,
+      "recommended_placement_dollars": 52.57,
+      "estimated_contracts": 155,
+      "estimated_position_cost": 52.39,
+      "estimated_target_value": 55.34,
+      "estimated_target_profit": 2.95,
+      "placement_sizing_basis": {
+        "method": "Research-only dollar placement size, not an order. Size is clamped to the user's placement range.",
+        "formula": "min_dollars + (max_dollars - min_dollars) * sizing_score",
+        "sizing_score_formula": "42% rank + 18% capped ROI + 16% liquidity + 12% spread + 12% low-directionless-risk",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 40.7,
+        "raw_roi_still_reported_uncapped": true,
+        "roi_influence": 0.0,
+        "contract_math": "estimated_contracts = floor(recommended_placement_dollars / yes_ask)"
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.065571078217594,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 84.7,
+        "warning_score": 31.8,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 41268248.3,
+          "volume_24h": 1483318.9,
+          "liquidity": 0.0,
+          "recent_move_pct": -6.27
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 41.83,
+        "raw_bear_probability": 34.52,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.6,
+          "price_anchor": 6.0,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.39,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.8,
+          "negative_momentum": 0.38,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 1.59,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "Expected future resale price = bull_probability * bull_price + base_probability * base_price + bear_probability * bear_price.",
+        "entry_price": 0.338,
+        "friction": 0.0357,
+        "friction_breakdown": {
+          "entry_fee": 0.0157,
+          "exit_fee_at_expected_price": 0.0161,
+          "exit_half_spread": 0.004,
+          "fee_rate": 0.07
+        },
+        "bull_price_formula": "entry + additive bull_delta scaled by remaining upside room",
+        "base_price_formula": "entry + small additive base_delta scaled by remaining upside room",
+        "bear_price_formula": "entry - downside_delta scaled by entry price",
+        "expected_roi_formula": "(expected_future_price - entry_price - friction) / entry_price",
+        "friction_formula": "taker fee at entry + taker fee at expected exit + exit half-spread",
+        "roi_policy": "Expected ROI is raw and uncapped for study, but ranking uses a capped ROI signal so tiny-price contracts cannot dominate only because the percentage looks huge.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "rise_floor_cents": 9,
+        "expected_rise_cents": 1.9,
+        "rise_floor_pass": false
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 32.6,
+        "path_implied_pct": 39.9,
+        "consistency_gap_pct": 7.2,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 7.6,
+            "model_beta_pts": 7.4,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Spain",
+            "expected_rise_cents": 4.5,
+            "model_beta_pts": 5.7,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-CH",
+      "title": "Will the Switzerland win the 2026 Men's World Cup?",
+      "display_name": "Switzerland",
+      "display_title": "Will the Switzerland win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.008,
+      "no_ask": 0.993,
+      "yes_bid": 0.007,
+      "no_bid": 0.992,
+      "last_price": 0.008,
+      "previous_price": 0.006,
+      "volume": 18171924.56,
+      "volume_24h": 2779834.77,
+      "liquidity": 0.0,
+      "spread": 0.001,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.0655710884375,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 98.8,
+      "momentum_score": 83.3,
+      "price_anchor_score": 15.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 99.8,
+      "directionless_penalty": 37.0,
+      "rank_score": 36.2,
+      "bull_probability": 39.7,
+      "base_probability": 24.9,
+      "bear_probability": 35.4,
+      "bull_price": null,
+      "base_price": null,
+      "bear_price": null,
+      "expected_future_price": null,
+      "expected_repricing_roi": null,
+      "entry_limit": null,
+      "recommended_placement_dollars": 52.82,
+      "estimated_contracts": null,
+      "estimated_position_cost": null,
+      "estimated_target_value": null,
+      "estimated_target_profit": null,
+      "placement_sizing_basis": {
+        "method": "Research-only watch budget because this placement has no executable ask yet.",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 41.0,
+        "roi_influence": 0.0
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.0655710884375,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 99.8,
+        "warning_score": 70.4,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 18171924.56,
+          "volume_24h": 2779834.77,
+          "liquidity": 0.0,
+          "recent_move_pct": 33.33
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 39.69,
+        "raw_bear_probability": 35.38,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.95,
+          "price_anchor": 0.9,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.99,
+          "momentum": 2.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.1,
+          "negative_momentum": 0.0,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 3.52,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "No tradable ask yet, so expected future price is not calculated.",
+        "entry_price": null
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 0.7,
+        "path_implied_pct": 0.2,
+        "consistency_gap_pct": -0.5,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 0.4,
+            "model_beta_pts": 0.2,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 0.2,
+            "model_beta_pts": 0.1,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-EGY",
+      "title": "Will Egypt win the 2026 Men's World Cup?",
+      "display_name": "Egypt",
+      "display_title": "Will Egypt win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.002,
+      "no_ask": 0.999,
+      "yes_bid": 0.001,
+      "no_bid": 0.998,
+      "last_price": 0.002,
+      "previous_price": 0.002,
+      "volume": 19380299.13,
+      "volume_24h": 1265235.39,
+      "liquidity": 0.0,
+      "spread": 0.001,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.065571098391203,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 98.8,
+      "momentum_score": 50.0,
+      "price_anchor_score": 15.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 81.8,
+      "directionless_penalty": 37.0,
+      "rank_score": 33.8,
+      "bull_probability": 37.0,
+      "base_probability": 30.4,
+      "bear_probability": 32.6,
+      "bull_price": null,
+      "base_price": null,
+      "bear_price": null,
+      "expected_future_price": null,
+      "expected_repricing_roi": null,
+      "entry_limit": null,
+      "recommended_placement_dollars": 52.01,
+      "estimated_contracts": null,
+      "estimated_position_cost": null,
+      "estimated_target_value": null,
+      "estimated_target_profit": null,
+      "placement_sizing_basis": {
+        "method": "Research-only watch budget because this placement has no executable ask yet.",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 40.0,
+        "roi_influence": 0.0
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.065571098391203,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 81.8,
+        "warning_score": 15.4,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 19380299.13,
+          "volume_24h": 1265235.39,
+          "liquidity": 0.0,
+          "recent_move_pct": 0.0
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 36.97,
+        "raw_bear_probability": 32.63,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.95,
+          "price_anchor": 0.9,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.27,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.1,
+          "negative_momentum": 0.0,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 0.77,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "No tradable ask yet, so expected future price is not calculated.",
+        "entry_price": null
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 0.1,
+        "path_implied_pct": 0.0,
+        "consistency_gap_pct": -0.1,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 0.1,
+            "model_beta_pts": 0.0,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 0.0,
+            "model_beta_pts": 0.0,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-GH",
+      "title": "Will the Ghana win the 2026 Men's World Cup?",
+      "display_name": "Ghana",
+      "display_title": "Will the Ghana win the 2026 Men's World Cup?",
+      "category": "unknown",
+      "category_path": [
+        "sports",
+        "soccer",
+        "world cup"
+      ],
+      "model_key": "sports_soccer_worldcup",
+      "model_name": "Sports / Soccer / World Cup",
+      "status": "active",
+      "yes_ask": 0.001,
+      "no_ask": 1.0,
+      "yes_bid": 0.0,
+      "no_bid": 0.999,
+      "last_price": 0.001,
+      "previous_price": 0.001,
+      "volume": 17381472.89,
+      "volume_24h": 1477365.59,
+      "liquidity": 0.0,
+      "spread": 0.001,
+      "crossed_book": false,
+      "end_date": "2026-07-19T14:00:00+00:00",
+      "days_to_resolution": 16.065571096145835,
+      "settlement_source": "Kalshi market metadata",
+      "catalyst_score": 44.0,
+      "liquidity_score": 100.0,
+      "exitability_score": 40.0,
+      "runway_score": 4.4,
+      "attention_score": 68.0,
+      "source_score": 45.0,
+      "spread_score": 98.8,
+      "momentum_score": 50.0,
+      "price_anchor_score": 15.0,
+      "domain_signal_score": 23.6,
+      "flow_signal_score": 81.8,
+      "directionless_penalty": 37.0,
+      "rank_score": 33.8,
+      "bull_probability": 37.0,
+      "base_probability": 30.4,
+      "bear_probability": 32.6,
+      "bull_price": null,
+      "base_price": null,
+      "bear_price": null,
+      "expected_future_price": null,
+      "expected_repricing_roi": null,
+      "entry_limit": null,
+      "recommended_placement_dollars": 52.01,
+      "estimated_contracts": null,
+      "estimated_position_cost": null,
+      "estimated_target_value": null,
+      "estimated_target_profit": null,
+      "placement_sizing_basis": {
+        "method": "Research-only watch budget because this placement has no executable ask yet.",
+        "min_placement_dollars": 20.0,
+        "max_placement_dollars": 100.0,
+        "sizing_score": 40.0,
+        "roi_influence": 0.0
+      },
+      "next_catalyst": {
+        "label": "Draw/bracket path, qualification, seeding, roster, or injury update",
+        "date_status": "needs source enrichment",
+        "days_proxy": 16.065571096145835,
+        "matched_terms": [
+          "world cup"
+        ],
+        "why_it_matters": "World Cup futures can reprice when the path to later rounds becomes clearer before the tournament is decided."
+      },
+      "domain_signals": {
+        "score": 23.6,
+        "signals": [
+          {
+            "name": "draw bracket path",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "qualification seeding",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "roster injury",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "team quality context",
+            "score": 20.0,
+            "matched_terms": [],
+            "note": "Needs external source enrichment; using a low baseline."
+          },
+          {
+            "name": "attention timing",
+            "score": 38.0,
+            "matched_terms": [
+              "world cup"
+            ],
+            "note": "Matched in market metadata."
+          }
+        ],
+        "note": "Domain score is model-specific; the same surface setup can mean different resale math in different categories."
+      },
+      "flow_signal": {
+        "score": 81.8,
+        "warning_score": 15.4,
+        "public_data_level": "quote, spread, volume, and liquidity only",
+        "holder_identity_available": false,
+        "holding_duration_available": false,
+        "what_it_can_tell_us": "It can flag unusual price/volume behavior that deserves a market-knows check.",
+        "what_it_cannot_tell_us": "It cannot prove who bought or sold, whether they were insiders, or how long a public trader held.",
+        "inputs": {
+          "volume": 17381472.89,
+          "volume_24h": 1477365.59,
+          "liquidity": 0.0,
+          "recent_move_pct": 0.0
+        }
+      },
+      "public_figure_profile": null,
+      "scenario_weight_basis": {
+        "method": "Heuristic scenario weighting for price appreciation, not calibrated final-outcome probability.",
+        "raw_bull_probability": 36.97,
+        "raw_bear_probability": 32.63,
+        "normalization": "Bull and bear are clamped to conservative ranges, base is the remaining probability, then all three are normalized to 100%.",
+        "model_profile": "Sports / Soccer / World Cup",
+        "category_path": [
+          "sports",
+          "soccer",
+          "world cup"
+        ],
+        "bull_components_pct": {
+          "base": 10.0,
+          "next_catalyst": 7.92,
+          "attention_growth": 7.48,
+          "time_runway": 0.35,
+          "source_backing": 2.7,
+          "liquidity_exit": 2.0,
+          "spread_quality": 3.95,
+          "price_anchor": 0.9,
+          "domain_model_fit": 2.83,
+          "flow_support": 3.27,
+          "momentum": 0.0,
+          "pre_open_structure": 0.0,
+          "directionless_or_short_runway_penalty": -4.44
+        },
+        "bear_components_pct": {
+          "base": 16.0,
+          "directionless_or_short_runway_penalty": 6.66,
+          "thin_liquidity": 6.0,
+          "wide_spread": 0.1,
+          "negative_momentum": 0.0,
+          "missing_domain_facts": 5.35,
+          "flow_warning": 0.77,
+          "source_backing_offset": -2.25
+        }
+      },
+      "price_scenario_basis": {
+        "method": "No tradable ask yet, so expected future price is not calculated.",
+        "entry_price": null
+      },
+      "probe_status": "Watch only",
+      "soccer_path": {
+        "market_share_pct": 0.1,
+        "path_implied_pct": 0.0,
+        "consistency_gap_pct": -0.1,
+        "elimination_scenarios": [
+          {
+            "rival_eliminated": "France",
+            "expected_rise_cents": 0.0,
+            "model_beta_pts": 0.0,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          },
+          {
+            "rival_eliminated": "Argentina",
+            "expected_rise_cents": 0.0,
+            "model_beta_pts": 0.0,
+            "basis": "mechanical share renormalization if the rival exits before meeting this team; model beta adds same-half path relief"
+          }
+        ],
+        "bracket_verified_as_of": "2026-07-03",
+        "method": "Bradley-Terry path model using de-vigged winner shares as strengths; consistency_gap flags internal cross-section tension, not external truth.",
+        "caveat": "Bradley-Terry on de-vigged winner shares is partly circular for favorites; treat gaps as internal-tension flags, not external truth."
+      }
+    }
+  ],
+  "claude_results": [
+    {
+      "ticker": "KXMENWORLDCUP-26-AR",
+      "decision": "Catalyst setup",
+      "side": "YES",
+      "scenario_weights": {
+        "bull": 41.8,
+        "base": 23.9,
+        "bear": 34.3
+      },
+      "scenario_weight_basis": "Weights come straight from the model's Sports/Soccer/World Cup profile: strong price-anchor (100) and deep flow support (volume ~$35.6M) pushed bull up, while thin displayed liquidity, missing enriched domain facts, and the short 16-day runway pushed bear up. Base is the normalized remainder.",
+      "expected_future_price_cents": 22,
+      "entry_limit_cents": 19,
+      "next_catalyst": "A rival favorite's elimination in the knockout rounds \u2014 specifically France exiting on Argentina's side of the bracket, which the path model scores as a ~9.3 cent renormalization rise.",
+      "catalyst_date_estimate": "Knockout window July 2026 (round of 32 begins ~July 2026; final 2026-07-19)",
+      "fair_probability_range": {
+        "low_pct": 14.0,
+        "high_pct": 20.0,
+        "basis": "Anchored on market share (18.2%) and path-implied share (23.2%) from the soccer_path block, discounted for the Bradley-Terry circularity caveat and the 48-team field. Beckham publicly named Argentina among his favorites, but that is opinion, not a probability anchor."
+      },
+      "why_i_believe_this": "I believe Argentina can reprice toward the mid-20-cent area if France is knocked out before the two would meet, because the path model shows a 9.3-cent mechanical rise from share renormalization plus same-half relief. Argentina is a genuine contender \u2014 defending champion pedigree, and Beckham publicly grouped them with the top favorites in mid-June 2026. The internal tension is real: path-implied share (23.2%) sits above market share (18.2%), a positive consistency gap suggesting the bracket treats them kindly. The catalyst is event-driven and dateable to the July knockout rounds, not a vague futures drift. What breaks the thesis: Argentina losing early themselves, France surviving deep on their side, or an injury to a key player. I cannot see who is holding or how long \u2014 only quote, spread, and volume are public \u2014 so I am not implying insider flow, just a clear conditional path.",
+      "market_knows_check": "Volume is very heavy (~$35.6M lifetime, ~$1.7M/24h) with a tight 0.8-cent spread, and the price ticked down from 19.2 to 18.2. That mild fade is consistent with normal favorite repricing, not an obvious information shock. A sudden sharp move without a match result would be the flag to investigate.",
+      "no_direction_check": "This has clear directional structure: a named rival (France), a quantified expected rise, and a datable knockout window. It is the only candidate that clears the 9-cent rise floor via an elimination scenario.",
+      "sources": [
+        {
+          "label": "Beckham names Argentina among World Cup favorites",
+          "url_or_reference": "https://www.telecomasia.net/news/football/beckham-names-england-france-spain-brazil-and-argentina-as-world-cup-favorites/",
+          "published_date": "Sun, 14 Jun 2026 10:36:38 GMT",
+          "why_it_matters": "Public confirmation that Argentina is treated as a live contender, supporting the bull path but as opinion not probability."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "France eliminated before meeting Argentina",
+          "action": "Expect the modeled ~9c renormalization; consider taking profit into the spike rather than holding to final."
+        },
+        {
+          "trigger": "Argentina loses or draws poorly in group/round of 32",
+          "action": "Exit; the entire path thesis collapses on their own elimination."
+        },
+        {
+          "trigger": "Sharp price move with no match trigger",
+          "action": "Pause and run a market-knows check before adding."
+        }
+      ]
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-FR",
+      "decision": "Watch only",
+      "side": "Watch",
+      "scenario_weights": {
+        "bull": 41.8,
+        "base": 23.6,
+        "bear": 34.5
+      },
+      "scenario_weight_basis": "Model weights: heavy flow support and a full price-anchor score lifted bull, but the negative expected repricing ROI (-4.9%), a price already at 33.8 cents with limited upside room, and short runway held it back. Base is the normalized remainder.",
+      "expected_future_price_cents": 36,
+      "entry_limit_cents": null,
+      "next_catalyst": "Argentina or Spain being eliminated on France's side, which the path model scores as 7.6c and 4.5c rises respectively \u2014 below the 9c suggestion floor.",
+      "catalyst_date_estimate": "Knockout window July 2026 (final 2026-07-19)",
+      "fair_probability_range": {
+        "low_pct": 30.0,
+        "high_pct": 40.0,
+        "basis": "Anchored on market share (32.6%) and path-implied share (39.9%) from soccer_path, with the tournament-favorite framing echoed by CBS expert picks and Beckham. Discounted for Bradley-Terry circularity, which is worst exactly for the top favorite."
+      },
+      "why_i_believe_this": "I keep France on watch, not as a suggestion, because it is the clear market favorite \u2014 CBS's June 11 expert panel repeatedly slotted France into the last-8 and Beckham called them 'incredibly strong.' The path model even shows a positive 7.2-point consistency gap, meaning the bracket flatters them. But the resale math does not work at 33.8 cents: expected future price is roughly flat to slightly negative after friction, and the biggest single elimination rise (Argentina out, 7.6c) still misses the 9c floor. The favorite is already priced. What would change my mind: a very cheap dip after a scare result, or a rival favorite exiting early enough to trigger the renormalization while France is still cheap. What breaks it: France themselves stumbling, which at this price is a large downside.",
+      "market_knows_check": "Volume is large (~$41M) with a tight spread; price faded from 35.1 to 32.9. That is ordinary favorite drift. No anomaly suggesting hidden information right now.",
+      "no_direction_check": "Direction exists (named rivals, quantified paths) but the expected move is too small and the entry too rich to be actionable \u2014 Watch only.",
+      "sources": [
+        {
+          "label": "CBS expert picks name France a top contender",
+          "url_or_reference": "https://www.cbssports.com/soccer/news/2026-world-cup-predictions-expert-picks-brazil-france-spain/",
+          "published_date": "Thu, 11 Jun 2026 02:03:40 GMT",
+          "why_it_matters": "Multiple experts place France in the final 8, supporting the favorite framing but confirming the price already reflects it."
+        },
+        {
+          "label": "Beckham names France among favorites",
+          "url_or_reference": "https://www.telecomasia.net/news/football/beckham-names-england-france-spain-brazil-and-argentina-as-world-cup-favorites/",
+          "published_date": "Sun, 14 Jun 2026 10:36:38 GMT",
+          "why_it_matters": "Reinforces France as the crowd favorite, i.e. limited repricing headroom."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "France dips sharply after a scare result",
+          "action": "Reassess as a cheaper entry with better upside room."
+        },
+        {
+          "trigger": "Argentina eliminated early",
+          "action": "Watch for the ~7.6c rise but note it is still below suggestion threshold."
+        }
+      ]
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-ES",
+      "decision": "Watch only",
+      "side": "Watch",
+      "scenario_weights": {
+        "bull": 43.8,
+        "base": 21.3,
+        "bear": 34.8
+      },
+      "scenario_weight_basis": "Model weights: top flow support, strong momentum (price rose from 10 to 12), and full price-anchor lifted bull; thin displayed liquidity, missing domain enrichment, and short runway lifted bear. Base is the normalized remainder.",
+      "expected_future_price_cents": 16,
+      "entry_limit_cents": 14,
+      "next_catalyst": "France eliminated on Spain's side \u2014 the path model's largest single rise for Spain at 6.0c, still below the 9c suggestion floor.",
+      "catalyst_date_estimate": "Knockout window July 2026 (final 2026-07-19)",
+      "fair_probability_range": {
+        "low_pct": 9.0,
+        "high_pct": 13.0,
+        "basis": "Anchored on market share (11.7%) versus path-implied share (9.2%), a negative gap that suggests the market may be slightly high. CBS expert picks list Spain in the last 8 across scenarios."
+      },
+      "why_i_believe_this": "Spain stays on watch because it is a legitimate second-tier favorite \u2014 CBS's June 11 panel put Spain into the final 8 in every listed bracket, and Beckham named them too. Momentum is positive (10 to 12 cents). The strongest catalyst is France exiting on Spain's side, worth a modeled 6 cents. But two things hold me back: the consistency gap is negative (market share 11.7% above path-implied 9.2%), hinting Spain is already a touch rich, and the best expected rise still misses the 9-cent floor. What would move attention: Spain winning its group convincingly or a favorite collapsing on their half. What breaks it: an early Spain exit, or the negative path gap resolving downward.",
+      "market_knows_check": "Very high volume (~$27M), razor-tight 0.1c spread, and a +20% recent move. The move up is visible and public; nothing indicates hidden information beyond ordinary form/odds shifts.",
+      "no_direction_check": "Has direction via named rival paths but the magnitude is sub-threshold \u2014 Watch only.",
+      "sources": [
+        {
+          "label": "CBS expert picks include Spain in last 8",
+          "url_or_reference": "https://www.cbssports.com/soccer/news/2026-world-cup-predictions-expert-picks-brazil-france-spain/",
+          "published_date": "Thu, 11 Jun 2026 02:03:40 GMT",
+          "why_it_matters": "Confirms Spain as a consensus deep-run pick, supporting but not exceeding the current price."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "France eliminated on Spain's half",
+          "action": "Watch for the modeled ~6c rise; below suggestion floor so treat as opportunistic only."
+        },
+        {
+          "trigger": "Spain loses early",
+          "action": "Exit watch; path collapses."
+        }
+      ]
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-BR",
+      "decision": "Watch only",
+      "side": "Watch",
+      "scenario_weights": {
+        "bull": 42.2,
+        "base": 24.1,
+        "bear": 33.6
+      },
+      "scenario_weight_basis": "Model weights: deep flow support and full price-anchor lifted bull; thin displayed liquidity, missing enriched domain facts, and the short runway lifted bear. The near-zero consistency gap (0.2) keeps base relatively higher.",
+      "expected_future_price_cents": 10,
+      "entry_limit_cents": 9,
+      "next_catalyst": "France eliminated on Brazil's side \u2014 modeled 3.1c rise, below the 9c suggestion floor.",
+      "catalyst_date_estimate": "Knockout window July 2026 (final 2026-07-19)",
+      "fair_probability_range": {
+        "low_pct": 6.0,
+        "high_pct": 9.0,
+        "basis": "Anchored on market share (6.1%) and path-implied share (6.3%) \u2014 a near-perfect match, so little internal tension. CNN and Sporting News confirm Brazil are a five-time champion but in a form dip."
+      },
+      "why_i_believe_this": "Brazil is on watch because the story is well-known and the price looks fair, not mispriced. CNN (June 13) framed Brazil as chasing a record sixth title after a 24-year drought with pressure on Vin\u00edcius J\u00fanior and Neymar, and Sporting News confirms the prolonged form dip. The soccer_path consistency gap is essentially zero (6.1% vs 6.3%), meaning the market and the path model agree \u2014 there is no obvious repricing edge. The largest elimination rise is only ~3.1c. What would raise attention: a dominant group-stage run reviving belief, or a favorite exiting their half. What breaks it: continued underperformance consistent with the reported dip.",
+      "market_knows_check": "Volume ~$23M, extremely tight 0.1c spread, modest -6% fade. Consistent with a favorite gently drifting; no hidden-information signal.",
+      "no_direction_check": "Direction exists but expected move is small and the price already agrees with the path model \u2014 Watch only.",
+      "sources": [
+        {
+          "label": "CNN: Brazil's 24-year drought and pressure",
+          "url_or_reference": "https://www.cnn.com/2026/06/13/sport/brazil-world-cup-hopes",
+          "published_date": "Sat, 13 Jun 2026 10:30:08 GMT",
+          "why_it_matters": "Establishes Brazil as a contender under pressure, framing why the price is fair rather than cheap."
+        },
+        {
+          "label": "Sporting News: Brazil schedule and form dip",
+          "url_or_reference": "https://www.sportingnews.com/in/football/news/brazil-world-cup-2026-schedule-results-group-fifa/59e3c5f4d8e3467240d92aa1",
+          "published_date": "Sat, 13 Jun 2026 08:00:02 GMT",
+          "why_it_matters": "Confirms the prolonged form dip that tempers the bull case."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "Brazil wins group convincingly",
+          "action": "Reassess for a form-driven repricing."
+        },
+        {
+          "trigger": "France eliminated on Brazil's half",
+          "action": "Watch for modeled ~3c rise; below suggestion floor."
+        }
+      ]
+    },
+    {
+      "ticker": "KXMENWORLDCUP-26-PT",
+      "decision": "Watch only",
+      "side": "Watch",
+      "scenario_weights": {
+        "bull": 43.6,
+        "base": 21.1,
+        "bear": 35.3
+      },
+      "scenario_weight_basis": "Model weights: top flow support, positive momentum (price up 6.5 to 7.8), and full price-anchor lifted bull; thin displayed liquidity, missing domain enrichment, and short runway lifted bear. A negative consistency gap (-2.6) trims base upside.",
+      "expected_future_price_cents": 12,
+      "entry_limit_cents": 10,
+      "next_catalyst": "France eliminated on Portugal's side \u2014 modeled 3.8c rise with a notably high model beta (8.4 pts), but still below the 9c suggestion floor.",
+      "catalyst_date_estimate": "Round of 32 confirmed underway (Portugal vs Croatia 2026-07-02 per FOX); further knockouts through 2026-07-19",
+      "fair_probability_range": {
+        "low_pct": 5.0,
+        "high_pct": 8.0,
+        "basis": "Anchored on market share (7.4%) versus a lower path-implied share (4.8%), a -2.6 gap suggesting the market may be pricing Portugal above its bracket-implied strength. FOX confirms Portugal advanced to the round of 32 but with only six goals, tied for its fewest ever in a group stage."
+      },
+      "why_i_believe_this": "Portugal is on watch as a dark-horse story with real tension. Telecom Asia (June 4) explicitly framed Portugal as a hidden favorite capable of a surprise, and FOX (July 1) confirmed they reached a third straight knockout stage \u2014 a plausible deep-run narrative. Momentum is positive. But the soccer_path flags a negative consistency gap (market share 7.4% above path-implied 4.8%), and FOX noted their attack was weak (six goals, fewest ever in a group). The biggest elimination rise (France out, 3.8c) has an unusually high model beta but still misses the 9c floor. What raises attention: a strong knockout win. What breaks it: the weak scoring form catching up, or an early exit \u2014 and the negative path gap says the market may already be too generous.",
+      "market_knows_check": "Very high volume (~$43M), tight 0.5c spread, and a +20% recent move up \u2014 the largest positive momentum among the favorites. Public and explained by advancing to the knockouts; not an obvious hidden-information signal, but the size of the move plus the negative path gap is worth monitoring.",
+      "no_direction_check": "Direction exists with dated fixtures, but expected move is sub-threshold and the path model suggests the price is already stretched \u2014 Watch only.",
+      "sources": [
+        {
+          "label": "Telecom Asia: Portugal as hidden favorite",
+          "url_or_reference": "https://www.telecomasia.net/blog/world-cup-2026-dark-horses-betting-tips/",
+          "published_date": "Thu, 04 Jun 2026 18:13:30 GMT",
+          "why_it_matters": "Establishes the dark-horse narrative that could drive attention-based repricing."
+        },
+        {
+          "label": "FOX: Portugal vs Croatia round of 32, weak scoring",
+          "url_or_reference": "https://www.foxsports.com/stories/soccer/portugal-vs-croatia-prediction-odds-picks-world-cup-match",
+          "published_date": "Wed, 01 Jul 2026 20:08:23 GMT",
+          "why_it_matters": "Confirms knockout progression (a dated catalyst) but flags the weak attack that caps the bull case."
+        }
+      ],
+      "exit_monitor": [
+        {
+          "trigger": "Portugal wins a knockout convincingly",
+          "action": "Reassess dark-horse repricing potential."
+        },
+        {
+          "trigger": "Price extends further above path-implied share",
+          "action": "Treat as overbought; do not chase."
+        },
+        {
+          "trigger": "Portugal eliminated",
+          "action": "Exit watch."
+        }
+      ]
+    }
+  ],
+  "claude_raw_text": "Here is my research-only analysis of the top 5 candidates. Note up front: the model itself flags every candidate at \"Watch only\" except Argentina, and by the 9-cent-rise policy, only Argentina has a documented path to a suggestion-grade move.\n\n```json\n[\n  {\n    \"ticker\": \"KXMENWORLDCUP-26-AR\",\n    \"decision\": \"Catalyst setup\",\n    \"side\": \"YES\",\n    \"scenario_weights\": {\"bull\": 41.8, \"base\": 23.9, \"bear\": 34.3},\n    \"scenario_weight_basis\": \"Weights come straight from the model's Sports/Soccer/World Cup profile: strong price-anchor (100) and deep flow support (volume ~$35.6M) pushed bull up, while thin displayed liquidity, missing enriched domain facts, and the short 16-day runway pushed bear up. Base is the normalized remainder.\",\n    \"expected_future_price_cents\": 22,\n    \"entry_limit_cents\": 19,\n    \"next_catalyst\": \"A rival favorite's elimination in the knockout rounds \u2014 specifically France exiting on Argentina's side of the bracket, which the path model scores as a ~9.3 cent renormalization rise.\",\n    \"catalyst_date_estimate\": \"Knockout window July 2026 (round of 32 begins ~July 2026; final 2026-07-19)\",\n    \"fair_probability_range\": {\"low_pct\": 14.0, \"high_pct\": 20.0, \"basis\": \"Anchored on market share (18.2%) and path-implied share (23.2%) from the soccer_path block, discounted for the Bradley-Terry circularity caveat and the 48-team field. Beckham publicly named Argentina among his favorites, but that is opinion, not a probability anchor.\"},\n    \"why_i_believe_this\": \"I believe Argentina can reprice toward the mid-20-cent area if France is knocked out before the two would meet, because the path model shows a 9.3-cent mechanical rise from share renormalization plus same-half relief. Argentina is a genuine contender \u2014 defending champion pedigree, and Beckham publicly grouped them with the top favorites in mid-June 2026. The internal tension is real: path-implied share (23.2%) sits above market share (18.2%), a positive consistency gap suggesting the bracket treats them kindly. The catalyst is event-driven and dateable to the July knockout rounds, not a vague futures drift. What breaks the thesis: Argentina losing early themselves, France surviving deep on their side, or an injury to a key player. I cannot see who is holding or how long \u2014 only quote, spread, and volume are public \u2014 so I am not implying insider flow, just a clear conditional path.\",\n    \"market_knows_check\": \"Volume is very heavy (~$35.6M lifetime, ~$1.7M/24h) with a tight 0.8-cent spread, and the price ticked down from 19.2 to 18.2. That mild fade is consistent with normal favorite repricing, not an obvious information shock. A sudden sharp move without a match result would be the flag to investigate.\",\n    \"no_direction_check\": \"This has clear directional structure: a named rival (France), a quantified expected rise, and a datable knockout window. It is the only candidate that clears the 9-cent rise floor via an elimination scenario.\",\n    \"sources\": [\n      {\"label\": \"Beckham names Argentina among World Cup favorites\", \"url_or_reference\": \"https://www.telecomasia.net/news/football/beckham-names-england-france-spain-brazil-and-argentina-as-world-cup-favorites/\", \"published_date\": \"Sun, 14 Jun 2026 10:36:38 GMT\", \"why_it_matters\": \"Public confirmation that Argentina is treated as a live contender, supporting the bull path but as opinion not probability.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"France eliminated before meeting Argentina\", \"action\": \"Expect the modeled ~9c renormalization; consider taking profit into the spike rather than holding to final.\"},\n      {\"trigger\": \"Argentina loses or draws poorly in group/round of 32\", \"action\": \"Exit; the entire path thesis collapses on their own elimination.\"},\n      {\"trigger\": \"Sharp price move with no match trigger\", \"action\": \"Pause and run a market-knows check before adding.\"}\n    ]\n  },\n  {\n    \"ticker\": \"KXMENWORLDCUP-26-FR\",\n    \"decision\": \"Watch only\",\n    \"side\": \"Watch\",\n    \"scenario_weights\": {\"bull\": 41.8, \"base\": 23.6, \"bear\": 34.5},\n    \"scenario_weight_basis\": \"Model weights: heavy flow support and a full price-anchor score lifted bull, but the negative expected repricing ROI (-4.9%), a price already at 33.8 cents with limited upside room, and short runway held it back. Base is the normalized remainder.\",\n    \"expected_future_price_cents\": 36,\n    \"entry_limit_cents\": null,\n    \"next_catalyst\": \"Argentina or Spain being eliminated on France's side, which the path model scores as 7.6c and 4.5c rises respectively \u2014 below the 9c suggestion floor.\",\n    \"catalyst_date_estimate\": \"Knockout window July 2026 (final 2026-07-19)\",\n    \"fair_probability_range\": {\"low_pct\": 30.0, \"high_pct\": 40.0, \"basis\": \"Anchored on market share (32.6%) and path-implied share (39.9%) from soccer_path, with the tournament-favorite framing echoed by CBS expert picks and Beckham. Discounted for Bradley-Terry circularity, which is worst exactly for the top favorite.\"},\n    \"why_i_believe_this\": \"I keep France on watch, not as a suggestion, because it is the clear market favorite \u2014 CBS's June 11 expert panel repeatedly slotted France into the last-8 and Beckham called them 'incredibly strong.' The path model even shows a positive 7.2-point consistency gap, meaning the bracket flatters them. But the resale math does not work at 33.8 cents: expected future price is roughly flat to slightly negative after friction, and the biggest single elimination rise (Argentina out, 7.6c) still misses the 9c floor. The favorite is already priced. What would change my mind: a very cheap dip after a scare result, or a rival favorite exiting early enough to trigger the renormalization while France is still cheap. What breaks it: France themselves stumbling, which at this price is a large downside.\",\n    \"market_knows_check\": \"Volume is large (~$41M) with a tight spread; price faded from 35.1 to 32.9. That is ordinary favorite drift. No anomaly suggesting hidden information right now.\",\n    \"no_direction_check\": \"Direction exists (named rivals, quantified paths) but the expected move is too small and the entry too rich to be actionable \u2014 Watch only.\",\n    \"sources\": [\n      {\"label\": \"CBS expert picks name France a top contender\", \"url_or_reference\": \"https://www.cbssports.com/soccer/news/2026-world-cup-predictions-expert-picks-brazil-france-spain/\", \"published_date\": \"Thu, 11 Jun 2026 02:03:40 GMT\", \"why_it_matters\": \"Multiple experts place France in the final 8, supporting the favorite framing but confirming the price already reflects it.\"},\n      {\"label\": \"Beckham names France among favorites\", \"url_or_reference\": \"https://www.telecomasia.net/news/football/beckham-names-england-france-spain-brazil-and-argentina-as-world-cup-favorites/\", \"published_date\": \"Sun, 14 Jun 2026 10:36:38 GMT\", \"why_it_matters\": \"Reinforces France as the crowd favorite, i.e. limited repricing headroom.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"France dips sharply after a scare result\", \"action\": \"Reassess as a cheaper entry with better upside room.\"},\n      {\"trigger\": \"Argentina eliminated early\", \"action\": \"Watch for the ~7.6c rise but note it is still below suggestion threshold.\"}\n    ]\n  },\n  {\n    \"ticker\": \"KXMENWORLDCUP-26-ES\",\n    \"decision\": \"Watch only\",\n    \"side\": \"Watch\",\n    \"scenario_weights\": {\"bull\": 43.8, \"base\": 21.3, \"bear\": 34.8},\n    \"scenario_weight_basis\": \"Model weights: top flow support, strong momentum (price rose from 10 to 12), and full price-anchor lifted bull; thin displayed liquidity, missing domain enrichment, and short runway lifted bear. Base is the normalized remainder.\",\n    \"expected_future_price_cents\": 16,\n    \"entry_limit_cents\": 14,\n    \"next_catalyst\": \"France eliminated on Spain's side \u2014 the path model's largest single rise for Spain at 6.0c, still below the 9c suggestion floor.\",\n    \"catalyst_date_estimate\": \"Knockout window July 2026 (final 2026-07-19)\",\n    \"fair_probability_range\": {\"low_pct\": 9.0, \"high_pct\": 13.0, \"basis\": \"Anchored on market share (11.7%) versus path-implied share (9.2%), a negative gap that suggests the market may be slightly high. CBS expert picks list Spain in the last 8 across scenarios.\"},\n    \"why_i_believe_this\": \"Spain stays on watch because it is a legitimate second-tier favorite \u2014 CBS's June 11 panel put Spain into the final 8 in every listed bracket, and Beckham named them too. Momentum is positive (10 to 12 cents). The strongest catalyst is France exiting on Spain's side, worth a modeled 6 cents. But two things hold me back: the consistency gap is negative (market share 11.7% above path-implied 9.2%), hinting Spain is already a touch rich, and the best expected rise still misses the 9-cent floor. What would move attention: Spain winning its group convincingly or a favorite collapsing on their half. What breaks it: an early Spain exit, or the negative path gap resolving downward.\",\n    \"market_knows_check\": \"Very high volume (~$27M), razor-tight 0.1c spread, and a +20% recent move. The move up is visible and public; nothing indicates hidden information beyond ordinary form/odds shifts.\",\n    \"no_direction_check\": \"Has direction via named rival paths but the magnitude is sub-threshold \u2014 Watch only.\",\n    \"sources\": [\n      {\"label\": \"CBS expert picks include Spain in last 8\", \"url_or_reference\": \"https://www.cbssports.com/soccer/news/2026-world-cup-predictions-expert-picks-brazil-france-spain/\", \"published_date\": \"Thu, 11 Jun 2026 02:03:40 GMT\", \"why_it_matters\": \"Confirms Spain as a consensus deep-run pick, supporting but not exceeding the current price.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"France eliminated on Spain's half\", \"action\": \"Watch for the modeled ~6c rise; below suggestion floor so treat as opportunistic only.\"},\n      {\"trigger\": \"Spain loses early\", \"action\": \"Exit watch; path collapses.\"}\n    ]\n  },\n  {\n    \"ticker\": \"KXMENWORLDCUP-26-BR\",\n    \"decision\": \"Watch only\",\n    \"side\": \"Watch\",\n    \"scenario_weights\": {\"bull\": 42.2, \"base\": 24.1, \"bear\": 33.6},\n    \"scenario_weight_basis\": \"Model weights: deep flow support and full price-anchor lifted bull; thin displayed liquidity, missing enriched domain facts, and the short runway lifted bear. The near-zero consistency gap (0.2) keeps base relatively higher.\",\n    \"expected_future_price_cents\": 10,\n    \"entry_limit_cents\": 9,\n    \"next_catalyst\": \"France eliminated on Brazil's side \u2014 modeled 3.1c rise, below the 9c suggestion floor.\",\n    \"catalyst_date_estimate\": \"Knockout window July 2026 (final 2026-07-19)\",\n    \"fair_probability_range\": {\"low_pct\": 6.0, \"high_pct\": 9.0, \"basis\": \"Anchored on market share (6.1%) and path-implied share (6.3%) \u2014 a near-perfect match, so little internal tension. CNN and Sporting News confirm Brazil are a five-time champion but in a form dip.\"},\n    \"why_i_believe_this\": \"Brazil is on watch because the story is well-known and the price looks fair, not mispriced. CNN (June 13) framed Brazil as chasing a record sixth title after a 24-year drought with pressure on Vin\u00edcius J\u00fanior and Neymar, and Sporting News confirms the prolonged form dip. The soccer_path consistency gap is essentially zero (6.1% vs 6.3%), meaning the market and the path model agree \u2014 there is no obvious repricing edge. The largest elimination rise is only ~3.1c. What would raise attention: a dominant group-stage run reviving belief, or a favorite exiting their half. What breaks it: continued underperformance consistent with the reported dip.\",\n    \"market_knows_check\": \"Volume ~$23M, extremely tight 0.1c spread, modest -6% fade. Consistent with a favorite gently drifting; no hidden-information signal.\",\n    \"no_direction_check\": \"Direction exists but expected move is small and the price already agrees with the path model \u2014 Watch only.\",\n    \"sources\": [\n      {\"label\": \"CNN: Brazil's 24-year drought and pressure\", \"url_or_reference\": \"https://www.cnn.com/2026/06/13/sport/brazil-world-cup-hopes\", \"published_date\": \"Sat, 13 Jun 2026 10:30:08 GMT\", \"why_it_matters\": \"Establishes Brazil as a contender under pressure, framing why the price is fair rather than cheap.\"},\n      {\"label\": \"Sporting News: Brazil schedule and form dip\", \"url_or_reference\": \"https://www.sportingnews.com/in/football/news/brazil-world-cup-2026-schedule-results-group-fifa/59e3c5f4d8e3467240d92aa1\", \"published_date\": \"Sat, 13 Jun 2026 08:00:02 GMT\", \"why_it_matters\": \"Confirms the prolonged form dip that tempers the bull case.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"Brazil wins group convincingly\", \"action\": \"Reassess for a form-driven repricing.\"},\n      {\"trigger\": \"France eliminated on Brazil's half\", \"action\": \"Watch for modeled ~3c rise; below suggestion floor.\"}\n    ]\n  },\n  {\n    \"ticker\": \"KXMENWORLDCUP-26-PT\",\n    \"decision\": \"Watch only\",\n    \"side\": \"Watch\",\n    \"scenario_weights\": {\"bull\": 43.6, \"base\": 21.1, \"bear\": 35.3},\n    \"scenario_weight_basis\": \"Model weights: top flow support, positive momentum (price up 6.5 to 7.8), and full price-anchor lifted bull; thin displayed liquidity, missing domain enrichment, and short runway lifted bear. A negative consistency gap (-2.6) trims base upside.\",\n    \"expected_future_price_cents\": 12,\n    \"entry_limit_cents\": 10,\n    \"next_catalyst\": \"France eliminated on Portugal's side \u2014 modeled 3.8c rise with a notably high model beta (8.4 pts), but still below the 9c suggestion floor.\",\n    \"catalyst_date_estimate\": \"Round of 32 confirmed underway (Portugal vs Croatia 2026-07-02 per FOX); further knockouts through 2026-07-19\",\n    \"fair_probability_range\": {\"low_pct\": 5.0, \"high_pct\": 8.0, \"basis\": \"Anchored on market share (7.4%) versus a lower path-implied share (4.8%), a -2.6 gap suggesting the market may be pricing Portugal above its bracket-implied strength. FOX confirms Portugal advanced to the round of 32 but with only six goals, tied for its fewest ever in a group stage.\"},\n    \"why_i_believe_this\": \"Portugal is on watch as a dark-horse story with real tension. Telecom Asia (June 4) explicitly framed Portugal as a hidden favorite capable of a surprise, and FOX (July 1) confirmed they reached a third straight knockout stage \u2014 a plausible deep-run narrative. Momentum is positive. But the soccer_path flags a negative consistency gap (market share 7.4% above path-implied 4.8%), and FOX noted their attack was weak (six goals, fewest ever in a group). The biggest elimination rise (France out, 3.8c) has an unusually high model beta but still misses the 9c floor. What raises attention: a strong knockout win. What breaks it: the weak scoring form catching up, or an early exit \u2014 and the negative path gap says the market may already be too generous.\",\n    \"market_knows_check\": \"Very high volume (~$43M), tight 0.5c spread, and a +20% recent move up \u2014 the largest positive momentum among the favorites. Public and explained by advancing to the knockouts; not an obvious hidden-information signal, but the size of the move plus the negative path gap is worth monitoring.\",\n    \"no_direction_check\": \"Direction exists with dated fixtures, but expected move is sub-threshold and the path model suggests the price is already stretched \u2014 Watch only.\",\n    \"sources\": [\n      {\"label\": \"Telecom Asia: Portugal as hidden favorite\", \"url_or_reference\": \"https://www.telecomasia.net/blog/world-cup-2026-dark-horses-betting-tips/\", \"published_date\": \"Thu, 04 Jun 2026 18:13:30 GMT\", \"why_it_matters\": \"Establishes the dark-horse narrative that could drive attention-based repricing.\"},\n      {\"label\": \"FOX: Portugal vs Croatia round of 32, weak scoring\", \"url_or_reference\": \"https://www.foxsports.com/stories/soccer/portugal-vs-croatia-prediction-odds-picks-world-cup-match\", \"published_date\": \"Wed, 01 Jul 2026 20:08:23 GMT\", \"why_it_matters\": \"Confirms knockout progression (a dated catalyst) but flags the weak attack that caps the bull case.\"}\n    ],\n    \"exit_monitor\": [\n      {\"trigger\": \"Portugal wins a knockout convincingly\", \"action\": \"Reassess dark-horse repricing potential.\"},\n      {\"trigger\": \"Price extends further above path-implied share\", \"action\": \"Treat as overbought; do not chase.\"},\n      {\"trigger\": \"Portugal eliminated\", \"action\": \"Exit watch.\"}\n    ]\n  }\n]\n```\n\nTwo caveats for the watchlist:\n\n1. **Only Argentina clears the 9-cent rise floor**, and it does so via one specific elimination scenario (France out). Everything else is Watch only by the stated policy \u2014 I did not upgrade any of them.\n2. **Holder identity and holding duration are unavailable** across every candidate (public data is quote, spread, volume, and liquidity only). Where I note big volume or price moves, I am flagging them for a market-knows check, not implying I know who traded or why. The soccer_path numbers rest on a Bradley-Terry model whose own cave",
+  "claude_parse_error": null
+}

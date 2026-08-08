@@ -1,0 +1,26 @@
+{
+  "tournament": "2026 FIFA Men's World Cup knockout",
+  "verified_as_of": "2026-07-03",
+  "sources": [
+    "Sky Sports bracket / route-to-final (fetched 2026-07-03): halves and quadrants",
+    "Kalshi KXMENWORLDCUP market statuses (fetched 2026-07-03): alive vs finalized teams",
+    "Match schedule reporting: Argentina-Cape Verde Jul 3, Australia-Egypt R16 feed, France-Paraguay Jul 4, Canada-Morocco"
+  ],
+  "notes": "Team labels match Kalshi yes_sub_title. Pairs are verified next matches; singleton pairs mean the exact pairing inside the quadrant is unverified, so the model pools them at quadrant level (labeled approximation). Final is July 19, 2026.",
+  "halves": [
+    {
+      "name": "top",
+      "quadrants": [
+        {"name": "Q1", "pairs": [["France", "Paraguay"], ["Canada", "Morocco"]]},
+        {"name": "Q2", "pairs": [["Portugal"], ["Spain"], ["USA"], ["Belgium"]]}
+      ]
+    },
+    {
+      "name": "bottom",
+      "quadrants": [
+        {"name": "Q3", "pairs": [["Argentina", "Cape Verde"], ["Australia", "Egypt"], ["Switzerland"], ["Colombia"], ["Ghana"]]},
+        {"name": "Q4", "pairs": [["Brazil", "Norway"], ["Mexico", "England"]]}
+      ]
+    }
+  ]
+}
