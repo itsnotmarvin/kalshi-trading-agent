@@ -143,7 +143,6 @@ EARLY_MARK_IMAGE_USER_AGENT = "KalshiEarlyMarks/0.1 (local research dashboard; c
 EARLY_MARK_PROBE_PATH = Path(__file__).parent / "data" / "early_marks_probe.json"
 EARLY_MARK_RUNS_PATH = Path(__file__).parent / "data" / "early_marks_runs.json"
 EARLY_MARK_STATUS_PATH = Path(__file__).parent / "data" / "early_marks_status.json"
-EARLY_MARK_POLITICS_CATEGORY = "politics"
 EARLY_MARK_RUNNING: dict[str, Any] = {"running": False, "run_id": None}
 EARLY_MARK_STATUS_DISPLAY = {
     "Watch only": "Watch only",
@@ -1035,16 +1034,23 @@ def _early_marks_claude_state() -> str:
 
 
 def _early_marks_category_quality() -> str:
+    """Summarize per-category track record honestly; scans are category-blind."""
     stats_path = Path(__file__).parent / "data" / "category_stats.json"
     try:
         stats = json.loads(stats_path.read_text())
-        politics = stats.get("Politics") if isinstance(stats, dict) else {}
-        won = int(politics.get("won") or 0)
-        trades = int(politics.get("trades") or 0)
-        pct = round((won / trades) * 100) if trades else 0
-        return f"Politics — {pct}% win rate ({won}/{trades}, trading-agent stats, small sample)"
+        parts = []
+        if isinstance(stats, dict):
+            for name, row in sorted(stats.items()):
+                trades = int(row.get("trades") or 0)
+                if trades <= 0:
+                    continue
+                won = int(row.get("won") or 0)
+                parts.append(f"{name} {round((won / trades) * 100)}% ({won}/{trades})")
+        if parts:
+            return f"Track record by category (trading-agent stats, small samples): {', '.join(parts)}"
+        return "No category track record yet — ranking is by market structure, not topic"
     except Exception:
-        return "Politics — category stats unavailable (small sample)"
+        return "Category stats unavailable — ranking is by market structure, not topic"
 
 
 async def _early_marks_kalshi_state() -> str:
@@ -1274,10 +1280,13 @@ async def run_early_marks(payload: dict[str, Any] = Body(default_factory=dict)):
     """Run the read-only Early Marks probe manually from the page."""
     if EARLY_MARK_RUNNING.get("running"):
         return JSONResponse({"status": "error", "message": "Early Marks probe is already running."}, status_code=409)
-    requested_category = str(payload.get("category") or EARLY_MARK_POLITICS_CATEGORY).lower()
-    if requested_category not in {"politics", "soccer"}:
+    # Early marks are defined by lifecycle structure, not topic. Category is
+    # an optional display filter — the default scans everything and lets the
+    # structural ranking decide.
+    requested_category = str(payload.get("category") or "all").strip().lower()
+    if not re.fullmatch(r"[a-z0-9 _/&-]{1,40}", requested_category):
         return JSONResponse(
-            {"status": "error", "message": "Category not enabled in Early Marks yet."}, status_code=400
+            {"status": "error", "message": "Invalid category filter."}, status_code=400
         )
     category = requested_category
     market_status = str(payload.get("market_status") or "all").lower()

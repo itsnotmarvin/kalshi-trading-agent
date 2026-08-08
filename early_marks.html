@@ -953,11 +953,12 @@
                     </div>
                     <div class="panel-body">
                         <div class="toolbar" id="healthChips" style="margin-bottom:12px"></div>
-                        <div class="empty" id="categoryNote" style="margin-bottom:12px">Choose a category before generating a fresh Early Marks scan.</div>
+                        <div class="empty" id="categoryNote" style="margin-bottom:12px">Early Marks ranks by structure (lifecycle age, lazy marks, catalyst runway, exitability) — category is an optional display filter.</div>
                         <div class="filter-grid">
                             <div class="field">
                                 <label for="runCategory">Category</label>
                                 <select id="runCategory">
+                                    <option value="all" selected>All categories (structure-first)</option>
                                     <option value="politics">Politics</option>
                                     <option value="soccer">Sports — Soccer (World Cup)</option>
                                 </select>
@@ -1226,9 +1227,13 @@
             ].join("");
             categoryFilter.value = previousCategory === "all" || categories.includes(previousCategory) ? previousCategory : "all";
             const runCategory = document.getElementById("runCategory");
-            const selected = runCategory.value || "politics";
-            runCategory.innerHTML = `<option value="politics">Politics</option><option value="soccer">Sports — Soccer (World Cup)</option>`;
-            runCategory.value = ["politics", "soccer"].includes(selected) ? selected : "politics";
+            const selected = runCategory.value || "all";
+            runCategory.innerHTML = [
+                `<option value="all">All categories (structure-first)</option>`,
+                ...categories.filter((category) => category !== "all").map((category) =>
+                    `<option value="${escapeHtml(category)}">${safeText(category, "Category")}</option>`),
+            ].join("");
+            runCategory.value = selected === "all" || categories.includes(selected) ? selected : "all";
         }
 
         function renderCategoryRadar() {
@@ -1816,9 +1821,14 @@
 
         function updateCategoryNote() {
             const selected = document.getElementById("runCategory").value;
-            const note = selected === "soccer"
-                ? `${lastHealth?.category_quality_soccer || "Sports/Soccer — path-model research mode, no track record yet"}. Only Soccer is enabled: the live World Cup has the deepest sports market set right now.`
-                : `${lastHealth?.category_quality || "Politics — category stats unavailable (small sample)"}. Other Early Marks categories are not ready yet.`;
+            let note;
+            if (selected === "soccer") {
+                note = `${lastHealth?.category_quality_soccer || "Sports/Soccer — path-model research mode, no track record yet"}.`;
+            } else if (selected === "all" || !selected) {
+                note = "Scans every category and ranks by market structure — lifecycle age, lazy marks, catalyst runway, exitability — never by topic.";
+            } else {
+                note = `${lastHealth?.category_quality || "Category stats unavailable"}. Filter is display-only; ranking stays structural.`;
+            }
             document.getElementById("categoryNote").textContent = note;
         }
 

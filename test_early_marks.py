@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import json
 from types import SimpleNamespace
 
@@ -455,6 +455,115 @@ async def test_ask_claude_reads_final_text_after_opus_thinking_block(monkeypatch
     assert json.loads(raw_text) == {"results": [result]}
     assert captured["model"] == "claude-opus-5"
     assert captured["output_config"]["format"]["type"] == "json_schema"
+
+
+def fresh_weather_market(**overrides):
+    # A structurally perfect early mark that V1 could never surface: listed
+    # hours ago, resolves in days, barely traded, mark still at its open.
+    now = datetime.now(timezone.utc)
+    raw = presidential_market(
+        ticker="KXHIGHDEN-25AUG10-B90",
+        title="Will the high temperature in Denver be above 90°F?",
+        event_title="Denver high temperature",
+        category="Climate and Weather",
+        yes_sub_title="Above 90°F",
+        no_sub_title="Above 90°F",
+        open_time=(now - timedelta(hours=12)).isoformat(),
+        expected_expiration_time=(now + timedelta(days=2)).isoformat(),
+        volume_fp="35",
+        volume_24h_fp="35",
+        last_price_dollars="",
+        previous_price_dollars="",
+    )
+    raw.update(overrides)
+    return raw
+
+
+def test_politics_keywords_use_word_boundaries():
+    # Bare substrings used to swallow these into politics_election.
+    greenhouse = score_raw_market(fresh_weather_market(
+        ticker="KXGHG-30", title="Will greenhouse gas emissions set a new high?",
+        event_title="Emissions milestone", category="Climate",
+    ))
+    household = score_raw_market(fresh_weather_market(
+        ticker="KXHHDEBT-30", title="Will US household debt exceed $20 trillion?",
+        event_title="Household debt", category="Economics",
+    ))
+    primary_energy = score_raw_market(fresh_weather_market(
+        ticker="KXPRIMEENGCONSUMPTION-30-SOLAR",
+        title="What will be the largest source of global primary energy consumption?",
+        event_title="Primary energy mix", category="Climate",
+    ))
+    election = score_raw_market(presidential_market())
+
+    assert greenhouse is not None and greenhouse.model_key != "politics_election"
+    assert household is not None and household.model_key != "politics_election"
+    assert primary_energy is not None and primary_energy.model_key != "politics_election"
+    assert election is not None and election.model_key == "politics_election"
+
+
+def test_no_rank_cliff_at_arbitrary_horizons():
+    # V1 had a −35 discontinuity at 30 days: the SAME market scored ~50 points
+    # apart at 29 vs 31 days out and flipped eligibility. Earliness is about
+    # lifecycle, not horizon — nearby horizons must score nearby ranks.
+    now = datetime.now(timezone.utc)
+    at_29d = score_raw_market(presidential_market(
+        expected_expiration_time=(now + timedelta(days=29)).isoformat(),
+    ))
+    at_31d = score_raw_market(presidential_market(
+        expected_expiration_time=(now + timedelta(days=31)).isoformat(),
+    ))
+
+    assert at_29d is not None and at_31d is not None
+    assert at_29d.probe_status != "Too directionless"
+    assert at_31d.probe_status != "Too directionless"
+    assert abs(at_29d.rank_score - at_31d.rank_score) < 5
+
+
+def test_fresh_short_dated_market_is_an_eligible_early_mark():
+    candidate = score_raw_market(fresh_weather_market())
+
+    assert candidate is not None
+    assert candidate.earliness_score >= 75  # listed 12h into a ~2.5-day life
+    assert candidate.mark_laziness_score >= 60  # 35 contracts, no last print
+    assert candidate.probe_status != "Too directionless"
+    assert candidate.rank_score > 0
+
+    selected, eligible = select_scan_shortlist(
+        [candidate], shortlist_size=5,
+        category_filter="all", status_filter="all", horizon_filter="all",
+    )
+    assert candidate in eligible
+    assert candidate in selected
+
+
+def test_earliness_measures_lifecycle_not_horizon():
+    now = datetime.now(timezone.utc)
+    listed_yesterday = score_raw_market(presidential_market(
+        ticker="KXPRESPERSON-28-FRESH",
+        open_time=(now - timedelta(days=1)).isoformat(),
+        expected_expiration_time=(now + timedelta(days=10)).isoformat(),
+    ))
+    old_long_dated = score_raw_market(presidential_market(
+        ticker="KXPRESPERSON-28-STALE",
+        open_time=(now - timedelta(days=300)).isoformat(),
+        expected_expiration_time=(now + timedelta(days=900)).isoformat(),
+    ))
+
+    assert listed_yesterday is not None and old_long_dated is not None
+    # The short-horizon market listed yesterday is EARLIER than the
+    # multi-year future that has already lived 300 days.
+    assert listed_yesterday.earliness_score > old_long_dated.earliness_score
+
+
+def test_sub_day_runway_is_not_an_early_mark():
+    # The one hard time floor that remains: enough runway to exit (~a day).
+    now = datetime.now(timezone.utc)
+    candidate = score_raw_market(fresh_weather_market(
+        expected_expiration_time=(now + timedelta(hours=6)).isoformat(),
+    ))
+    assert candidate is not None
+    assert candidate.probe_status == "Too directionless"
 
 
 def test_claude_validation_rejects_unsupplied_source_url():

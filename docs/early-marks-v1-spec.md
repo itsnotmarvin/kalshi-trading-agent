@@ -3,19 +3,24 @@
 Status: binding for `early_marks.html`, the Early Marks endpoints in
 `server.py`, and `scripts/manual_probes/test_early_marks.py` stage emission.
 Design system: `static/desk.css` tokens per
-`.agents/skills/_shared/ui-design-system.md`.
+`/Users/marbin/kalshi/.agents/skills/_shared/ui-design-system.md`.
 
-## V1 honesty rules
+## Honesty rules (V2 — category-blind discovery)
 
-- Early Marks V1 supports **Politics only**. There is no "All categories" and
-  no "General" mode anywhere in the UI. The category selector lists only
-  categories with working category-specific logic — today that is Politics.
-- Category quality shown from `data/category_stats.json` honestly:
-  `Politics — 40% win rate (2/5, trading-agent stats, small sample)`.
-- A visible note explains other categories are not ready yet.
-- Server enforces this: the run endpoint passes `--category` for politics
-  regardless of client input (verify the exact category token the probe
-  matches against; use whatever value actually filters to politics markets).
+- An early mark is defined by **lifecycle structure, never by topic**: listed
+  recently (little of the market's own life elapsed), few trades, a mark
+  still near its opening price, a concrete catalyst before resolution, and a
+  book that plausibly allows an exit after the repricing. Scans default to
+  **all categories**; the ranking must not gate or boost on category.
+  (V1's politics-only allowlist and 30-day runway floor encoded the surface
+  features of one example market and structurally excluded fast-cadence
+  categories — that was the politics-skew bug, not a feature.)
+- Category remains a *display filter* and a *research lens*: domain-specific
+  question lists and cadence floors (e.g. tournament schedules) are allowed
+  at the explanation layer, but never as eligibility gates.
+- Category quality shown from `data/category_stats.json` honestly, as a
+  per-category track-record summary with sample sizes; when there is no
+  track record, say so and state that ranking is structural.
 - Concentration warning: if ≥60% of current-run candidates share one ticker
   series prefix (text before first `-`), show a warning chip on the results
   header: "Concentrated: mostly one market family".

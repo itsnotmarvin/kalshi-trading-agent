@@ -181,15 +181,16 @@ FUTURE_CATALYST_TERMS = (
     "season",
     "world cup",
 )
-HIGH_ATTENTION_CATEGORIES = (
-    "sports",
-    "politics",
-    "economics",
-    "financials",
-    "crypto",
-    "entertainment",
-)
-MIN_EARLY_RUNWAY_DAYS = 30
+# An early mark is defined by lifecycle structure, never by topic: listed
+# recently, few trades, mark still near its opening price, a catalyst before
+# resolution, and a book that will let you exit after the repricing.
+# "Early" is measured from the market's own life (age since listing), and the
+# only hard time floor is having enough runway left to EXIT — about a day —
+# not an arbitrary month that structurally excludes fast-cadence categories.
+MIN_EXIT_RUNWAY_DAYS = 1.0
+# Runway saturates quickly: two weeks of exit room is full marks. Beyond that,
+# more horizon is NOT more early — it's just far away.
+RUNWAY_SATURATION_DAYS = 14.0
 DEFAULT_MIN_PLACEMENT_DOLLARS = 20.0
 DEFAULT_MAX_PLACEMENT_DOLLARS = 100.0
 UUIDISH_CHARS = set("0123456789abcdefABCDEF-")
@@ -214,7 +215,9 @@ def write_stage_status(run_id: str, stage: str, done_through: bool = False) -> N
 
 DEFAULT_RANK_WEIGHTS = {
     "catalyst": 0.18,
-    "runway": 0.14,
+    "earliness": 0.14,
+    "laziness": 0.07,
+    "runway": 0.07,
     "attention": 0.12,
     "liquidity": 0.10,
     "source": 0.09,
@@ -453,6 +456,10 @@ class Candidate:
     crossed_book: bool
     end_date: str | None
     days_to_resolution: float | None
+    open_date: str | None
+    age_days: float | None
+    earliness_score: float
+    mark_laziness_score: float
     settlement_source: str
     catalyst_score: float
     liquidity_score: float
@@ -842,6 +849,16 @@ def _has_any(text: str, terms: tuple[str, ...] | list[str]) -> bool:
     return any(term in text for term in terms)
 
 
+# Word-boundary matching on strong political terms only. Bare substrings like
+# "house" and "primary" swallowed "household debt", "greenhouse gas", and
+# "primary energy" markets into the politics model, which both mislabeled them
+# and inflated the politics share of every scan.
+_POLITICS_PATTERN = re.compile(
+    r"\b(politics?|political|elections?|electoral|president|presidential|senate|senator|"
+    r"governor|nominee|nomination|congress|congressional|ballot|parliament)\b"
+)
+
+
 def classify_market(category: str, title_l: str) -> tuple[str, dict[str, Any]]:
     text = f"{category} {title_l}".lower()
     if _has_any(text, ("world cup", "fifa world cup")):
@@ -852,7 +869,7 @@ def classify_market(category: str, title_l: str) -> tuple[str, dict[str, Any]]:
         key = "sports_soccer"
     elif _has_any(text, ("sports", "playoff", "champion", "final", "season")):
         key = "sports_general"
-    elif _has_any(text, ("politic", "election", "president", "senate", "house", "governor", "nominee", "primary")):
+    elif _POLITICS_PATTERN.search(text):
         key = "politics_election"
     elif _has_any(text, ("economics", "financial", "crypto", "bitcoin", "fed", "rate", "cpi", "inflation", "earnings", "etf")):
         key = "macro_financial"
@@ -1005,10 +1022,43 @@ def score_raw_market(
     if yes_ask is not None and no_ask is not None:
         crossed_book = yes_ask + no_ask < 1.0 - 1e-9
         spread = max(0.0, yes_ask + no_ask - 1.0)
+    now = datetime.now(timezone.utc)
     end_dt = parse_date(raw)
     days_to_resolution = None
     if end_dt:
-        days_to_resolution = (end_dt - datetime.now(timezone.utc)).total_seconds() / 86400
+        days_to_resolution = (end_dt - now).total_seconds() / 86400
+
+    # Lifecycle earliness: how much of this market's OWN life has elapsed
+    # since listing. This is the definition of "early" — a market listed
+    # yesterday resolving next week is early; a two-year-old election future
+    # is not, no matter how distant its resolution. Category-blind on purpose.
+    open_dt = None
+    raw_open_time = raw.get("open_time")
+    if raw_open_time:
+        try:
+            open_dt = datetime.fromisoformat(str(raw_open_time).replace("Z", "+00:00"))
+        except ValueError:
+            open_dt = None
+    age_days = (now - open_dt).total_seconds() / 86400 if open_dt else None
+    if age_days is not None and end_dt and end_dt > open_dt:
+        life_days = (end_dt - open_dt).total_seconds() / 86400
+        earliness_score = 1.0 - clamp(age_days / life_days, 0.0, 1.0) if life_days > 0 else 0.5
+    elif age_days is not None:
+        earliness_score = clamp(1.0 - age_days / 30.0, 0.0, 1.0)
+    else:
+        earliness_score = 0.5  # listing age unknown — stay neutral, never punish
+
+    # Mark laziness: is the price still an opening default nobody has traded
+    # against? Low lifetime activity plus a stale/absent last print means the
+    # mark carries little information — exactly the repricing opportunity.
+    activity = clamp(math.log10(max(volume, 1.0)) / 4.0, 0.0, 1.0)
+    if last_price is None:
+        staleness = 1.0
+    elif previous_price is not None and abs(last_price - previous_price) < 0.005:
+        staleness = 0.7
+    else:
+        staleness = 0.2
+    mark_laziness = clamp(0.6 * (1.0 - activity) + 0.4 * staleness, 0.0, 1.0)
 
     profile_terms = tuple(str(term) for term in profile.get("terms", ()))
     term_hits = sum(1 for term in FUTURE_CATALYST_TERMS if term in title_l)
@@ -1017,10 +1067,13 @@ def score_raw_market(
     if status not in {"open", "active"}:
         catalyst_score = clamp(catalyst_score + 0.12, 0.0, 1.0)
 
+    # Runway is EXIT room, not horizon length: two weeks to work out of a
+    # position is full marks. days/365 conflated "long-dated" with "early"
+    # and structurally ranked multi-year politics futures above everything.
     if days_to_resolution is None:
         runway_score = 0.35
     else:
-        runway_score = clamp(days_to_resolution / 365, 0.0, 1.0)
+        runway_score = clamp(days_to_resolution / RUNWAY_SATURATION_DAYS, 0.0, 1.0)
 
     liquidity_score = clamp(math.log10(max(volume + liquidity, volume_24h, 1.0)) / 6, 0.0, 1.0)
     bid_factor = 1.0 if (yes_bid or no_bid) else 0.0
@@ -1032,10 +1085,13 @@ def score_raw_market(
     else:
         momentum_score = 0.5
     anchor_score = price_anchor_score(yes_ask)
-    attention_text = f"{category} {' '.join(profile.get('path', []))}".lower()
-    attention_score = 0.18 + 0.28 * any(cat in attention_text for cat in HIGH_ATTENTION_CATEGORIES)
+    # Attention potential from observable structure — recent flow and a
+    # catalyst-shaped title — never from a category allowlist, and never from
+    # horizon length (which awarded a bonus just for being long-dated).
+    recent_activity = clamp(math.log10(max(volume_24h, 1.0)) / 4.0, 0.0, 1.0)
+    attention_score = 0.18 + 0.28 * recent_activity
     attention_score += 0.22 if term_hits else 0
-    attention_score += 0.18 if runway_score > 0.35 else 0
+    attention_score += 0.18 * earliness_score
     attention_score = clamp(attention_score, 0.0, 1.0)
 
     settlement_source = str(raw.get("settlement_source_url") or raw.get("settlement_sources") or "Kalshi market metadata")
@@ -1053,9 +1109,10 @@ def score_raw_market(
         previous_price=previous_price,
     )
 
-    # Live-tournament profiles run on scheduled-match catalysts, so they carry
-    # a lower runway floor than slow-drift categories.
-    min_runway_days = float(profile.get("min_runway_days", MIN_EARLY_RUNWAY_DAYS))
+    # The only hard floor is exit room (~a day). Profiles may raise it when
+    # their catalyst cadence warrants (e.g. tournament schedules), but no
+    # profile gets a month-long floor that erases fast-cadence markets.
+    min_runway_days = float(profile.get("min_runway_days", MIN_EXIT_RUNWAY_DAYS))
     too_short_for_early_mark = days_to_resolution is not None and days_to_resolution < min_runway_days
     directionless_penalty = 0.0
     if term_hits == 0 and profile_term_hits == 0:
@@ -1085,6 +1142,8 @@ def score_raw_market(
         "domain_model_fit": _profile_number(profile, "scenario", "domain_bull", 0.08) * domain_signal_score,
         "flow_support": 0.04 * flow_signal_score,
         "momentum": 0.06 * max(momentum_score - 0.5, 0.0),
+        "early_lifecycle": 0.08 * earliness_score,
+        "lazy_mark": 0.05 * mark_laziness,
         "pre_open_structure": 0.04 if pre_open else 0.0,
         "directionless_or_short_runway_penalty": -0.12 * directionless_penalty,
     }
@@ -1198,7 +1257,9 @@ def score_raw_market(
         100
         * (
             float(rank_weights.get("catalyst", 0.18)) * catalyst_score
-            + float(rank_weights.get("runway", 0.14)) * runway_score
+            + float(rank_weights.get("earliness", 0.14)) * earliness_score
+            + float(rank_weights.get("laziness", 0.07)) * mark_laziness
+            + float(rank_weights.get("runway", 0.07)) * runway_score
             + float(rank_weights.get("attention", 0.12)) * attention_score
             + float(rank_weights.get("liquidity", 0.10)) * exitability
             + float(rank_weights.get("source", 0.09)) * source_score
@@ -1211,8 +1272,10 @@ def score_raw_market(
             - float(rank_weights.get("directionless", 0.24)) * directionless_penalty
         )
     )
-    if too_short_for_early_mark:
-        rank_score -= 35
+    # No flat cliff penalty here: too_short already flows through the
+    # directionless penalty and forces "Too directionless" status below.
+    # A −35 discontinuity at the floor made 29-day and 31-day versions of the
+    # SAME market score 50 points apart.
 
     placement_sizing = build_placement_sizing(
         open_price=open_price,
@@ -1274,6 +1337,10 @@ def score_raw_market(
         crossed_book=crossed_book,
         end_date=end_dt.isoformat() if end_dt else None,
         days_to_resolution=days_to_resolution,
+        open_date=open_dt.isoformat() if open_dt else None,
+        age_days=round(age_days, 2) if age_days is not None else None,
+        earliness_score=round(earliness_score * 100, 1),
+        mark_laziness_score=round(mark_laziness * 100, 1),
         settlement_source=settlement_source,
         catalyst_score=round(catalyst_score * 100, 1),
         liquidity_score=round(liquidity_score * 100, 1),
@@ -1464,6 +1531,17 @@ Goal:
 - Do not claim secret information or guaranteed moves.
 - Treat unexplained price movement as possible information from the market.
 - This is research only. Do not place or recommend immediate live orders.
+
+What an "early mark" is — judge STRUCTURE, never the topic or category:
+a market listed recently (little of its life elapsed — see earliness_score
+and age_days), with few trades and a mark still sitting near its opening
+price (mark_laziness_score), a concrete public catalyst arriving before
+resolution, and a book that will plausibly let you exit after the repricing.
+Example shape: listed 3 days ago, resolves in 6 weeks, 40 contracts traded,
+price unchanged at 18 cents since open, known catalyst in 2 weeks, two-sided
+book. Whether that market is about weather, an election, a tournament, or a
+song chart is irrelevant — the same structure is the same opportunity. Do not
+prefer or discount a candidate because of its subject matter.
 
 Use the candidate data below plus the external_research block: recent dated
 news snippets fetched per ticker. When external research exists for a
