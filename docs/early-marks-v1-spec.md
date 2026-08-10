@@ -88,7 +88,7 @@ material, no error internals:
   `pull_markets` (Pulling markets) → `category_model` (Checking category
   model) → `rank` (Ranking early marks) → `enrich` (Enriching with research)
   → `render` (Rendering cards). Keep the probe change additive — do not
-  alter scoring logic; `test_early_marks.py` root tests must stay green.
+  alter scoring logic; `tests/test_early_marks.py` must stay green.
 - `GET /api/early-marks/run/status` (new): returns that file plus a
   server-side `running` flag toggled around the subprocess.
 - Client: POST run as today; while awaiting, poll status every ~2s and render
