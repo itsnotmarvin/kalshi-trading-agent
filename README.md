@@ -146,7 +146,7 @@ fake edges.
 
 Paper validation is only as honest as the numbers feeding it, so the
 measurement layer enforces five invariants (regression-tested in
-`test_scoreboard_integrity.py`):
+`tests/test_scoreboard_integrity.py`):
 
 - **Fees in every path** — the edge gate subtracts the entry fee from the
   probability gap, settlement P&L is net of the entry fee, and take-profit

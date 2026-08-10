@@ -11,28 +11,8 @@ search_path = ["venv/lib/python3.11/site-packages"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+testpaths = ["tests"]
 norecursedirs = [
     "scripts/manual_probes",
 ]
-python_files = [
-    "test_agent_init.py",
-    "test_early_marks.py",
-    "test_early_marks_server.py",
-    "test_fix_verification.py",
-    "test_logger_report.py",
-    "test_market_pricing.py",
-    "test_order_idempotency.py",
-    "test_forecast_scoring.py",
-    "test_probability_math.py",
-    "test_review_fixes.py",
-    "test_scoreboard_integrity.py",
-    "test_sizing_engine.py",
-    "test_skill_scripts.py",
-    "test_soccer_path.py",
-    "test_weather_forecast_log.py",
-    "test_weather_learning.py",
-    "test_weather_live_gate.py",
-    "test_world_cup_api.py",
-    "test_world_cup_math.py",
-    "test_world_cup_service.py",
-]
+python_files = ["test_*.py"]
