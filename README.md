@@ -1,7 +1,10 @@
-# Prediction Market AI Trading Agent
+# Kalshi Prediction Market Research and Decision-Support Platform
 
-A provider-configurable autonomous trading agent for prediction markets.
-Supports **Kalshi** (recommended for US users 18+) and **Polymarket**.
+An AI-assisted platform that scans live prediction markets, combines prices
+and order books with weather, sports, and source-backed news, and ranks
+opportunities by estimated probability, expected value, liquidity, and risk —
+with paper/shadow validation and risk-gated execution. Provider-configurable:
+supports **Kalshi** (recommended for US users 18+) and **Polymarket**.
 
 ## Platform Options
 
