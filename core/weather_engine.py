@@ -759,6 +759,13 @@ class WeatherEngine:
         without selection bias.
         """
         try:
+            try:
+                market_yes_midpoint = float(market.midpoint)
+            except (AttributeError, TypeError, ValueError):
+                yes_ask = float(market.yes_price)
+                yes_bid = 1.0 - float(market.no_price)
+                market_yes_midpoint = (yes_bid + yes_ask) / 2.0
+
             record = {
                 "ts": datetime.now(timezone.utc).isoformat(),
                 "market_id": market.id,
@@ -771,6 +778,7 @@ class WeatherEngine:
                 "probability": result.get("probability"),
                 "raw_probability": result.get("raw_probability"),
                 "confidence": result.get("confidence"),
+                "market_yes_midpoint": market_yes_midpoint,
                 "market_yes_price": market.yes_price,
                 "market_no_price": market.no_price,
                 "direction": result.get("direction"),

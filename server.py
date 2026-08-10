@@ -288,7 +288,7 @@ async def lifespan(app: FastAPI):
         bot_task.cancel()
 
 
-app = FastAPI(title="Prediction Market Agent", lifespan=lifespan)
+app = FastAPI(title="Kalshi Forecasting Lab API", lifespan=lifespan)
 world_cup_service = WorldCupService(get_adapter)
 
 

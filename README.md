@@ -1,193 +1,177 @@
-# Kalshi Prediction Market Research and Decision-Support Platform
+# Kalshi Forecasting Lab
 
-An AI-assisted platform that scans live prediction markets, combines prices
-and order books with weather, sports, and source-backed news, and ranks
-opportunities by estimated probability, expected value, liquidity, and risk —
-with paper/shadow validation and risk-gated execution. Provider-configurable:
-supports **Kalshi** (recommended for US users 18+) and **Polymarket**.
+[![Tests](https://github.com/itsnotmarvin/kalshi-trading-agent/actions/workflows/tests.yml/badge.svg)](https://github.com/itsnotmarvin/kalshi-trading-agent/actions/workflows/tests.yml)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Mode: paper first](https://img.shields.io/badge/mode-paper%20first-6C63FF)](#safety-boundary)
 
-## Platform Options
+An experimental prediction-market research system exploring how market data and
+external evidence can become testable probability forecasts. It combines a
+model-backed weather route, market microstructure, provider-assisted research,
+paper execution, settlement accounting, and forecast-evaluation tooling.
 
-| Platform    | Age Req | Location | Real Money | API Access | Best For              |
-|-------------|---------|----------|------------|------------|-----------------------|
-| **Kalshi**  | 18+     | US (42+ states) | Yes | REST + WebSocket | Regulated, USD deposits |
-| **Polymarket** | 18+  | Global (US waitlist) | Yes | REST + WebSocket | Highest volume, crypto |
-| **Manifold**| 13+     | Global   | Play money | REST | Risk-free prototyping |
+This repository demonstrates a forecasting and risk system. It does **not**
+claim a profitable trading edge.
 
-## Quick Start
+## What is implemented
+
+| Capability | Current status | Evidence |
+| --- | --- | --- |
+| Weather probabilities | Model-backed | Open-Meteo GFS ensemble distribution; the LLM may summarize NWS context but cannot add a numeric modifier |
+| General-event research | Experimental | The general path still accepts an LLM-generated `my_probability`; search evidence is not yet retained as an auditable fact record |
+| Market comparison | Partial | Midpoint, executable-cost, and fee primitives exist; the order-book risk path uses them, while the generic fallback still compares against the YES ask |
+| Forecast evaluation | Measurement/gating | Brier score, gated log loss, calibration buckets, directional accuracy, baseline comparison, and walk-forward split helpers exist; no fitted calibrator is applied yet |
+| Point-in-time lineage | Partial | Forecast logs exist, but strict pre-resolution cutoffs plus immutable model/input/source versions are not yet enforced end to end |
+| Paper execution | Regression-tested | Fill-only accounting, fee-aware P&L, settlement fallback, idempotency, and persistent circuit breakers |
+| Profitable edge | **Not established** | The summarized single-market replay lost **$3.42** under its model-timing policy and is explicitly anecdotal |
+
+The strongest part of the project today is its risk, accounting, test, and
+scoring scaffolding: forecast logs, paper fills, settlement, costs, and baseline
+comparisons. A credible evaluation still requires stricter point-in-time data
+lineage. The next architecture milestone is to make every traded domain follow
+the model-backed pattern already used for weather.
+
+## System shape
+
+```mermaid
+flowchart LR
+    A[Market and domain data] --> B[Adapters and feature extraction]
+    B --> C[Model-backed forecaster]
+    D[News, reports, and source text] --> E[LLM research and structured extraction]
+    E -->|validated facts only| B
+    C --> F[Versioned model probability]
+    F --> G[Market midpoint and executable-price comparison]
+    G --> H[Fee, liquidity, and risk gates]
+    H --> I[Paper execution and fill accounting]
+    I --> J[Settlement, scoring, and calibration review]
+```
+
+The diagram is the target contract for model-backed routes. The current weather
+workflow follows it most closely. General event research is retained as an
+experimental path until its probabilities come from a fitted, backtested model.
+
+## Why the LLM is not the forecaster
+
+An LLM is useful for finding and structuring facts such as an injury, lineup
+change, forecast discussion, or source timestamp. It should not invent an
+adjustment such as `injury = -8%`.
+
+Numeric impacts should come from a fitted model or a deterministic rerun:
+
+```text
+impact = P(model | changed validated input) - P(model | original inputs)
+```
+
+The weather route enforces this separation: an ensemble produces the
+probability, while the NWS discussion reader returns qualitative context with a
+numeric modifier of zero. The broader event route is clearly marked experimental
+because it has not completed this migration.
+
+Current limitations are explicit:
+
+- The general event schema still asks the LLM for `my_probability`, and that
+  output can reach a proposal. It must be hard-gated before this migration can
+  be called complete.
+- General web-search snippets, source timestamps, conflicts, and quoted evidence
+  are not yet persisted as a validated fact record.
+- Weather probabilities use ensemble fractions plus Jeffreys smoothing; the
+  project measures calibration but does not yet fit a calibration transform.
+- Forecast archives still need enforced pre-resolution cutoffs and immutable
+  model/input versions.
+
+## Evaluation contract
+
+Prediction quality and trading quality are measured separately:
+
+- **Prediction quality:** Brier score, log loss, calibration, accuracy, and
+  performance against naive and market baselines.
+- **Trading quality:** net P&L after executable prices, spread, fees, partial
+  fills, slippage assumptions, and liquidity/risk gates.
+
+A well-calibrated forecast can still be untradeable if the market already
+contains the same information or transaction costs consume the gap.
+
+See [the single-market replay summary](examples/backtest-summary.md) for the
+repository's current evidence boundary. It is a diagnostic, not validation.
+
+## Next experiment
+
+Archive fixed-horizon, pre-resolution weather forecasts across many resolved
+markets. On chronological holdouts, compare:
+
+1. the raw GFS ensemble probability,
+2. a calibration transform fitted only on earlier forecasts,
+3. the contemporaneous market midpoint, and
+4. executable paper results after spread, fees, and slippage assumptions.
+
+Report Brier score, log loss, Brier Skill Score with uncertainty, probability
+buckets, and net paper P&L. Verify each contract's threshold/equality and
+settlement rules before scoring. This experiment tests whether the one existing
+model-backed route has skill; the architecture alone cannot prove an edge.
+
+## Local setup
+
+The default development configuration is paper-only and uses a mock LLM, so it
+does not make paid model calls or place orders.
 
 ```bash
-# 1. Clone and setup
-cd kalshi-agent
-python3 -m venv venv
-source venv/bin/activate
-
-# 2. Install dependencies
-pip install anthropic openai httpx python-dotenv kalshi-python
-
-# 3. Configure credentials
-# Edit .env with your API keys and model provider choice
-
-# 4. Run in real-market paper/shadow mode (NO order placement)
-python main.py --mode paper
-
-# 5. After enough resolved real-market evidence, go live with tight limits
-python main.py --mode live --max-daily-loss 25
+git clone https://github.com/itsnotmarvin/kalshi-trading-agent.git
+cd kalshi-trading-agent
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+pytest -q
+python server.py
 ```
 
-Paper/shadow mode always points at production market data so validation is based
-on real tickers, real prices, and real resolutions; it only skips live order
-placement.
+Open `http://127.0.0.1:8000`. The dashboard shell loads without trading
+credentials; authenticated account and live-market operations require your own
+Kalshi configuration.
 
-## LLM Provider Setup
-
-The agent defaults to Claude and supports three provider modes:
-
-```bash
-# Free/dev mode: no paid model calls, safe HOLD-only proposals
-LLM_PROVIDER=mock
-
-# ChatGPT/OpenAI mode: requires OPENAI_API_KEY
-LLM_PROVIDER=openai
-OPENAI_API_KEY=your_key_here
-OPENAI_MODEL=gpt-5.4-mini
-OPENAI_SCAN_MODEL=gpt-5.4-mini
-
-# Existing Claude mode: requires ANTHROPIC_API_KEY
-LLM_PROVIDER=anthropic
-ANTHROPIC_API_KEY=your_key_here
-CLAUDE_MODEL=claude-opus-5
-CLAUDE_SCAN_MODEL=claude-opus-5
-```
-
-If you want to build the dashboard and World Cup workflow before funding API
-credits, use `LLM_PROVIDER=mock`. It will never recommend a real trade; it only
-keeps the scan/research flow alive for UI and integration testing.
-
-## World Cup Trading Assistant Decisions
-
-For the World Cup route, evaluate every available market one by one. Do not
-shortcut to only a top few markets just because the slate is large.
-
-Support both true Kalshi combos/RFQs and basket-style groups of single trades.
-Singles can be monitored for sell/hedge opportunities after purchase; combos
-must show RFQ freshness, correlation risk, and explicit approval language.
-
-The approval flow is: assistant researches, prepares an exact trade card, user
-approves, then the bot places only that exact trade. Post-fill monitoring should
-prepare sell/hedge cards for user approval.
-
-The research breakdown should show source-backed probabilities, signed factor
-impacts, confidence/reliability scores, the live Kalshi quote, and the gap
-between the independent estimate and market-implied probability. Kalshi is the
-source of truth for final fees, total cost, payout, and order-preview math.
-
-## Probability Math Contract
-
-The assistant must not invent additive probability adjustments. Probability
-updates should happen in log-odds space, or by re-running the deterministic
-model after one sourced input changes:
+## Repository map
 
 ```text
-logit(p) = ln(p / (1 - p))
-final_logit = base_logit + sum(factor_weights)
-final_probability = 1 / (1 + exp(-final_logit))
+adapters/                     Exchange interfaces and Kalshi integration
+config/                       Environment-backed settings and research prompts
+core/agent.py                 Provider-aware research and experimental event path
+core/weather_engine.py        Ensemble-based weather probability model
+core/forecast_scoring.py      Brier, log-loss, calibration, and baseline scoring
+core/market_pricing.py        Midpoint, executable cost, and fee math
+core/risk_manager.py          Exposure, liquidity, sizing, and circuit breakers
+core/trading_loop.py          Paper/live orchestration and settlement flow
+core/world_cup_service.py     Match and combo trade-card workflow
+scripts/manual_probes/        Explicit, non-pytest research probes
+tests/                        148 automated tests at this cleanup baseline
+dashboard.html                Research dashboard
+paper.html                    Paper forecasting dashboard
+server.py                     FastAPI application
 ```
 
-For user-facing factor impacts, report the measured probability difference
-caused by perturbing one input:
+## Integrity and safety properties
 
-```text
-impact = P(model | changed input) - P(model | base input)
-```
+- Entry and exit calculations include fees; an apparent gap smaller than costs
+  is not called an edge.
+- Accepted orders do not count as trades—only adapter-reported fills affect
+  positions, counters, and P&L.
+- Client order IDs are thesis-derived so retries do not silently duplicate a
+  position.
+- Resolution lookup falls back from expired market endpoints to event data.
+- Circuit-breaker state persists across restarts.
+- Combo cards expose each leg and require correlation notes; probabilities are
+  not multiplied blindly.
 
-That impact is only valid if the changed input is sourced. For example, a
-striker absence can change expected goals only through a rating, xG/xA
-contribution, lineup model, market movement study, or another cited data source.
-If a factor lacks source support, show it as `UNVERIFIED` and do not silently
-fold it into the final probability.
+These invariants are exercised in
+[`tests/test_scoreboard_integrity.py`](tests/test_scoreboard_integrity.py),
+[`tests/test_order_idempotency.py`](tests/test_order_idempotency.py), and the
+rest of the test suite.
 
-Use Kalshi prices in two different ways:
+## Safety boundary
 
-- Mid-market estimate: closer to market belief, such as `(yes_bid + yes_ask)/2`.
-- Executable price: the current quote for one YES or NO contract.
+Live-order code exists, but this public project is configured and documented for
+research and paper validation. The CLI has a session-level confirmation; the
+generic dashboard path does **not** provide per-order human approval and is not
+suitable for live use. Keep it in paper mode. Independently verify every
+forecast, final exchange quote, fee, payout, and liquidity assumption.
 
-Do not call the ask alone "the market probability." The ask includes the cost
-of crossing the spread. Compare the model with the market midpoint:
-
-```text
-probability_gap = model_side_probability - market_side_probability
-confidence_adjusted_gap = probability_gap * confidence_multiplier
-```
-
-The app models the Kalshi trading fee — `ceil_to_cent(rate × C × P × (1 − P))`,
-taker 7% / maker 1.75% — in both the decision gate and realized P&L, because an
-"edge" smaller than the fee is not an edge:
-
-```text
-fee_adjusted_gap = confidence_adjusted_gap - fee_fraction(side_cost)
-```
-
-It still uses a configured fixed stake plus hard safety limits rather than
-reproducing Kalshi's payout/breakeven/cash-out/Kelly checkout math, and asks
-the user to verify final checkout numbers in Kalshi.
-
-For grouped singles, show every leg separately and do not multiply leg
-probabilities. Same-match or correlated legs require explicit correlation notes.
-- True Kalshi combos/RFQs must display quote freshness and finality before
-  approval.
-
-Track calibration over time. Bin predictions by probability and compare
-predicted frequency to observed frequency. Long-shot bins are especially
-important, because tail probabilities create attractive payouts and the easiest
-fake edges.
-
-## Scoreboard Integrity
-
-Paper validation is only as honest as the numbers feeding it, so the
-measurement layer enforces five invariants (regression-tested in
-`tests/test_scoreboard_integrity.py`):
-
-- **Fees in every path** — the edge gate subtracts the entry fee from the
-  probability gap, settlement P&L is net of the entry fee, and take-profit
-  exits must clear round-trip fees before firing.
-- **404s still settle** — Kalshi legitimately 404s expired/settled markets;
-  the adapter falls back to the event endpoint so resolved positions book
-  P&L instead of staying open at a stale mark.
-- **Only fills count** — an accepted order is not a trade. Balance, daily
-  trade counters, and alerts reflect the adapter-reported fill count, with
-  partial fills counted for exactly the filled contracts.
-- **Idempotency survives retries** — `client_order_id` is derived from the
-  trade thesis (market + direction + price + day), not a per-cycle UUID, so
-  a timeout-after-acceptance retry hits the 409 dedup path instead of
-  double-positioning.
-- **Circuit breakers survive restarts** — halt state, loss streaks, and
-  daily P&L persist to disk and reload on startup, so a crash cannot clear
-  a tripped breaker.
-
-## Architecture
-
-```
-main.py                  ← Entry point, scheduling loop
-core/
-  agent.py               ← Provider-aware reasoning engine (Claude, ChatGPT, or mock)
-  risk_manager.py        ← All safety checks & circuit breakers
-  portfolio.py           ← Position tracking & P&L
-  logger.py              ← Decision logging for review
-adapters/
-  base.py                ← Abstract interface all platforms implement
-  kalshi_adapter.py      ← Kalshi API integration
-  polymarket_adapter.py  ← Polymarket API integration (stub)
-  manifold_adapter.py    ← Manifold play-money (for practice)
-strategies/
-  forecaster.py          ← Claude probability estimation
-config/
-  settings.py            ← All configurable parameters
-  prompts.py             ← System prompts for LLM research
-```
-
-## Cost Estimates
-
-- **Claude/OpenAI API**: configurable; use mock mode for $0 local testing
-- **Kalshi**: Verify current fees and final totals in Kalshi's order preview
-- **Total startup cost**: ~$50-100 (API credits + initial trading capital)
+Prediction markets involve financial risk. This project is not financial
+advice.

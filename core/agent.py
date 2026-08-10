@@ -1,10 +1,8 @@
-"""
-Agent Brain - provider-aware reasoning engine.
+"""Provider-aware research and experimental general-event reasoning.
 
-This is where the configured LLM analyzes markets, researches events,
-estimates probabilities, and makes trade recommendations.
-The agent uses tool calling for web search and structured
-output for trade decisions.
+Model-backed routes such as weather supply their own deterministic probability.
+The broader LLM probability path remains experimental and must not be presented
+as a validated forecaster until it is replaced by fitted, backtested models.
 """
 import asyncio
 import json

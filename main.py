@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Prediction Market AI Trading Agent
-===================================
-Fully autonomous prediction market trader powered by Claude.
+Kalshi Forecasting Lab
+======================
+Experimental prediction-market research and paper-validation workflow.
 
 Usage:
     python main.py --mode paper              # Paper trading (no real money)
@@ -464,7 +464,7 @@ async def run_trading_cycle(
 
 
 async def main():
-    parser = argparse.ArgumentParser(description="Prediction Market AI Trading Agent")
+    parser = argparse.ArgumentParser(description="Kalshi Forecasting Lab")
     parser.add_argument(
         "--mode", choices=["paper", "live"], default="paper",
         help="Trading mode (default: paper)"
@@ -547,7 +547,7 @@ async def main():
     adapter = get_adapter()
     agent = TradingAgent(risk_manager)
 
-    print(f"\n🚀 Starting Prediction Market Agent")
+    print(f"\n🚀 Starting Kalshi Forecasting Lab")
     print(f"   Platform: {settings.platform}")
     print(f"   Mode: {'📝 Paper' if is_paper else '💰 LIVE'}")
     if is_paper:
