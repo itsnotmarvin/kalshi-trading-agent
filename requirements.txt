@@ -1,0 +1,23 @@
+# Core dependencies
+anthropic>=0.40.0           # Claude API client
+openai>=1.99.0              # Optional ChatGPT/OpenAI API client
+httpx>=0.27.0               # Async HTTP client
+python-dotenv>=1.0.0        # Environment variable loading
+
+# Dashboard server
+fastapi[standard]>=0.115.0  # Web framework + uvicorn
+uvicorn>=0.30.0             # ASGI server
+
+# Tests
+pytest>=9.0.0
+pytest-asyncio>=1.4.0
+
+# Platform SDKs (install the one you need)
+# kalshi-python>=2.1.0      # pip install kalshi-python (for Kalshi)
+# py-clob-client>=0.34.0    # pip install py-clob-client (for Polymarket)
+
+# Optional: Better search integration
+# tavily-python>=0.3.0      # pip install tavily-python (for web search)
+
+# Crypto signing for authenticated Kalshi requests
+cryptography>=42.0.0

@@ -1,0 +1,28 @@
+# Secrets
+.env
+*.pem
+*.key
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Runtime logs
+*.jsonl
+
+# Generated runtime state and research output
+data/backtest_replay_*.json
+data/category_stats.json
+data/daily_stats_state.json
+data/early_marks_*.json
+data/macro_lessons.json
+data/memory.json
+data/paper_*.json
+data/postmortem_history.json
+data/postmortems/
+data/tmp_skill_selftest/
+data/weather_skill_report.json
+data/world_cup_calibration.json
