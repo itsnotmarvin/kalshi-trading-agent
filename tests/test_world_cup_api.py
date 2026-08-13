@@ -45,10 +45,20 @@ class FakeWorldCupService:
         return {"status": "paper_approved", "lock_id": payload["lock_id"], "simulated_order": {"live_order_placed": False}}
 
 
-def make_client(monkeypatch):
+def make_client(monkeypatch, enabled: bool = True):
+    # The archived route is default-off; these tests opt in explicitly.
+    monkeypatch.setattr(server.settings, "world_cup_enabled", enabled)
     monkeypatch.setattr(server, "world_cup_service", FakeWorldCupService())
     monkeypatch.setattr(server, "refresh_state_from_platform", AsyncMock())
     return TestClient(server.app)
+
+
+def test_world_cup_route_is_disabled_by_default(monkeypatch):
+    client = make_client(monkeypatch, enabled=False)
+
+    assert client.get("/api/world-cup/status").status_code == 410
+    assert client.get("/world-cup").status_code == 410
+    assert client.post("/api/world-cup/evaluate", json={}).status_code == 410
 
 
 def test_world_cup_status_route(monkeypatch):

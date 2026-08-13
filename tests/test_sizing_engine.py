@@ -4,24 +4,29 @@ from pathlib import Path
 # Ensure core is importable
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from core.paper_sizer import get_exploratory_size
+import pytest
+
+from core.paper_sizer import EXPLORATORY_SIZE_LADDER_USD, get_exploratory_size
 from core.risk_manager import RiskManager, TradeProposal
 from adapters.base import Position, Side
 
 def test_paper_sizer():
-    print("🧪 Running Test: Paper Sizer...")
-    sizes = [get_exploratory_size(5.0, 10000.0) for _ in range(1000)]
-    assert all(5.0 <= s <= 10000.0 for s in sizes), "Sizer generated size out of bounds"
-    
-    # Check that we span multiple scales
-    has_micro = any(s < 50 for s in sizes)
-    has_small = any(50 <= s < 250 for s in sizes)
-    has_med = any(250 <= s < 1000 for s in sizes)
-    has_large = any(1000 <= s < 5000 for s in sizes)
-    has_mega = any(5000 <= s for s in sizes)
-    
-    assert has_micro and has_small and has_med and has_large and has_mega, "Sizer failed to distribute across size scales"
-    print("✅ Paper Sizer tests passed successfully!")
+    # Deterministic ladder: the index selects the size, and cycling wraps.
+    sizes = [
+        get_exploratory_size(observation_index=index)
+        for index in range(len(EXPLORATORY_SIZE_LADDER_USD))
+    ]
+    assert sizes == list(EXPLORATORY_SIZE_LADDER_USD)
+    assert (
+        get_exploratory_size(observation_index=len(EXPLORATORY_SIZE_LADDER_USD))
+        == EXPLORATORY_SIZE_LADDER_USD[0]
+    )
+    # Bounds trim the ladder rather than sampling outside it.
+    assert get_exploratory_size(50.0, 500.0, observation_index=0) == 50.0
+    with pytest.raises(ValueError):
+        get_exploratory_size(-1.0, 100.0)
+    with pytest.raises(ValueError):
+        get_exploratory_size(11.0, 24.0)  # no ladder rung in range
 
 def test_risk_manager_bypass():
     print("🧪 Running Test: Risk Manager Bypass...")

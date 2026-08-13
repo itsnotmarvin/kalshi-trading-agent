@@ -1,7 +1,12 @@
-"""Experimental Manifold adapter for reading markets and placing mana bets.
+"""Partial Manifold play-money adapter.
 
 API docs: https://docs.manifold.markets/api
 Current platform terms and API behavior should be verified before use.
+
+Implemented: binary-market discovery, market lookup, balance lookup, and mana
+bets. Unsupported: position reconstruction and transfer history. Portfolio
+value currently means cash balance only. This adapter provides no evidence
+about real-money execution quality.
 """
 import httpx
 from datetime import datetime, timezone

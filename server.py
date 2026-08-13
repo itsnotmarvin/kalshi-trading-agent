@@ -169,6 +169,17 @@ def require_api_token(x_agent_token: str | None = Header(default=None)):
         raise HTTPException(status_code=403, detail="Invalid dashboard token")
 
 
+def require_world_cup_enabled():
+    # The 2026 tournament ended 2026-07-19. The route stays in the tree for
+    # historical replay and its regression tests, but the HTTP surface is
+    # opt-in via WORLD_CUP_ENABLED.
+    if not settings.world_cup_enabled:
+        raise HTTPException(
+            status_code=410,
+            detail="The 2026 World Cup workflow is archived and disabled.",
+        )
+
+
 _global_adapter = None
 
 def get_adapter():
@@ -1465,7 +1476,7 @@ async def run_early_marks(payload: dict[str, Any] = Body(default_factory=dict)):
     }
 
 
-@app.get("/api/world-cup/status")
+@app.get("/api/world-cup/status", dependencies=[Depends(require_world_cup_enabled)])
 async def get_world_cup_status():
     """Get real-data status and provider gates for the World Cup route."""
     return {
@@ -1474,25 +1485,25 @@ async def get_world_cup_status():
     }
 
 
-@app.get("/api/world-cup/matchday")
+@app.get("/api/world-cup/matchday", dependencies=[Depends(require_world_cup_enabled)])
 async def get_world_cup_matchday(user_timezone: str = "America/New_York"):
     """Get the World Cup matchday dashboard payload."""
     return await world_cup_service.get_matchday(user_timezone=user_timezone)
 
 
-@app.post("/api/world-cup/evaluate")
+@app.post("/api/world-cup/evaluate", dependencies=[Depends(require_world_cup_enabled)])
 async def evaluate_world_cup(payload: dict | None = None, _: None = Depends(require_api_token)):
     """Evaluate current World Cup matchday markets without placing orders."""
     return await world_cup_service.evaluate(payload or {})
 
 
-@app.post("/api/world-cup/settings")
+@app.post("/api/world-cup/settings", dependencies=[Depends(require_world_cup_enabled)])
 async def update_world_cup_settings(updates: dict, _: None = Depends(require_api_token)):
     """Update route-local World Cup settings."""
     return world_cup_service.update_settings(updates)
 
 
-@app.post("/api/world-cup/approval-lock")
+@app.post("/api/world-cup/approval-lock", dependencies=[Depends(require_world_cup_enabled)])
 async def lock_world_cup_approval(payload: dict, _: None = Depends(require_api_token)):
     """Create an immutable approval-card lock. Does not place orders."""
     card = payload.get("card") if isinstance(payload, dict) else None
@@ -1501,7 +1512,7 @@ async def lock_world_cup_approval(payload: dict, _: None = Depends(require_api_t
     return world_cup_service.approval_lock(card)
 
 
-@app.post("/api/world-cup/paper-approve")
+@app.post("/api/world-cup/paper-approve", dependencies=[Depends(require_world_cup_enabled)])
 async def paper_approve_world_cup(payload: dict, _: None = Depends(require_api_token)):
     """Approve only the exact locked card for paper simulation."""
     return world_cup_service.paper_approve(payload)
@@ -1911,7 +1922,7 @@ async def serve_paper():
     return HTMLResponse("<h1>Paper dashboard not found</h1>")
 
 
-@app.get("/world-cup")
+@app.get("/world-cup", dependencies=[Depends(require_world_cup_enabled)])
 async def serve_world_cup():
     """Serve the real-data-only World Cup assistant route."""
     page_path = WEB_DIR / "world_cup.html"

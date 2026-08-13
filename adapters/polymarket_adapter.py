@@ -1,7 +1,9 @@
-"""
-Polymarket Platform Adapter
+"""Partial, read-only Polymarket market-discovery adapter.
 
-Uses py-clob-client to interact with Polymarket's orderbook and Gamma API for markets.
+Implemented: Gamma API event/market discovery for paper research.
+Unsupported: CLOB authentication, order books, orders, cancellation,
+positions, transfers, and real portfolio valuation. Live mode is rejected by
+settings validation.
 """
 import httpx
 import json

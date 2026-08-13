@@ -13,6 +13,16 @@ confirmation in the command-line flow. Nothing in this repository establishes
 that the system is profitable or that its probability estimates beat the
 market.
 
+### Legacy performance snapshot
+
+The risk manager formerly embedded a May 27, 2026 snapshot of 23 trades:
+Weather 4W/8L (-$20.49), Sports 2W/5L (-$78.34), and Tech/AI 2W/2L
+(+$199.65), for 8W/15L and +$100.82 in total. Politics, Crypto, and
+Economics each recorded zero trades. The repository does not include the
+fill-level ledger needed to independently reproduce that snapshot, so it is
+historical context — not evidence of current or expected performance. Fresh
+installations now start with zeroed category statistics.
+
 ## What the system does
 
 The general pipeline is:
@@ -41,10 +51,10 @@ The repository currently contains four related workflows:
   probability distribution, and records every analyzed forecast so it can be
   scored after settlement. NWS products are used as additional context rather
   than silently substituted for the requested numerical model.
-- **World Cup assistant:** evaluates markets through a separate real-data-only
-  service. Missing required inputs cause a visible failure instead of a
-  placeholder recommendation. Trade cards, quote-freshness checks, approval
-  locks, and paper approvals are exposed through the dashboard API.
+- **Archived World Cup 2026 assistant:** retained for historical replay and
+  regression tests. Its dashboard and API are disabled by default after the
+  tournament (ended July 19, 2026) and require an explicit
+  `WORLD_CUP_ENABLED=true` opt-in.
 - **Early Marks:** a staged pipeline for finding markets that have not yet
   reacted to something that should move them. A credential-free collector
   snapshots the full market universe into SQLite (category-blind,
@@ -61,8 +71,11 @@ The repository currently contains four related workflows:
 
 The codebase also contains climate, sports, BTC-mode, calibration, postmortem,
 and paper-analytics components. The Kalshi adapter is the developed execution
-path. Polymarket and Manifold adapters remain experimental; Polymarket live mode
-is explicitly rejected by configuration validation.
+path. Manifold supports market reads and play-money mana bets but not position
+or transfer reconstruction. Polymarket supports Gamma market discovery only:
+CLOB order books, orders, positions, balances, transfers, and live execution
+are not implemented, and Polymarket live mode is rejected by configuration
+validation.
 
 ## How a proposal is gated
 
@@ -195,8 +208,9 @@ Start the local dashboard and API:
 python server.py
 ```
 
-Then open `http://127.0.0.1:8000`. The server also provides `/paper`,
-`/world-cup`, and `/early-marks` views. Mutating API requests require the local
+Then open `http://127.0.0.1:8000`. The server also provides `/paper` and
+`/early-marks` views; the archived `/world-cup` view is disabled by default
+(`WORLD_CUP_ENABLED=true` re-enables it). Mutating API requests require the local
 dashboard token injected into those pages. Set `DASHBOARD_API_TOKEN` when a
 stable token is needed; otherwise the server creates a new one at startup.
 
