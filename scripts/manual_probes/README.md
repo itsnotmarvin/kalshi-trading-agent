@@ -11,6 +11,11 @@ example:
 python scripts/manual_probes/test_kalshi.py
 ```
 
+General position, market, category, and date inspection utilities also live in
+this directory (`check_pos.py`, `dump_market.py`, `dump_politics.py`,
+`dump_all_dates.py`, `debug_dates.py`, and `scan_all.py`) so the project root
+contains only application entry points and configuration.
+
 For the World Cup route, this read-only probe fetches the public schedule,
 scans live Kalshi Sports markets, links markets to the matchday teams, and
 prints the discovered market/leg types such as winner/result, totals, both

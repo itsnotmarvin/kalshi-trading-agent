@@ -1,15 +1,9 @@
-"""
-Weather Engine — Ensemble-based probability calculator for Kalshi weather markets.
+"""Ensemble-based probability calculator for supported Kalshi weather markets.
 
-Uses Open-Meteo's free 31-member GFS ensemble API to compute actual probability
-distributions, giving a statistical edge over gut-feel pricing.
-
-Key insights (validated via r/algotrading):
-  - Ensemble models give probability distributions, not point forecasts
-  - Most Kalshi weather traders price on gut feel / Weather.com → data gap = edge
-  - Penny contracts ($0.05) are traps → min price filter $0.10
-  - High model disagreement = low confidence → skip
-  - Thin order books → keep position sizes small ($5 max)
+The engine requests explicit GFS ensemble and HRRR model data through
+Open-Meteo, derives an empirical distribution from available members, and logs
+each analyzed forecast for later scoring. Model output is an input to the risk
+process, not evidence by itself that the strategy has an edge.
 """
 import json
 import re
@@ -18,6 +12,7 @@ from datetime import datetime, timezone, timedelta
 from dataclasses import dataclass
 from pathlib import Path
 from core.forecaster import ForecasterInsight
+from config.paths import RUNTIME_DATA_DIR
 
 
 # ── City Coordinates ────────────────────────────────────────
@@ -125,6 +120,9 @@ NON_WEATHER_TICKER_PREFIXES = [
 
 
 ENSEMBLE_API_URL = "https://ensemble-api.open-meteo.com/v1/ensemble"
+DETERMINISTIC_API_URL = "https://api.open-meteo.com/v1/forecast"
+GFS_ENSEMBLE_MODEL = "gfs_seamless"
+HRRR_CONUS_MODEL = "ncep_hrrr_conus"
 NUM_MEMBERS = 31  # 1 control + 30 perturbed
 
 
@@ -172,7 +170,7 @@ class WeatherEngine:
         # Every analyzed market gets logged here, traded or not. Scoring only
         # traded markets selection-biases the calibration curve; the engine
         # produces ~20× more forecasts than trades, and they're all evidence.
-        self.forecast_log_path = Path("data/weather_forecast_log.jsonl")
+        self.forecast_log_path = RUNTIME_DATA_DIR / "weather_forecast_log.jsonl"
         
         # Kept for dashboard compatibility. Probability is no longer moved by
         # an arbitrary lesson-derived percentage; calibration must come from
@@ -197,14 +195,23 @@ class WeatherEngine:
             "latitude": lat,
             "longitude": lon,
             "hourly": variable,
-            "models": "gfs_seamless",
+            "models": GFS_ENSEMBLE_MODEL,
             "forecast_days": forecast_days,
             "temperature_unit": "fahrenheit",
             "timezone": "auto",
         }
         resp = self.client.get(ENSEMBLE_API_URL, params=params)
         resp.raise_for_status()
-        return resp.json()
+        payload = resp.json()
+        payload["_provenance"] = {
+            "source_type": "forecast_model",
+            "provider": "Open-Meteo",
+            "model": GFS_ENSEMBLE_MODEL,
+            "member_count_expected": NUM_MEMBERS,
+            "url": str(resp.request.url),
+            "retrieved_at": datetime.now(timezone.utc).isoformat(),
+        }
+        return payload
 
     def get_deterministic_forecast(
         self,
@@ -214,20 +221,29 @@ class WeatherEngine:
         forecast_days: int = 3,
     ) -> dict:
         """
-        Fetch HRRR deterministic forecast and current observations.
+        Fetch an explicitly selected HRRR deterministic forecast and observations.
         """
         params = {
             "latitude": lat,
             "longitude": lon,
             "hourly": variable,
             "current": variable,
+            "models": HRRR_CONUS_MODEL,
             "forecast_days": forecast_days,
             "temperature_unit": "fahrenheit",
             "timezone": "auto",
         }
-        resp = self.client.get("https://api.open-meteo.com/v1/forecast", params=params)
+        resp = self.client.get(DETERMINISTIC_API_URL, params=params)
         resp.raise_for_status()
-        return resp.json()
+        payload = resp.json()
+        payload["_provenance"] = {
+            "source_type": "forecast_model",
+            "provider": "Open-Meteo",
+            "model": HRRR_CONUS_MODEL,
+            "url": str(resp.request.url),
+            "retrieved_at": datetime.now(timezone.utc).isoformat(),
+        }
+        return payload
 
     # ── Probability ──────────────────────────────────────────
 
@@ -583,19 +599,26 @@ class WeatherEngine:
         except Exception:
             return None
 
+        ensemble_provenance = data.get("_provenance", {})
+        deterministic_provenance = det_data.get("_provenance", {})
+        deterministic_model = deterministic_provenance.get("model", HRRR_CONUS_MODEL)
+        forecast_provenance = [
+            source for source in (ensemble_provenance, deterministic_provenance) if source
+        ]
+
         # 1. Real-Time Observation Override (METAR equivalent)
         current_temp = det_data.get("current", {}).get(parsed.variable)
         if current_temp is not None:
             if "high" in parsed.raw_question.lower() or "HIGH" in market.id:
                 if parsed.above and current_temp >= parsed.threshold:
                     # Target hit, it's 100% going to resolve YES.
-                    return self._build_override_result(parsed, market, 0.99, "BUY_YES", f"Current temp {current_temp}°F already hit threshold {parsed.threshold}°F")
+                    return self._build_override_result(parsed, market, 0.99, "BUY_YES", f"Current temp {current_temp}°F already hit threshold {parsed.threshold}°F", forecast_provenance)
                 if not parsed.above and current_temp >= parsed.threshold:
                     # Target broken, it's 100% going to resolve NO.
-                    return self._build_override_result(parsed, market, 0.01, "BUY_NO", f"Current temp {current_temp}°F broke 'below {parsed.threshold}°F' limit")
+                    return self._build_override_result(parsed, market, 0.01, "BUY_NO", f"Current temp {current_temp}°F broke 'below {parsed.threshold}°F' limit", forecast_provenance)
             if "low" in parsed.raw_question.lower() or "LOW" in market.id:
                 if not parsed.above and current_temp < parsed.threshold:
-                    return self._build_override_result(parsed, market, 0.99, "BUY_YES", f"Current temp {current_temp}°F already fell below {parsed.threshold}°F")
+                    return self._build_override_result(parsed, market, 0.99, "BUY_YES", f"Current temp {current_temp}°F already fell below {parsed.threshold}°F", forecast_provenance)
 
         # Find the target hour index
         hourly_times = data.get("hourly", {}).get("time", [])
@@ -668,7 +691,7 @@ class WeatherEngine:
         # 3. HRRR Consensus Veto Gating (If < 48h to expiry and HRRR available)
         hrrr_veto = False
         hrrr_msg = ""
-        if hrrr_temp is not None:
+        if hrrr_temp is not None and deterministic_model == HRRR_CONUS_MODEL:
             gfs_cross = raw_prob >= 0.5
             hrrr_cross = (hrrr_temp >= parsed.threshold) == parsed.above
             if gfs_cross != hrrr_cross:
@@ -742,6 +765,17 @@ class WeatherEngine:
             "executable_price": executable_price,
             "member_count": member_count,
             "hrrr_veto": hrrr_veto,
+            "ensemble_model": ensemble_provenance.get("model", GFS_ENSEMBLE_MODEL),
+            "deterministic_model": deterministic_model,
+            "model_provenance": [
+                source
+                for source in (
+                    ensemble_provenance,
+                    deterministic_provenance,
+                    insight.get("source") if insight else None,
+                )
+                if source
+            ],
             "hours_to_target": round(hours_to_target, 1),
             "probability_method": "member-wise daily extreme with Jeffreys smoothing" if (is_daily_high or is_daily_low) else "ensemble fraction with Jeffreys smoothing",
             "forecaster_probability_adjustment": 0.0,
@@ -759,13 +793,6 @@ class WeatherEngine:
         without selection bias.
         """
         try:
-            try:
-                market_yes_midpoint = float(market.midpoint)
-            except (AttributeError, TypeError, ValueError):
-                yes_ask = float(market.yes_price)
-                yes_bid = 1.0 - float(market.no_price)
-                market_yes_midpoint = (yes_bid + yes_ask) / 2.0
-
             record = {
                 "ts": datetime.now(timezone.utc).isoformat(),
                 "market_id": market.id,
@@ -778,13 +805,15 @@ class WeatherEngine:
                 "probability": result.get("probability"),
                 "raw_probability": result.get("raw_probability"),
                 "confidence": result.get("confidence"),
-                "market_yes_midpoint": market_yes_midpoint,
                 "market_yes_price": market.yes_price,
                 "market_no_price": market.no_price,
                 "direction": result.get("direction"),
                 "edge": result.get("edge"),
                 "should_trade": result.get("should_trade"),
                 "hrrr_veto": result.get("hrrr_veto", False),
+                "ensemble_model": result.get("ensemble_model"),
+                "deterministic_model": result.get("deterministic_model"),
+                "model_provenance": result.get("model_provenance", []),
                 "hours_to_target": result.get("hours_to_target"),
                 "member_count": result.get("member_count"),
                 "probability_method": result.get("probability_method"),
@@ -796,7 +825,15 @@ class WeatherEngine:
             # Logging must never break the analysis path.
             pass
 
-    def _build_override_result(self, parsed: ParsedWeatherMarket, market, final_prob: float, direction: str, logic: str):
+    def _build_override_result(
+        self,
+        parsed: ParsedWeatherMarket,
+        market,
+        final_prob: float,
+        direction: str,
+        logic: str,
+        model_provenance: list[dict] | None = None,
+    ):
         market_price = market.yes_price
         edge = final_prob - market.yes_price if direction == "BUY_YES" else (1 - final_prob) - market.no_price
         executable_price = market.yes_price if direction == "BUY_YES" else market.no_price
@@ -819,6 +856,15 @@ class WeatherEngine:
             "executable_price": executable_price,
             "member_count": 0,
             "hrrr_veto": False,
+            "ensemble_model": next(
+                (source.get("model") for source in (model_provenance or []) if source.get("model") == GFS_ENSEMBLE_MODEL),
+                GFS_ENSEMBLE_MODEL,
+            ),
+            "deterministic_model": next(
+                (source.get("model") for source in (model_provenance or []) if source.get("model") == HRRR_CONUS_MODEL),
+                HRRR_CONUS_MODEL,
+            ),
+            "model_provenance": model_provenance or [],
             "hours_to_target": 0.0,
             "probability_method": "observed threshold override",
             "forecaster_probability_adjustment": 0.0,

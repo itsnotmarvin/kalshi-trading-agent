@@ -817,7 +817,7 @@
                 <button class="btn btn-tab" id="tabSizing" onclick="switchTab('sizing')"><span
                         style="margin-right:6px">📐</span>Sizing Analytics</button>
                 <button class="btn btn-tab active" id="tabTrading" onclick="switchTab('trading')"><span
-                        style="margin-right:6px">🧪</span>Paper Mode</button>
+                        style="margin-right:6px">🧪</span>Paper Bot</button>
                 <a href="/early-marks" class="btn btn-tab" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; color:var(--text-secondary);">
                     Early Marks
                 </a>
@@ -1691,6 +1691,7 @@
                     ${p.size_usd > 0 ? `<span>Size: <b>$${p.size_usd.toFixed(2)}</b></span>` : ''}
                 </div>
                 ${p.reasoning ? `<div class="proposal-reasoning">${escapeHtml(p.reasoning)}</div>` : ''}
+                ${renderResearchLineage(p)}
                 ${renderRiskCheck(p)}
                 <div class="proposal-status ${statusClass}">${statusText}${p.rejection_reasons?.length ? ': ' + escapeHtml(p.rejection_reasons[0]) : ''
                         }</div>
@@ -1708,6 +1709,45 @@
             const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
+        }
+
+        function safeExternalUrl(rawUrl) {
+            try {
+                const parsed = new URL(rawUrl);
+                return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '';
+            } catch (_) {
+                return '';
+            }
+        }
+
+        function renderResearchLineage(proposal) {
+            const sources = Array.isArray(proposal.research_sources) ? proposal.research_sources : [];
+            const evidence = [
+                ...(Array.isArray(proposal.evidence_for) ? proposal.evidence_for : []),
+                ...(Array.isArray(proposal.evidence_against) ? proposal.evidence_against : []),
+            ];
+            if (!sources.length && !evidence.length) return '';
+
+            const sourceRows = sources.map(source => {
+                const href = safeExternalUrl(source.url);
+                const label = source.title || source.model || `${source.provider || 'Source'}${source.office ? ` ${source.office}` : ''}`;
+                const linkedLabel = href
+                    ? `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`
+                    : escapeHtml(label);
+                return `<li>${linkedLabel} <span style="color:var(--text-dim)">${escapeHtml(source.provider || source.source_type || '')}</span></li>`;
+            }).join('');
+            const evidenceRows = evidence.map(item =>
+                `<li>${escapeHtml(item.claim || '')} <span style="color:${item.verified ? 'var(--green)' : 'var(--red)'}">${item.verified ? 'verified' : 'unverified'}</span></li>`
+            ).join('');
+            const validation = proposal.source_validation || {};
+            const status = validation.actionable === true ? 'verified' : validation.actionable === false ? 'blocked' : 'model provenance';
+
+            return `<details class="proposal-reasoning" style="font-style:normal">
+                <summary>Research lineage · ${escapeHtml(status)} · ${sources.length} source${sources.length === 1 ? '' : 's'}</summary>
+                ${proposal.base_rate ? `<p><strong>Base rate:</strong> ${escapeHtml(proposal.base_rate)}</p>` : ''}
+                ${evidenceRows ? `<strong>Evidence</strong><ul>${evidenceRows}</ul>` : ''}
+                ${sourceRows ? `<strong>Sources</strong><ul>${sourceRows}</ul>` : ''}
+            </details>`;
         }
 
         function renderMacroLessons(lessons) {

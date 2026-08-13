@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from collections import defaultdict
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-load_dotenv(".env")
+load_dotenv("/Users/marbin/kalshi/.env")
 
 from adapters.kalshi_adapter import KalshiAdapter
 

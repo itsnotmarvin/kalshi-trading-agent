@@ -2,7 +2,7 @@ import asyncio
 import os
 from dotenv import load_dotenv
 
-load_dotenv(".env")
+load_dotenv("/Users/marbin/kalshi/.env")
 from adapters.kalshi_adapter import KalshiAdapter
 
 async def run_test_balance():

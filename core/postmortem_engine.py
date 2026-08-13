@@ -8,6 +8,7 @@ from adapters.base import PlatformAdapter, Position  # type: ignore
 from core.memory_manager import MemoryManager  # type: ignore
 from config.settings import settings  # type: ignore
 from config.prompts import POSTMORTEM_PROMPT  # type: ignore
+from config.paths import RUNTIME_DATA_DIR, TRADE_LOG_PATH
 
 class PostmortemEngine:
     """
@@ -18,13 +19,13 @@ class PostmortemEngine:
     def __init__(self, memory_manager: MemoryManager, anthropic_api_key: str):
         self.memory = memory_manager
         self.client = anthropic.Anthropic(api_key=anthropic_api_key)
-        self.data_dir = Path("data/postmortems")
+        self.data_dir = RUNTIME_DATA_DIR / "postmortems"
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
     async def run_analysis(self, adapter: PlatformAdapter):
         """Find recently settled trades and analyze them using trades.jsonl."""
         try:
-            log_path = Path("trades.jsonl")
+            log_path = TRADE_LOG_PATH
             if not log_path.exists():
                 return
             
@@ -43,7 +44,7 @@ class PostmortemEngine:
                         resolutions.append(data)
             
             # 2. Identify resolutions that haven't been processed
-            history_file = Path("data/postmortem_history.json")
+            history_file = RUNTIME_DATA_DIR / "postmortem_history.json"
             processed_ids: Set[str] = set()
             if history_file.exists():
                 try:

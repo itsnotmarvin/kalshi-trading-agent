@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Kalshi Forecasting Lab
-======================
-Experimental prediction-market research and paper-validation workflow.
+Prediction Market Research and Trading Agent
+=============================================
+Provider-configurable research, risk, paper, and live execution loop.
 
 Usage:
     python main.py --mode paper              # Paper trading (no real money)
@@ -334,6 +334,13 @@ async def run_trading_cycle(
                 direction=proposal.direction,
                 confidence=proposal.confidence,
                 reasoning=proposal.reasoning,
+                is_deep_research=getattr(proposal, "is_deep_research", False),
+                base_rate=proposal.base_rate,
+                base_rate_source_ids=proposal.base_rate_source_ids,
+                evidence_for=proposal.evidence_for,
+                evidence_against=proposal.evidence_against,
+                research_sources=proposal.research_sources,
+                source_validation=proposal.source_validation,
             )
 
     # --- Step 5: Risk-check and execute ---
@@ -464,7 +471,7 @@ async def run_trading_cycle(
 
 
 async def main():
-    parser = argparse.ArgumentParser(description="Kalshi Forecasting Lab")
+    parser = argparse.ArgumentParser(description="Prediction Market AI Trading Agent")
     parser.add_argument(
         "--mode", choices=["paper", "live"], default="paper",
         help="Trading mode (default: paper)"
@@ -547,7 +554,7 @@ async def main():
     adapter = get_adapter()
     agent = TradingAgent(risk_manager)
 
-    print(f"\n🚀 Starting Kalshi Forecasting Lab")
+    print(f"\n🚀 Starting Prediction Market Agent")
     print(f"   Platform: {settings.platform}")
     print(f"   Mode: {'📝 Paper' if is_paper else '💰 LIVE'}")
     if is_paper:

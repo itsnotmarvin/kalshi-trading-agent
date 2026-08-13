@@ -5,10 +5,10 @@ Score logged weather forecasts against Kalshi settlements.
 Usage (from kalshi-agent/):
     python3 scripts/score_weather.py
 
-Reads data/weather_forecast_log.jsonl (written by WeatherEngine for every
+Reads data/runtime/weather_forecast_log.jsonl (written by WeatherEngine for every
 analyzed market, traded or not), fetches settlement results — surviving the
 404 that settled markets return — and reports model-vs-market Brier scores
-and the Brier Skill Score. Writes data/weather_skill_report.json.
+and the Brier Skill Score. Writes data/runtime/weather_skill_report.json.
 """
 import asyncio
 import json
@@ -19,9 +19,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from adapters.kalshi_adapter import KalshiAdapter  # noqa: E402
 from core.weather_skill import latest_per_market, load_forecasts, score_forecasts  # noqa: E402
+from config.paths import RUNTIME_DATA_DIR  # noqa: E402
 
-FORECAST_LOG = Path("data/weather_forecast_log.jsonl")
-REPORT_PATH = Path("data/weather_skill_report.json")
+FORECAST_LOG = RUNTIME_DATA_DIR / "weather_forecast_log.jsonl"
+REPORT_PATH = RUNTIME_DATA_DIR / "weather_skill_report.json"
 
 
 async def main() -> int:

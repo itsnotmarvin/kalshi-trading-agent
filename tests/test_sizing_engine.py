@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 # Ensure core is importable
-sys.path.append(str(Path(__file__).parent))
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from core.paper_sizer import get_exploratory_size
 from core.risk_manager import RiskManager, TradeProposal

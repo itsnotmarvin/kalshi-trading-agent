@@ -1,10 +1,7 @@
-# Data directory
+# Data directories
 
-`wc2026_bracket.json` is the only committed reference fixture in this
-directory. The application and research probes generate the other JSON/JSONL
-files locally for paper positions, calibration, circuit-breaker state,
-postmortems, and replay output; those files are intentionally ignored.
+- `reference/` contains reviewed, versioned inputs required to reproduce a
+  workflow, including the World Cup bracket and imported market-price history.
+- `runtime/` contains local logs, learned state, databases, paper positions, and generated reports. Git ignores everything in this directory except `.gitkeep`.
 
-Generated evidence that is useful for review should be reduced to a small,
-human-readable artifact under `examples/` with its assumptions and limitations
-stated explicitly.
+Runtime output is intentionally excluded from the repository because it can contain personal trading history, model responses, and environment-specific state.

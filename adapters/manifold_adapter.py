@@ -1,15 +1,7 @@
-"""
-Manifold Markets Adapter - PLAY MONEY (risk-free practice)
-
-Manifold uses "mana" (play money), making it perfect for:
-- Testing your bot logic with zero financial risk
-- Validating Claude's probability estimates against outcomes
-- Learning the agent architecture before committing real money
+"""Experimental Manifold adapter for reading markets and placing mana bets.
 
 API docs: https://docs.manifold.markets/api
-No authentication needed for reading, API key for betting.
-Get your API key at: https://manifold.markets/profile → API tab
-Age requirement: 13+ (play money only)
+Current platform terms and API behavior should be verified before use.
 """
 import httpx
 from datetime import datetime, timezone
@@ -24,14 +16,15 @@ MANIFOLD_API = "https://api.manifold.markets/v0"
 
 class ManifoldAdapter(PlatformAdapter):
     """
-    Manifold Markets adapter for risk-free testing.
+    Manifold Markets adapter for play-money integration testing.
 
     SETUP:
     1. Create account at manifold.markets
     2. Go to Profile → API → copy your API key
     3. Set MANIFOLD_API_KEY in .env (optional, only needed for placing bets)
 
-    You start with free mana. No real money involved.
+    This adapter does not treat play-money results as evidence of live-market
+    execution quality or profitability.
     """
 
     def __init__(self, api_key: str = ""):

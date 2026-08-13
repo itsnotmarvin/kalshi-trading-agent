@@ -1,28 +1,35 @@
-# Secrets
+# Local credentials. Commit only the redacted template.
 .env
+.env.*
+!.env.example
 *.pem
 *.key
+*.p8
+*.rsa
 
-# Python
-venv/
+# Python/editor artifacts
 .venv/
+venv/
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.pyright/
 .DS_Store
+.vscode/
 
-# Runtime logs
+# Runtime state and generated reports. data/reference remains versioned.
+data/runtime/**
+!data/runtime/.gitkeep
+data/early_marks/
 *.jsonl
 
-# Generated runtime state and research output
-data/backtest_replay_*.json
-data/category_stats.json
-data/daily_stats_state.json
-data/early_marks_*.json
-data/macro_lessons.json
+# Local scratch files retained only for compatibility with older workspaces.
+yay.txt
+pooper.txt
+
+# One-off full-codebase review dumps
+codebase_for_review.txt
+complete_sanitized_codebase.txt
 data/memory.json
-data/paper_*.json
-data/postmortem_history.json
-data/postmortems/
-data/tmp_skill_selftest/
-data/weather_skill_report.json
-data/world_cup_calibration.json
+data/category_stats.json

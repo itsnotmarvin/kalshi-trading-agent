@@ -7,12 +7,13 @@ capital: does the model beat the market it is trading against?
 Joins the selection-bias-free forecast log (every analyzed market, traded or
 not — see WeatherEngine._log_forecast) against Kalshi settlement results and
 computes the Brier score of the model versus the Brier score of the market
-midpoint, summarized as a Brier Skill Score:
+price, summarized as a Brier Skill Score:
 
     BSS = 1 − Brier(model) / Brier(market)
 
-BSS > 0 means the model beat the midpoint baseline on the scored sample. That
-is evidence about forecast quality, not proof of executable trading profit.
+BSS > 0 → the model is better-calibrated than the price it trades against
+(a necessary condition for edge). BSS ≤ 0 → there is no edge to harvest,
+regardless of how good the model looks in isolation.
 """
 from __future__ import annotations
 
@@ -42,9 +43,8 @@ def latest_per_market(records: list[dict]) -> dict[str, dict]:
     """
     Keep the most recent forecast per market.
 
-    The engine re-analyzes markets every cycle. Callers must exclude records at
-    or after resolution before using this helper; it cannot infer settlement
-    cutoffs from a forecast row alone.
+    The engine re-analyzes markets every cycle; the last forecast before
+    settlement is the one the model would have traded on.
     """
     latest: dict[str, dict] = {}
     for record in records:
@@ -68,7 +68,7 @@ def _log_loss(prob: float, outcome: int) -> float:
 
 def score_forecasts(forecasts: dict[str, dict], outcomes: dict[str, str]) -> dict:
     """
-    Score model probabilities against market midpoints on resolved markets.
+    Score model probabilities against market prices on resolved markets.
 
     forecasts: market_id → forecast record (from latest_per_market)
     outcomes:  market_id → "yes" / "no" settlement result
@@ -81,12 +81,7 @@ def score_forecasts(forecasts: dict[str, dict], outcomes: dict[str, str]) -> dic
         if result not in ("yes", "no"):
             continue
         prob = record.get("probability")
-        price = record.get("market_yes_midpoint")
-        if price is None:
-            yes_ask = record.get("market_yes_price")
-            no_ask = record.get("market_no_price")
-            if yes_ask is not None and no_ask is not None:
-                price = (float(yes_ask) + (1.0 - float(no_ask))) / 2.0
+        price = record.get("market_yes_price")
         if prob is None or price is None:
             continue
         outcome = 1 if result == "yes" else 0

@@ -1,11 +1,7 @@
-"""
-Kalshi Platform Adapter
+"""Kalshi REST adapter for market data, portfolio state, and order execution.
 
-Kalshi is CFTC-regulated, accepts USD deposits via ACH/wire/Apple Pay,
-available in 42+ US states, and requires only 18+ age verification.
-
-API docs: https://docs.kalshi.com
-Python SDK: pip install kalshi-python
+Platform rules and availability can change; consult the current Kalshi terms
+and API documentation before using live mode: https://docs.kalshi.com
 """
 import httpx
 import asyncio
@@ -22,6 +18,7 @@ from adapters.base import (
     Side, OrderStatus, Transfer
 )
 from config.settings import settings
+from config.paths import resolve_project_path
 
 
 # Kalshi API base URLs
@@ -32,11 +29,8 @@ class KalshiAdapter(PlatformAdapter):
     """
     Kalshi prediction market adapter.
 
-    SETUP INSTRUCTIONS:
-    1. Create account at kalshi.com (18+, US address required)
-    2. Go to Settings → API → Create new API key
-    3. Download your private key (.pem file)
-    4. Set KALSHI_API_KEY_ID and KALSHI_PRIVATE_KEY_PATH in .env
+    Configure KALSHI_API_KEY_ID and an explicit KALSHI_PRIVATE_KEY_PATH.
+    Keep the private key outside the repository.
 
     Paper/shadow mode still uses production Kalshi market data; it only skips
     live order placement.
@@ -51,20 +45,10 @@ class KalshiAdapter(PlatformAdapter):
         self._member_id = None
 
     def _resolve_private_key_path(self, configured_path: str) -> str:
-        """
-        Resolve the configured private key path with a local dev fallback.
-
-        The fallback file is gitignored and only used when the configured path is
-        missing, which keeps server startup working after local folder renames.
-        """
-        if configured_path and Path(configured_path).expanduser().exists():
-            return configured_path
-
-        local_key_path = Path(__file__).resolve().parents[1] / "yay.txt"
-        if local_key_path.exists():
-            return str(local_key_path)
-
-        return configured_path
+        """Resolve only the explicitly configured key path; never guess a key file."""
+        if not configured_path:
+            return ""
+        return str(resolve_project_path(configured_path))
 
     async def connect(self) -> bool:
         """Load private key and verify connection."""

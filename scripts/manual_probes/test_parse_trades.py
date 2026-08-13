@@ -7,7 +7,8 @@ def parse_trades():
     resolutions = []
     scans = 0
 
-    with open("trades.jsonl", "r") as f:
+    from config.paths import TRADE_LOG_PATH
+    with open(TRADE_LOG_PATH, "r") as f:
         for line in f:
             try:
                 entry = json.loads(line)

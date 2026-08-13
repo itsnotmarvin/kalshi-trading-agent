@@ -1,13 +1,14 @@
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from config.paths import RUNTIME_DATA_DIR
 
 
 class MemoryManager:
     """Manages the bot's long-term memory of past trades and lessons learned."""
     
-    def __init__(self, data_dir: str = "data"):
-        self.data_dir = Path(data_dir)
+    def __init__(self, data_dir: str | Path | None = None):
+        self.data_dir = Path(data_dir) if data_dir is not None else RUNTIME_DATA_DIR
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.memory_file = self.data_dir / "memory.json"
         self.macro_file = self.data_dir / "macro_lessons.json"
@@ -119,7 +120,8 @@ class MemoryManager:
     def get_resolved_trade_count(self) -> int:
         """Count resolved trades from trades.jsonl for auto-trigger logic."""
         count = 0
-        log_path = Path("trades.jsonl")
+        from config.paths import TRADE_LOG_PATH
+        log_path = TRADE_LOG_PATH
         if log_path.exists():
             try:
                 with open(log_path, "r") as f:

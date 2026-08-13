@@ -1,6 +1,7 @@
 import httpx
 import os
 import json
+import re
 from datetime import datetime, timezone
 import anthropic
 from config.settings import settings
@@ -34,6 +35,10 @@ CITY_TO_WFO = {
     "OKC": "OUN"  # Oklahoma City
 }
 
+WEATHER_TICKER_CITY_RE = re.compile(
+    r"^KX(?:HIGH|LOW|RAIN|SNOW|WIND)([A-Z]+?)(?:-|$)"
+)
+
 class ForecasterInsight:
     """
     Fetches the latest Area Forecast Discussion from the National Weather Service
@@ -53,13 +58,18 @@ class ForecasterInsight:
         
     def _get_wfo_code(self, market_id: str) -> str | None:
         """Extract WFO code from a Kalshi weather market ID."""
-        for city_code, wfo in CITY_TO_WFO.items():
-            if city_code in market_id:
-                return wfo
-        return None
+        match = WEATHER_TICKER_CITY_RE.match(str(market_id).upper())
+        if not match:
+            return None
+        return CITY_TO_WFO.get(match.group(1))
 
     def fetch_nws_discussion(self, wfo_code: str) -> str | None:
         """Fetch the latest Area Forecast Discussion for a given NWS office."""
+        record = self._fetch_nws_discussion_record(wfo_code)
+        return record["text"] if record else None
+
+    def _fetch_nws_discussion_record(self, wfo_code: str) -> dict | None:
+        """Fetch discussion text together with the exact NWS product URL."""
         try:
             url = f"https://api.weather.gov/products/types/AFD/locations/{wfo_code}"
             resp = self.client.get(url)
@@ -77,7 +87,14 @@ class ForecasterInsight:
             text_resp = self.client.get(latest_url)
             text_resp.raise_for_status()
             
-            return text_resp.json().get("productText")
+            text = text_resp.json().get("productText")
+            if not text:
+                return None
+            return {
+                "text": text,
+                "url": latest_url,
+                "retrieved_at": datetime.now(timezone.utc).isoformat(),
+            }
         except Exception as e:
             print(f"Error fetching NWS discussion for {wfo_code}: {e}")
             return None
@@ -147,8 +164,16 @@ Provide your analysis in the following JSON format:
         if not wfo:
             return None
             
-        text = self.fetch_nws_discussion(wfo)
-        if not text:
+        discussion = self._fetch_nws_discussion_record(wfo)
+        if not discussion:
             return None
             
-        return self.analyze_sentiment(text, variable, threshold, above)
+        insight = self.analyze_sentiment(discussion["text"], variable, threshold, above)
+        insight["source"] = {
+            "source_type": "forecast_discussion",
+            "provider": "National Weather Service",
+            "office": wfo,
+            "url": discussion["url"],
+            "retrieved_at": discussion["retrieved_at"],
+        }
+        return insight

@@ -27,10 +27,10 @@ def no_forecaster_insight(*_args, **_kwargs):
     return {"modifier": 0.0, "reasoning": "No external forecaster modifier."}
 
 
-async def test_learning():
+async def test_learning(tmp_path):
     print("--- Testing Weather Learning & Safety System ---")
 
-    mm = MemoryManager(data_dir="data")
+    mm = MemoryManager(data_dir=tmp_path)
     lessons = mm.get_macro_lessons()
     print(f"Loaded {len(lessons)} active lessons.")
 

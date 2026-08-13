@@ -1,15 +1,8 @@
-"""
-Sports Data Engine — Structured stats for Kalshi sports markets.
+"""Fetch structured sports context for supported Kalshi market analysis.
 
-Fetches real-time scores, standings, injuries, and odds from free APIs
-so Claude has concrete data instead of relying on web search quality.
-
-Data sources:
-  - ESPN API (unofficial, free, no key needed) — scores, standings, injuries
-  - Odds API (free tier: 500 req/month) — consensus lines for edge detection
-
-This is the sports equivalent of the WeatherEngine — it turns Claude's
-sports analysis from vibes-based guessing into data-grounded reasoning.
+The engine reads ESPN's unofficial API for scores, standings, and injury data.
+External availability and schemas are not guaranteed, and the returned context
+does not by itself establish forecast accuracy.
 """
 import re
 import httpx
