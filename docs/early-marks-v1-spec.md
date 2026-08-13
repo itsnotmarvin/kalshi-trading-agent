@@ -1,10 +1,11 @@
-# Early Marks — Page & Workflow Contract
+# Early Marks V1 — Page & Workflow Contract
 
-Status: binding for `early_marks.html`, the Early Marks endpoints in
+Status: binding for `web/early_marks.html`, the Early Marks endpoints in
 `server.py`, and `scripts/manual_probes/test_early_marks.py` stage emission.
-Design system: `static/desk.css` tokens.
+Design system: `static/desk.css` tokens per
+`/Users/marbin/kalshi/.agents/skills/_shared/ui-design-system.md`.
 
-## Honesty rules (category-blind discovery)
+## Honesty rules (V2 — category-blind discovery)
 
 - An early mark is defined by **lifecycle structure, never by topic**: listed
   recently (little of the market's own life elapsed), few trades, a mark
@@ -17,7 +18,7 @@ Design system: `static/desk.css` tokens.
 - Category remains a *display filter* and a *research lens*: domain-specific
   question lists and cadence floors (e.g. tournament schedules) are allowed
   at the explanation layer, but never as eligibility gates.
-- Category quality shown from `data/category_stats.json` honestly, as a
+- Category quality shown from `data/runtime/category_stats.json` honestly, as a
   per-category track-record summary with sample sizes; when there is no
   track record, say so and state that ranking is structural.
 - Concentration warning: if ≥60% of current-run candidates share one ticker
@@ -70,7 +71,7 @@ material, no error internals:
 - kalshi: one lightweight authenticated or public read with short timeout.
 - llm/openai/research: configuration presence only (connected/error level,
   never key details). openai chip hidden entirely when not configured.
-- cache: existence + age of `data/early_marks_probe.json` / runs file.
+- cache: existence + age of `data/runtime/early_marks_probe.json` / runs file.
 - Client renders chips (ONLINE / OFFLINE / API OK / API ERROR / NOT SET /
   STALE) on load, before Generate.
 - Kalshi offline → `offline` state, Generate disabled. Research or LLM not
@@ -81,13 +82,13 @@ material, no error internals:
 ## Generate flow & staged progress
 
 - Probe script (`test_early_marks.py`) additionally writes
-  `data/early_marks_status.json` at stage boundaries:
+  `data/runtime/early_marks_status.json` at stage boundaries:
   `{"run_id", "stage", "stages_done": [...], "updated_at"}`. Stages, in order:
   `connect` (Connecting to Kalshi) → `health` (Checking service health) →
   `pull_markets` (Pulling markets) → `category_model` (Checking category
   model) → `rank` (Ranking early marks) → `enrich` (Enriching with research)
   → `render` (Rendering cards). Keep the probe change additive — do not
-  alter scoring logic; `tests/test_early_marks.py` must stay green.
+  alter scoring logic; `test_early_marks.py` root tests must stay green.
 - `GET /api/early-marks/run/status` (new): returns that file plus a
   server-side `running` flag toggled around the subprocess.
 - Client: POST run as today; while awaiting, poll status every ~2s and render

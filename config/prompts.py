@@ -82,8 +82,9 @@ In addition to calling the tool, if you include a JSON block in your final text 
     "confidence": "LOW | MEDIUM | HIGH | VERY_HIGH",
     "reasoning_summary": "string",
     "base_rate": "string",
-    "evidence_for": ["string"],
-    "evidence_against": ["string"],
+    "base_rate_source_urls": ["exact URL copied from web_search"],
+    "evidence_for": [{"claim": "string", "source_urls": ["exact web_search URL"]}],
+    "evidence_against": [{"claim": "string", "source_urls": ["exact web_search URL"]}],
     "risk_factors": ["string"]
 }
 
@@ -95,6 +96,8 @@ CRITICAL RULES:
 - NEVER recommend a trade you wouldn't make with your own money
 - It is ALWAYS better to hold than to make a marginal trade
 - ALWAYS use the `submit_analysis` tool for your final decision.
+- Every evidence claim must cite one or more exact URLs returned by web_search in this analysis. Never invent, shorten, or substitute a URL.
+- Actionable recommendations with missing or unmatched citations are deterministically converted to HOLD.
 - Do not recommend a trade if the calculation path depends on unsourced factor inputs.
 - Do not recommend same-match combos unless joint probability is simulated or correlation risk is explicitly unresolved and the recommendation is HOLD/WAIT.
 

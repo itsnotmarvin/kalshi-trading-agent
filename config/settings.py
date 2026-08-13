@@ -3,9 +3,16 @@ Configuration - loads from .env and provides typed settings.
 """
 import os
 from dataclasses import dataclass, field
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv(override=True)
+# Prefer exported environment variables, then the project-local .env, then
+# the parent repository's legacy .env location.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+load_dotenv(PROJECT_ROOT / ".env", override=False)
+load_dotenv(PROJECT_ROOT.parent / ".env", override=False)
+
+from config.paths import TRADE_LOG_PATH, resolve_project_path
 
 
 @dataclass
@@ -45,7 +52,12 @@ class Settings:
     world_cup_schedule_days_ahead: int = field(default_factory=lambda: int(os.getenv("WORLD_CUP_SCHEDULE_DAYS_AHEAD", "45")))
     world_cup_quote_fresh_seconds: int = field(default_factory=lambda: int(os.getenv("WORLD_CUP_QUOTE_FRESH_SECONDS", "30")))
     world_cup_combo_quote_fresh_seconds: int = field(default_factory=lambda: int(os.getenv("WORLD_CUP_COMBO_QUOTE_FRESH_SECONDS", "10")))
-    world_cup_calibration_file: str = field(default_factory=lambda: os.getenv("WORLD_CUP_CALIBRATION_FILE", "./data/world_cup_calibration.json"))
+    world_cup_calibration_file: str = field(default_factory=lambda: str(
+        resolve_project_path(os.getenv(
+            "WORLD_CUP_CALIBRATION_FILE",
+            str(TRADE_LOG_PATH.parent / "world_cup_calibration.json"),
+        ))
+    ))
 
     # Platform selection
     platform: str = field(default_factory=lambda: os.getenv("PLATFORM", "kalshi"))
@@ -88,7 +100,9 @@ class Settings:
 
     # Agent Loop
     cycle_interval_minutes: int = field(default_factory=lambda: int(os.getenv("CYCLE_INTERVAL_MINUTES", "30")))
-    log_file: str = field(default_factory=lambda: os.getenv("LOG_FILE", "./trades.jsonl"))
+    log_file: str = field(default_factory=lambda: str(
+        resolve_project_path(os.getenv("LOG_FILE", str(TRADE_LOG_PATH)))
+    ))
     allow_weather_live_before_validation: bool = field(default_factory=lambda: os.getenv("ALLOW_WEATHER_LIVE_BEFORE_VALIDATION", "false").lower() == "true")
 
     # Telegram Notifications

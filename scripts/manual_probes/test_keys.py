@@ -22,13 +22,10 @@ from config.settings import settings  # noqa: E402
 async def main() -> int:
     adapter = KalshiAdapter()
     configured_path = Path(adapter.private_key_path).expanduser() if adapter.private_key_path else None
-    local_key_path = PROJECT_DIR / "yay.txt"
-    if (not configured_path or not configured_path.exists()) and local_key_path.exists():
-        adapter.private_key_path = str(local_key_path)
 
     print("Kalshi environment: production")
     print(f"API key configured: {bool(adapter.api_key_id)}")
-    print(f"Private key file configured: {bool(adapter.private_key_path)}")
+    print(f"Private key file configured: {bool(configured_path)}")
 
     if not adapter.api_key_id or not adapter.private_key_path:
         print("Missing Kalshi API configuration.")

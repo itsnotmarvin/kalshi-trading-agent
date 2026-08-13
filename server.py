@@ -1,8 +1,8 @@
 """
 Web Server — FastAPI backend for the trading dashboard.
 
-Serves the React dashboard and provides REST API endpoints
-for the frontend to communicate with the trading bot.
+Serves the HTML/JavaScript dashboards and REST API endpoints used to inspect
+and control the local trading process.
 
 Usage:
     pip install "fastapi[standard]" uvicorn
@@ -29,6 +29,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Resp
 
 from adapters.base import TradeResult, Side, Order, OrderStatus  # type: ignore
 from config.settings import settings  # type: ignore
+from config.paths import RUNTIME_DATA_DIR, WEB_DIR  # type: ignore
 from core.notifier import send_telegram_alert  # type: ignore
 from core.agent import TradingAgent  # type: ignore
 from core.risk_manager import RiskManager, TradeProposal  # type: ignore
@@ -140,9 +141,9 @@ COUNTED_TRANSFER_STATUSES = {"applied", "approved", "completed", "settled", "suc
 PREOPEN_MARKET_STATUSES = {"initialized", "unopened", "preopen", "pending", "not_started", "unstarted"}
 EARLY_MARK_IMAGE_CACHE: dict[str, str | None] = {}
 EARLY_MARK_IMAGE_USER_AGENT = "KalshiEarlyMarks/0.1 (local research dashboard; contact: research@example.com)"
-EARLY_MARK_PROBE_PATH = Path(__file__).parent / "data" / "early_marks_probe.json"
-EARLY_MARK_RUNS_PATH = Path(__file__).parent / "data" / "early_marks_runs.json"
-EARLY_MARK_STATUS_PATH = Path(__file__).parent / "data" / "early_marks_status.json"
+EARLY_MARK_PROBE_PATH = RUNTIME_DATA_DIR / "early_marks_probe.json"
+EARLY_MARK_RUNS_PATH = RUNTIME_DATA_DIR / "early_marks_runs.json"
+EARLY_MARK_STATUS_PATH = RUNTIME_DATA_DIR / "early_marks_status.json"
 EARLY_MARK_RUNNING: dict[str, Any] = {"running": False, "run_id": None}
 EARLY_MARK_STATUS_DISPLAY = {
     "Watch only": "Watch only",
@@ -186,7 +187,7 @@ def get_adapter():
         _global_adapter = PolymarketAdapter()
     else:
         raise ValueError(f"Unknown platform: {settings.platform}")
-        
+
     return _global_adapter
 
 async def refresh_state_from_platform(adapter=None):
@@ -1035,7 +1036,7 @@ def _early_marks_claude_state() -> str:
 
 def _early_marks_category_quality() -> str:
     """Summarize per-category track record honestly; scans are category-blind."""
-    stats_path = Path(__file__).parent / "data" / "category_stats.json"
+    stats_path = RUNTIME_DATA_DIR / "category_stats.json"
     try:
         stats = json.loads(stats_path.read_text())
         parts = []
@@ -1177,7 +1178,7 @@ async def get_history():
                                     state.market_titles[mid] = mid
                             except Exception:
                                 state.market_titles[mid] = mid
-                
+
                 h["market_question"] = state.market_titles.get(mid, mid)
 
     return {"history": history}
@@ -1273,6 +1274,42 @@ async def get_early_mark_image(name: str, category: str = ""):
     if thumbnail:
         return RedirectResponse(thumbnail)
     return Response(_early_mark_fallback_svg(name, category), media_type="image/svg+xml")
+
+
+@app.post("/api/early-marks/snapshot")
+async def collect_early_marks_snapshot(payload: dict[str, Any] = Body(default_factory=dict)):
+    """
+    Collect one point-in-time snapshot of the market universe (V2 detection
+    prerequisite — non-response is a claim about history and needs history).
+    """
+    from datetime import datetime as _dt
+
+    from core.early_marks_snapshots import collect_snapshot
+
+    max_pages = max(1, min(int(_safe_float(payload.get("max_pages"), 120)), 300))
+    page_limit = max(50, min(int(_safe_float(payload.get("page_limit"), 200)), 200))
+    observed_at = _dt.now(timezone.utc)
+    try:
+        summary = await collect_snapshot(
+            get_adapter(), observed_at, max_pages=max_pages, page_limit=page_limit
+        )
+    except Exception as e:
+        return JSONResponse({"status": "error", "message": f"Snapshot failed: {e}"}, status_code=502)
+
+    return {
+        "status": "ok",
+        "observed_at": observed_at.isoformat(),
+        **summary,
+    }
+
+
+@app.get("/api/early-marks/snapshots")
+async def list_early_marks_snapshots():
+    """List collected snapshot runs with their coverage stats."""
+    from core.early_marks_snapshots import list_collection_runs
+
+    runs = list_collection_runs()
+    return {"runs": runs, "count": len(runs)}
 
 
 @app.post("/api/early-marks/run")
@@ -1511,7 +1548,7 @@ async def get_paper_analytics():
         "large": {"name": "Large ($1,000-$5,000)", "count": 0, "won": 0, "pnl": 0.0, "total_size": 0.0},
         "mega": {"name": "Mega (>=$5,000)", "count": 0, "won": 0, "pnl": 0.0, "total_size": 0.0},
     }
-    
+
     trade_sizes = {}
     log_path = Path(settings.log_file)
     if log_path.exists():
@@ -1527,7 +1564,7 @@ async def get_paper_analytics():
                             market_id = entry.get("market_id")
                             pnl = entry.get("pnl", 0.0)
                             price = entry.get("market_price_at_entry", 0.5)
-                            
+
                             # Determine size
                             size = trade_sizes.get(market_id)
                             if size is None:
@@ -1538,10 +1575,10 @@ async def get_paper_analytics():
                                         size = pnl * price / (1.0 - price)
                                     else:
                                         size = pnl
-                            
+
                             if size <= 0:
                                 continue
-                                
+
                             # Sort into buckets
                             if size < 50.0:
                                 b_key = "micro"
@@ -1553,7 +1590,7 @@ async def get_paper_analytics():
                                 b_key = "large"
                             else:
                                 b_key = "mega"
-                                
+
                             buckets[b_key]["count"] += 1
                             buckets[b_key]["pnl"] += pnl
                             buckets[b_key]["total_size"] += size
@@ -1563,7 +1600,7 @@ async def get_paper_analytics():
                         continue
         except Exception:
             pass
-            
+
     # Calculate averages and win rates
     formatted = []
     for key, data in buckets.items():
@@ -1571,11 +1608,11 @@ async def get_paper_analytics():
         pnl = data["pnl"]
         won = data["won"]
         total_size = data["total_size"]
-        
+
         win_rate = (won / count * 100.0) if count > 0 else 0.0
         avg_size = (total_size / count) if count > 0 else 0.0
         roi = (pnl / total_size * 100.0) if total_size > 0 else 0.0
-        
+
         formatted.append({
             "key": key,
             "name": data["name"],
@@ -1585,7 +1622,7 @@ async def get_paper_analytics():
             "avg_size": round(avg_size, 2),
             "roi": round(roi, 1),
         })
-        
+
     return {"analytics": formatted}
 
 
@@ -1594,12 +1631,12 @@ async def get_recommendations(_: None = Depends(require_api_token)):
     """Generate recommendations on what to do next based on bot state."""
     from core.analyzer import TradeAnalyzer  # type: ignore
     from core.memory_manager import MemoryManager  # type: ignore
-    
+
     mm = MemoryManager()
     analyzer = TradeAnalyzer()
-    
+
     active_lessons = [l for l in mm.get_macro_lessons_raw() if l.get("status") in ("active", "probationary")]
-    
+
     try:
         # Manual slicing to satisfy IDE
         all_positions = list(state.positions) if state.positions else []
@@ -1609,7 +1646,7 @@ async def get_recommendations(_: None = Depends(require_api_token)):
             p_start = p_len - 5 if p_len > 5 else 0
             for i in range(p_start, p_len):
                 recent_positions.append(all_positions[i])
-        
+
         raw_lessons = list(active_lessons) if active_lessons else []
         recent_lessons = []
         if raw_lessons:
@@ -1617,7 +1654,7 @@ async def get_recommendations(_: None = Depends(require_api_token)):
             l_start = l_len - 5 if l_len > 5 else 0
             for i in range(l_start, l_len):
                 recent_lessons.append(raw_lessons[i])
-        
+
         open_positions = []
         if recent_positions:
             for p in recent_positions:
@@ -1638,7 +1675,7 @@ async def get_recommendations(_: None = Depends(require_api_token)):
         }
     except Exception:
         state_data = {"balance": state.balance, "mode": state.mode, "open_positions": [], "lessons": []}
-    
+
     recs = await analyzer.generate_recommendations(state_data)
     return {"status": "success", "recommendations": recs}
 
@@ -1771,12 +1808,12 @@ async def update_settings(updates: dict, _: None = Depends(require_api_token)):
 async def scan_market_intel(_: None = Depends(require_api_token)):
     """Analyze the current market and return a strategy intel report."""
     from core.analyzer import TradeAnalyzer
-    
+
     try:
         adapter = get_adapter()
         # Always connect fresh to ensure we have auth for signing
         await adapter.connect()
-            
+
         # Handle paper mode vs live mode balance check
         is_paper_mode = state.mode == "paper" or state.mode.endswith("_paper")
         if is_paper_mode:
@@ -1789,11 +1826,11 @@ async def scan_market_intel(_: None = Depends(require_api_token)):
             # Fetch live balance directly — state.balance may be stale/zero
             live_balance = await adapter.get_balance()
             state.balance = live_balance  # update state too
-        
+
         markets_obj = await adapter.get_markets(limit=250)
         if not markets_obj:
             return {"status": "error", "message": "Failed to fetch active markets from platform"}
-            
+
         # Send ALL markets to Claude — let the AI decide what's interesting.
         # Kalshi often reports 0 for volume_24h, so filtering is counterproductive.
         markets_data = []
@@ -1809,13 +1846,13 @@ async def scan_market_intel(_: None = Depends(require_api_token)):
                 "end_date": m.end_date.isoformat() if m.end_date else "N/A",
                 "category": m.category,
             })
-        
+
         # Sort by total volume descending
         markets_data.sort(key=lambda x: x["volume"], reverse=True)
-            
+
         analyzer = TradeAnalyzer()
         report = await analyzer.generate_market_intel(markets_data, live_balance)
-        
+
         if report:
             state.add_log("success", "🧠 Market Intel Scan complete.")
             return {"status": "success", "report": report}
@@ -1835,7 +1872,7 @@ async def start_with_directive(data: dict, _: None = Depends(require_api_token))
 
     mode = data.get("mode", "paper")
     directive = data.get("directive", "")
-    
+
     state.is_running = True
     state.is_paused = False
     state.mode = mode
@@ -1844,7 +1881,7 @@ async def start_with_directive(data: dict, _: None = Depends(require_api_token))
     state.add_log("info", f"🚀 Starting bot in {mode.upper()} mode via Market Intel Directive.")
     if directive:
         state.add_log("info", f"🎯 Directive Active: {directive[:50]}...")
-        
+
     bot_task = asyncio.create_task(trading_loop())
     return {"status": "started", "mode": mode, "directive": directive}
 
@@ -1855,7 +1892,7 @@ async def start_with_directive(data: dict, _: None = Depends(require_api_token))
 @app.get("/")
 async def serve_dashboard():
     """Serve the React dashboard."""
-    dashboard_path = Path(__file__).parent / "dashboard.html"
+    dashboard_path = WEB_DIR / "dashboard.html"
     if dashboard_path.exists():
         html = dashboard_path.read_text()
         html = html.replace("__API_TOKEN__", API_TOKEN)
@@ -1866,7 +1903,7 @@ async def serve_dashboard():
 @app.get("/paper")
 async def serve_paper():
     """Serve the paper dashboard."""
-    paper_path = Path(__file__).parent / "paper.html"
+    paper_path = WEB_DIR / "paper.html"
     if paper_path.exists():
         html = paper_path.read_text()
         html = html.replace("__API_TOKEN__", API_TOKEN)
@@ -1877,7 +1914,7 @@ async def serve_paper():
 @app.get("/world-cup")
 async def serve_world_cup():
     """Serve the real-data-only World Cup assistant route."""
-    page_path = Path(__file__).parent / "world_cup.html"
+    page_path = WEB_DIR / "world_cup.html"
     if page_path.exists():
         html = page_path.read_text()
         html = html.replace("__API_TOKEN__", API_TOKEN)
@@ -1888,7 +1925,7 @@ async def serve_world_cup():
 @app.get("/early-marks")
 async def serve_early_marks():
     """Serve the Early Marks repricing watchlist route."""
-    page_path = Path(__file__).parent / "early_marks.html"
+    page_path = WEB_DIR / "early_marks.html"
     if page_path.exists():
         html = page_path.read_text()
         html = html.replace("__API_TOKEN__", API_TOKEN)

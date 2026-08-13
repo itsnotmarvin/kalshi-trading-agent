@@ -1411,7 +1411,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--allow-undated-sources", action="store_true")
     parser.add_argument("--tavily-api-key", default=os.getenv("TAVILY_API_KEY", ""))
     parser.add_argument("--checkpoint-llm", choices=("none", "claude"), default="none")
-    parser.add_argument("--json-out", type=Path, default=Path("data/backtest_replay_kxfedchairnom_kw.json"))
+    parser.add_argument("--json-out", type=Path, default=Path("data/runtime/backtests/backtest_replay_kxfedchairnom_kw.json"))
     return parser.parse_args()
 
 

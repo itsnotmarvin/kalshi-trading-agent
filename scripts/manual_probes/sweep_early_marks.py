@@ -34,7 +34,7 @@ from scripts.manual_probes.test_early_marks import (
 )
 
 
-SWEEP_OUTPUT = Path("data/early_marks_sweep.json")
+SWEEP_OUTPUT = PROJECT_ROOT / "data" / "runtime" / "early_marks_sweep.json"
 STATUS_CHOICES = ("open", "preopen", "all")
 HORIZON_CHOICES = ("short", "medium", "long")
 

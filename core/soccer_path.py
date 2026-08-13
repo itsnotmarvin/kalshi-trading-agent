@@ -14,7 +14,7 @@ calculations Early Marks can rank on:
   rival. Same-half eliminations help more than cross-half ones; the model
   captures that structurally instead of by heuristic.
 
-The bracket file (data/wc2026_bracket.json style) is curated from verified
+The bracket file (data/reference/wc2026_bracket.json) is curated from verified
 sources and carries a `verified_as_of` date. Rounds are nested groups:
 half -> quadrant -> pair -> team names matching Kalshi `yes_sub_title`.
 All outputs are research-only signals, labeled by the caller per

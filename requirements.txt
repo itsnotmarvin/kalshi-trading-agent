@@ -12,9 +12,8 @@ uvicorn>=0.30.0             # ASGI server
 pytest>=9.0.0
 pytest-asyncio>=1.4.0
 
-# Platform SDKs (install the one you need)
-# kalshi-python>=2.1.0      # pip install kalshi-python (for Kalshi)
-# py-clob-client>=0.34.0    # pip install py-clob-client (for Polymarket)
+# Experimental adapter extras
+# py-clob-client>=0.34.0    # future Polymarket order-book/execution work
 
 # Optional: Better search integration
 # tavily-python>=0.3.0      # pip install tavily-python (for web search)

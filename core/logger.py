@@ -38,6 +38,13 @@ class TradeLogger:
         direction: str,
         confidence: str,
         reasoning: str,
+        is_deep_research: bool = False,
+        base_rate: str = "",
+        base_rate_source_ids: list[str] | None = None,
+        evidence_for: list[dict] | None = None,
+        evidence_against: list[dict] | None = None,
+        research_sources: list[dict] | None = None,
+        source_validation: dict | None = None,
     ):
         """Log Claude's analysis of a market."""
         self._write({
@@ -51,6 +58,13 @@ class TradeLogger:
             "direction": direction,
             "confidence": confidence,
             "reasoning": str(reasoning)[:500],  # type: ignore
+            "is_deep_research": is_deep_research,
+            "base_rate": base_rate,
+            "base_rate_source_ids": base_rate_source_ids or [],
+            "evidence_for": evidence_for or [],
+            "evidence_against": evidence_against or [],
+            "research_sources": research_sources or [],
+            "source_validation": source_validation or {},
         })
 
     def log_trade(

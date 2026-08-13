@@ -78,7 +78,6 @@ def test_analyze_market_logs_every_forecast_even_untraded(monkeypatch, tmp_path)
     assert record["city"] == "nyc"
     assert record["probability"] == pytest.approx(31.5 / 32)
     assert record["market_yes_price"] == 0.97
-    assert record["market_yes_midpoint"] == 0.97
     assert record["should_trade"] is False
     assert record["hrrr_veto"] is False
     assert record["threshold"] == 70.0
@@ -163,7 +162,6 @@ def _record(market_id, prob, price, city="new york", variable="temperature_2m", 
         "city": city,
         "variable": variable,
         "probability": prob,
-        "market_yes_midpoint": price,
         "market_yes_price": price,
     }
 
@@ -203,15 +201,6 @@ def test_score_forecasts_computes_brier_skill_vs_market():
     assert overall["brier_skill_score"] == pytest.approx(1 - 0.025 / 0.205, abs=1e-6)
     assert set(report["by_city"]) == {"new york", "chicago"}
     assert report["by_city"]["new york"]["n"] == 1
-
-
-def test_score_forecasts_uses_midpoint_instead_of_executable_yes_ask():
-    record = _record("M1", 0.60, 0.65)
-    record.pop("market_yes_midpoint")
-    record["market_no_price"] = 0.45  # YES bid = 0.55, midpoint = 0.60
-    report = score_forecasts({"M1": record}, {"M1": "yes"})
-
-    assert report["overall"]["market_brier"] == pytest.approx((0.60 - 1.0) ** 2)
 
 
 def test_score_forecasts_negative_skill_when_model_is_worse():

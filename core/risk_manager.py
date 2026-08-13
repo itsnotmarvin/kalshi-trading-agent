@@ -13,6 +13,7 @@ from pathlib import Path
 
 from adapters.base import Position, Market
 from config.settings import settings
+from config.paths import RUNTIME_DATA_DIR
 from core.market_pricing import kalshi_trading_fee, fee_fraction_per_contract
 
 
@@ -52,6 +53,12 @@ class TradeProposal:
     confidence: str        # LOW, MEDIUM, HIGH, VERY_HIGH
     position_size_usd: float
     reasoning: str
+    base_rate: str = ""
+    base_rate_source_ids: list[str] = field(default_factory=list)
+    evidence_for: list[dict] = field(default_factory=list)
+    evidence_against: list[dict] = field(default_factory=list)
+    research_sources: list[dict] = field(default_factory=list)
+    source_validation: dict = field(default_factory=dict)
     target_entry_price: float = 0.0
     risk_factors: list[str] = field(default_factory=list)
     r_score: float = 0.0
@@ -76,14 +83,14 @@ class RiskManager:
         self.max_drawdown_pct = 0.15  # 15% max drawdown from peak
 
         # Category Discipline System
-        self.category_stats_file = Path("data/category_stats.json")
+        self.category_stats_file = RUNTIME_DATA_DIR / "category_stats.json"
         self.category_stats_file.parent.mkdir(parents=True, exist_ok=True)
         self.category_stats = self._load_category_stats()
-        self.paper_positions_file = Path("data/paper_positions.json")
+        self.paper_positions_file = RUNTIME_DATA_DIR / "paper_positions.json"
 
         # Circuit breakers must survive restarts: a crash during a loss
         # streak must not clear the halt, loss counter, or drawdown peak.
-        self.daily_state_file = Path("data/daily_stats_state.json")
+        self.daily_state_file = RUNTIME_DATA_DIR / "daily_stats_state.json"
         self.daily_stats = self._load_daily_state() or DailyStats(date=self._today())
 
     def _load_category_stats(self) -> dict:
@@ -286,6 +293,11 @@ class RiskManager:
         if proposal.direction == "HOLD":
             failures.append("Agent recommends HOLD — no trade")
             return False, failures
+
+        # LLM-generated proposals carry a source-validation record. Weather
+        # engine proposals use model provenance instead and leave this empty.
+        if proposal.source_validation and not proposal.source_validation.get("actionable", False):
+            failures.append("Source lineage gate failed — cited evidence was not verified")
 
         # === CHECK 4: Minimum confidence ===
         if proposal.confidence == "LOW":

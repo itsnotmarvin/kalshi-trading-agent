@@ -1,7 +1,8 @@
 [tool.pyright]
-include = ["."]
+include = ["adapters", "config", "core", "scripts", "tests", "main.py", "server.py"]
+exclude = ["data/runtime", ".venv"]
 venvPath = "."
-venv = "venv"
+venv = ".venv"
 extraPaths = ["."]
 typeCheckingMode = "basic"
 

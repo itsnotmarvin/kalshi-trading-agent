@@ -197,7 +197,8 @@ def print_table(outputs: list[WeatherOutput]) -> None:
 async def run() -> int:
     args = parse_args()
 
-    lessons = load_macro_lessons(Path("data/macro_lessons.json"))
+    from config.paths import RUNTIME_DATA_DIR
+    lessons = load_macro_lessons(RUNTIME_DATA_DIR / "macro_lessons.json")
     engine = WeatherEngine(
         min_price=args.min_price,
         min_confidence=args.min_confidence,

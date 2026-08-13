@@ -86,7 +86,7 @@ def test_cross_section_report_shape():
 
 
 def test_wc2026_bracket_file_is_coherent():
-    bracket = json.loads(Path("data/wc2026_bracket.json").read_text())
+    bracket = json.loads(Path("data/reference/wc2026_bracket.json").read_text())
     teams = []
     for half in bracket["halves"]:
         for quadrant in half["quadrants"]:

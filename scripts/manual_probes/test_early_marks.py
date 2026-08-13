@@ -37,7 +37,7 @@ from core.market_pricing import TAKER_FEE_RATE
 from core.soccer_path import cross_section_report
 
 RISE_FLOOR_DOLLARS = 0.09
-SOCCER_BRACKET_PATH = Path(__file__).resolve().parents[2] / "data" / "wc2026_bracket.json"
+SOCCER_BRACKET_PATH = Path(__file__).resolve().parents[2] / "data" / "reference" / "wc2026_bracket.json"
 
 EARLY_MARKS_DECISIONS = (
     "Catalyst setup",
@@ -139,8 +139,8 @@ EARLY_MARKS_RESPONSE_SCHEMA: dict[str, Any] = {
 }
 
 
-PROBE_OUTPUT = Path("data/early_marks_probe.json")
-STATUS_OUTPUT = Path("data/early_marks_status.json")
+PROBE_OUTPUT = Path("data/runtime/early_marks_probe.json")
+STATUS_OUTPUT = Path("data/runtime/early_marks_status.json")
 STATUS_STAGES = ("connect", "health", "pull_markets", "category_model", "rank", "enrich", "render")
 MARKET_STATUSES_TO_TRY = (None, "open", "unopened", "active")
 # Live tournament series fetched directly when a matching category scan runs;

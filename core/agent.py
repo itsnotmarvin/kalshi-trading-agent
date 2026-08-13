@@ -1,12 +1,17 @@
-"""Provider-aware research and experimental general-event reasoning.
+"""
+Agent Brain - provider-aware reasoning engine.
 
-Model-backed routes such as weather supply their own deterministic probability.
-The broader LLM probability path remains experimental and must not be presented
-as a validated forecaster until it is replaced by fitted, backtested models.
+This is where the configured LLM analyzes markets, researches events,
+estimates probabilities, and makes trade recommendations.
+The agent uses tool calling for web search and structured
+output for trade decisions.
 """
 import asyncio
+import hashlib
 import json
+from datetime import datetime, timezone
 from typing import Any
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import anthropic  # type: ignore
 
@@ -85,13 +90,40 @@ AGENT_TOOLS = [
                     "description": "2-3 sentence summary of your analysis"
                 },
                 "base_rate": {"type": "string"},
+                "base_rate_source_urls": {
+                    "type": "array",
+                    "description": "Exact URLs from web_search supporting the base rate",
+                    "items": {"type": "string"}
+                },
                 "evidence_for": {
                     "type": "array",
-                    "items": {"type": "string"}
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "claim": {"type": "string"},
+                            "source_urls": {
+                                "type": "array",
+                                "description": "Exact supporting URLs copied from web_search results",
+                                "items": {"type": "string"}
+                            }
+                        },
+                        "required": ["claim", "source_urls"]
+                    }
                 },
                 "evidence_against": {
                     "type": "array",
-                    "items": {"type": "string"}
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "claim": {"type": "string"},
+                            "source_urls": {
+                                "type": "array",
+                                "description": "Exact supporting URLs copied from web_search results",
+                                "items": {"type": "string"}
+                            }
+                        },
+                        "required": ["claim", "source_urls"]
+                    }
                 },
                 "risk_factors": {
                     "type": "array",
@@ -101,7 +133,8 @@ AGENT_TOOLS = [
             "required": [
                 "market_id", "market_question", "my_probability",
                 "current_market_price", "direction", "confidence",
-                "reasoning_summary"
+                "reasoning_summary", "base_rate", "base_rate_source_urls",
+                "evidence_for", "evidence_against", "risk_factors"
             ]
         }
     }
@@ -397,6 +430,7 @@ INSTRUCTION:
             )
 
         messages = [{"role": "user", "content": prompt}]
+        research_sources: list[dict[str, Any]] = []
         
         max_iterations = 15 if depth == "deep" else 8
 
@@ -455,6 +489,8 @@ INSTRUCTION:
                                 log_callback("🧠 Claude is finalizing mathematical calculations...")
                                 
                         result = self._execute_tool(b_name, b_input)
+                        if b_name == "web_search":
+                            self._merge_search_sources(research_sources, result)
                         tool_results.append({
                             "type": "tool_result",
                             "tool_use_id": b_id,
@@ -467,7 +503,9 @@ INSTRUCTION:
                     break
 
             # Extract the trade proposal from the conversation
-            proposal = self._extract_proposal(messages, market, balance)
+            proposal = self._extract_proposal(
+                messages, market, balance, research_sources=research_sources
+            )
             if proposal and depth == "deep":
                 proposal.is_deep_research = True
             return proposal
@@ -500,6 +538,7 @@ INSTRUCTION:
         max_iterations = 15 if depth == "deep" else 8
         submitted_analysis: dict[str, Any] | None = None
         total_text = ""
+        research_sources: list[dict[str, Any]] = []
 
         try:
             for _ in range(max_iterations):
@@ -543,6 +582,8 @@ INSTRUCTION:
                         submitted_analysis = input_data
 
                     result = self._execute_tool(name, input_data)
+                    if name == "web_search":
+                        self._merge_search_sources(research_sources, result)
                     messages.append({
                         "role": "tool",
                         "tool_call_id": tool_call.id,
@@ -553,12 +594,19 @@ INSTRUCTION:
                     break
 
             if submitted_analysis is not None:
-                proposal = self._proposal_from_analysis_data(submitted_analysis, market, balance)
+                proposal = self._proposal_from_analysis_data(
+                    submitted_analysis,
+                    market,
+                    balance,
+                    research_sources=research_sources,
+                )
                 if proposal and depth == "deep":
                     proposal.is_deep_research = True
                 return proposal
 
-            return self._extract_text_proposal(total_text, market, balance)
+            return self._extract_text_proposal(
+                total_text, market, balance, research_sources=research_sources
+            )
         except Exception as e:
             print(f"⚠️  OpenAI analysis failed for {market.id}: {e}")
             return None
@@ -614,6 +662,7 @@ INSTRUCTION:
                             "title": r.get("title", ""),
                             "url": r.get("href", ""),
                             "content": r.get("body", "")[:500],
+                            "published_at": r.get("date"),
                             "score": 1.0
                         })
                 return {
@@ -652,6 +701,7 @@ INSTRUCTION:
                     "title": item.get("title", ""),
                     "url": item.get("url", ""),
                     "content": item.get("content", "")[:500],
+                    "published_at": item.get("published_date"),
                     "score": item.get("score"),
                 })
 
@@ -668,6 +718,7 @@ INSTRUCTION:
         messages: list,
         market: Market,
         balance: float,
+        research_sources: list[dict[str, Any]] | None = None,
     ) -> TradeProposal | None:
         """Extract the trade proposal from Claude's conversation."""
         # Look for submit_analysis tool calls
@@ -679,7 +730,9 @@ INSTRUCTION:
                         b_name = getattr(block, "name", "")
                         if b_name == "submit_analysis":
                             data = getattr(block, "input", {})
-                            return self._proposal_from_analysis_data(data, market, balance)
+                            return self._proposal_from_analysis_data(
+                                data, market, balance, research_sources=research_sources
+                            )
 
         # If no tool call found, try to parse from text
         import re
@@ -699,7 +752,9 @@ INSTRUCTION:
         if json_match:
             try:
                 data = json.loads(json_match.group(0))
-                return self._proposal_from_analysis_data(data, market, balance)
+                return self._proposal_from_analysis_data(
+                    data, market, balance, research_sources=research_sources
+                )
             except Exception as e:
                 print(f"⚠️  JSON extraction failed: {e}")
 
@@ -718,7 +773,13 @@ INSTRUCTION:
             risk_factors=["analysis_extraction_failed"],
         )
 
-    def _extract_text_proposal(self, text: str, market: Market, balance: float) -> TradeProposal | None:
+    def _extract_text_proposal(
+        self,
+        text: str,
+        market: Market,
+        balance: float,
+        research_sources: list[dict[str, Any]] | None = None,
+    ) -> TradeProposal | None:
         """Parse a JSON proposal from plain model text."""
         import re
 
@@ -727,7 +788,9 @@ INSTRUCTION:
             return self._mock_trade_proposal(market)
         try:
             data = json.loads(json_match.group(0))
-            return self._proposal_from_analysis_data(data, market, balance)
+            return self._proposal_from_analysis_data(
+                data, market, balance, research_sources=research_sources
+            )
         except Exception as e:
             print(f"⚠️  OpenAI JSON extraction failed: {e}")
             return self._mock_trade_proposal(market)
@@ -737,13 +800,22 @@ INSTRUCTION:
         data: dict[str, Any],
         market: Market,
         balance: float,
+        research_sources: list[dict[str, Any]] | None = None,
     ) -> TradeProposal:
         """Build a TradeProposal from either Claude or ChatGPT structured output."""
         model_probability = float(data.get("my_probability", 0.5))
         executable_yes_ask = market.yes_price
         edge = abs(model_probability - executable_yes_ask)
 
-        direction = data.get("direction", "HOLD")
+        requested_direction = data.get("direction", "HOLD")
+        lineage = self._validate_source_lineage(data, research_sources or [])
+        direction = requested_direction
+        risk_factors = list(data.get("risk_factors", []))
+        if requested_direction in {"BUY_YES", "BUY_NO", "WAIT_FOR_ENTRY"} and not lineage["actionable"]:
+            direction = "HOLD"
+            risk_factors.append(
+                "source_lineage_gate: actionable recommendation lacked verified cited evidence"
+            )
         entry_direction = infer_entry_direction(
             direction=direction,
             estimated_prob=model_probability,
@@ -774,10 +846,143 @@ INSTRUCTION:
             confidence=data.get("confidence", "LOW"),
             position_size_usd=size,
             reasoning=data.get("reasoning_summary", data.get("reasoning", "")),
+            base_rate=str(data.get("base_rate", "")),
+            base_rate_source_ids=lineage["base_rate_source_ids"],
+            evidence_for=lineage["evidence_for"],
+            evidence_against=lineage["evidence_against"],
+            research_sources=lineage["sources"],
+            source_validation={
+                "requested_direction": requested_direction,
+                "actionable": lineage["actionable"],
+                "cited_source_count": lineage["cited_source_count"],
+                "unverified_url_count": lineage["unverified_url_count"],
+            },
             target_entry_price=data.get("target_entry_price", 0.0),
-            risk_factors=data.get("risk_factors", []),
+            risk_factors=risk_factors,
             entry_direction=entry_direction,
         )
+
+    @staticmethod
+    def _canonical_source_url(raw_url: Any) -> str | None:
+        """Normalize a public HTTP(S) URL for exact search-result matching."""
+        try:
+            parts = urlsplit(str(raw_url).strip())
+        except Exception:
+            return None
+        if parts.scheme.lower() not in {"http", "https"} or not parts.netloc:
+            return None
+        tracking_keys = {"fbclid", "gclid", "mc_cid", "mc_eid"}
+        clean_query = [
+            (key, value)
+            for key, value in parse_qsl(parts.query, keep_blank_values=True)
+            if not key.lower().startswith("utm_") and key.lower() not in tracking_keys
+        ]
+        path = parts.path.rstrip("/") or "/"
+        return urlunsplit(
+            (parts.scheme.lower(), parts.netloc.lower(), path, urlencode(clean_query), "")
+        )
+
+    @classmethod
+    def _merge_search_sources(
+        cls,
+        destination: list[dict[str, Any]],
+        search_result: dict[str, Any],
+    ) -> None:
+        """Persist canonical metadata from actual search results, deduplicated by URL."""
+        known = {source.get("canonical_url") for source in destination}
+        retrieved_at = datetime.now(timezone.utc).isoformat()
+        for item in search_result.get("results", []):
+            canonical_url = cls._canonical_source_url(item.get("url"))
+            if not canonical_url or canonical_url in known:
+                continue
+            destination.append({
+                "source_id": f"src_{hashlib.sha256(canonical_url.encode()).hexdigest()[:12]}",
+                "title": str(item.get("title", ""))[:300],
+                "url": str(item.get("url", "")),
+                "canonical_url": canonical_url,
+                "query": str(search_result.get("query", ""))[:300],
+                "provider": str(search_result.get("source", "web_search")),
+                "retrieved_at": retrieved_at,
+                "published_at": item.get("published_at"),
+                "snippet": str(item.get("content", ""))[:500],
+            })
+            known.add(canonical_url)
+
+    @classmethod
+    def _validate_source_lineage(
+        cls,
+        data: dict[str, Any],
+        research_sources: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        """Link model claims only to URLs that were returned by this analysis' searches."""
+        source_by_url = {
+            source["canonical_url"]: source
+            for source in research_sources
+            if source.get("canonical_url")
+        }
+        cited_ids: set[str] = set()
+        unverified_urls: set[str] = set()
+
+        def link_urls(raw_urls: Any) -> list[str]:
+            linked: list[str] = []
+            for raw_url in raw_urls if isinstance(raw_urls, list) else []:
+                canonical_url = cls._canonical_source_url(raw_url)
+                source = source_by_url.get(canonical_url) if canonical_url else None
+                if source:
+                    source_id = str(source["source_id"])
+                    if source_id not in linked:
+                        linked.append(source_id)
+                        cited_ids.add(source_id)
+                elif canonical_url:
+                    unverified_urls.add(canonical_url)
+            return linked
+
+        def link_evidence(raw_items: Any) -> list[dict[str, Any]]:
+            linked_items: list[dict[str, Any]] = []
+            for raw_item in raw_items if isinstance(raw_items, list) else []:
+                if isinstance(raw_item, dict):
+                    claim = str(raw_item.get("claim", "")).strip()
+                    source_ids = link_urls(raw_item.get("source_urls", []))
+                else:
+                    # Legacy string evidence is retained for display but is not verified.
+                    claim = str(raw_item).strip()
+                    source_ids = []
+                if claim:
+                    linked_items.append({
+                        "claim": claim,
+                        "source_ids": source_ids,
+                        "verified": bool(source_ids),
+                    })
+            return linked_items
+
+        evidence_for = link_evidence(data.get("evidence_for", []))
+        evidence_against = link_evidence(data.get("evidence_against", []))
+        base_rate_source_ids = link_urls(data.get("base_rate_source_urls", []))
+        requested_direction = data.get("direction", "HOLD")
+        directional_evidence = (
+            evidence_for if requested_direction == "BUY_YES"
+            else evidence_against if requested_direction == "BUY_NO"
+            else evidence_for + evidence_against
+        )
+        directional_verified = any(item["verified"] for item in directional_evidence)
+        actionable = bool(cited_ids) and directional_verified and not unverified_urls
+
+        sources = []
+        for source in research_sources:
+            clean_source = dict(source)
+            clean_source.pop("canonical_url", None)
+            clean_source["cited"] = source.get("source_id") in cited_ids
+            sources.append(clean_source)
+
+        return {
+            "sources": sources,
+            "base_rate_source_ids": base_rate_source_ids,
+            "evidence_for": evidence_for,
+            "evidence_against": evidence_against,
+            "cited_source_count": len(cited_ids),
+            "unverified_url_count": len(unverified_urls),
+            "actionable": actionable,
+        }
 
     async def generate_lesson(self, market_id: str, question: str, reasoning: str, outcome_pnl: float, outcome_msg: str) -> str:
         """

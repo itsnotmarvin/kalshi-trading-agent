@@ -87,6 +87,10 @@ def _log_trade_decision(proposal, market, approved: bool, reasons: list[str], mo
             "client_order_id": proposal.client_order_id,
             "post_only": proposal.post_only,
             "execution_metrics": proposal.execution_metrics,
+            "source_validation": proposal.source_validation,
+            "research_sources": proposal.research_sources,
+            "evidence_for": proposal.evidence_for,
+            "evidence_against": proposal.evidence_against,
         },
     )
 
@@ -345,6 +349,12 @@ async def _process_trade_proposal(
         "confidence": proposal.confidence,
         "size_usd": proposal.position_size_usd,
         "reasoning": proposal.reasoning,
+        "base_rate": proposal.base_rate,
+        "base_rate_source_ids": proposal.base_rate_source_ids,
+        "evidence_for": proposal.evidence_for,
+        "evidence_against": proposal.evidence_against,
+        "research_sources": proposal.research_sources,
+        "source_validation": proposal.source_validation,
         "risk_factors": proposal.risk_factors,
         "entry_direction": proposal.entry_direction,
         "target_entry_price": proposal.target_entry_price,
@@ -940,6 +950,7 @@ async def trading_loop():
                             f"Final Prob={result.get('probability', 0):.0%}. "
                             f"({result.get('city', 'Unknown').title()}: {result.get('ensemble_mean', 0):.1f}\u00b0F vs {result.get('threshold', 0)}\u00b0F)"
                         ),
+                        research_sources=result.get("model_provenance", []),
                         risk_factors=[],
                         entry_direction=result.get("direction", "HOLD")
                     )
@@ -1004,6 +1015,7 @@ async def trading_loop():
                                 f"Final Prob={result.get('probability', 0):.0%}. "
                                 f"({result.get('city', 'Unknown').title()}: {result.get('ensemble_mean', 0):.1f}\u00b0F vs {result.get('threshold', 0)}\u00b0F)"
                             ),
+                            research_sources=result.get("model_provenance", []),
                             risk_factors=["Tomorrow Market (Stricter requirements applied)"],
                             entry_direction=result.get("direction", "HOLD")
                         )
@@ -1239,6 +1251,12 @@ async def trading_loop():
                     edge=proposal.edge, direction=proposal.direction, confidence=proposal.confidence,
                     reasoning=proposal.reasoning,
                     is_deep_research=getattr(proposal, "is_deep_research", False),
+                    base_rate=proposal.base_rate,
+                    base_rate_source_ids=proposal.base_rate_source_ids,
+                    evidence_for=proposal.evidence_for,
+                    evidence_against=proposal.evidence_against,
+                    research_sources=proposal.research_sources,
+                    source_validation=proposal.source_validation,
                 )
 
             # Run Postmortem Analysis every cycle

@@ -14,6 +14,7 @@ from pathlib import Path
 from anthropic import Anthropic
 from config.settings import settings
 from config.prompts import SYSTEM_PROMPT
+from config.paths import TRADE_LOG_PATH
 from core.memory_manager import MemoryManager
 
 # ── Analysis Lenses ──────────────────────────────────────────
@@ -179,7 +180,7 @@ class TradeAnalyzer:
         """Load and prepare trade history from the log file."""
         trades: list[dict] = []
         try:
-            log_path = Path("trades.jsonl")
+            log_path = TRADE_LOG_PATH
             if log_path.exists():
                 with open(log_path, "r") as f:
                     for line in f.read().splitlines():
