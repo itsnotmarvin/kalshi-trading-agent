@@ -5,6 +5,7 @@ and the model-vs-market skill scorer built on top of it.
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -96,16 +97,29 @@ def test_observation_override_path_also_logs(monkeypatch, tmp_path):
         engine,
         "get_deterministic_forecast",
         lambda **_kwargs: {
-            # Current temp already above the threshold → 0.99 override
             "current": {"temperature_2m": 74.0},
             "hourly": {"temperature_2m": [75.0]},
         },
     )
+    # Settlement-station observation on the market's climate day, clearing
+    # the threshold by more than LOCK_MARGIN_F → 0.99 override.
+    now_ny = datetime.now(ZoneInfo("America/New_York"))
+    monkeypatch.setattr(
+        engine,
+        "get_station_observation",
+        lambda _station: {
+            "temperature_f": 74.0,
+            "observed_at": now_ny.isoformat(),
+            "station_id": "KNYC",
+            "_provenance": {"source_type": "station_observation", "station_id": "KNYC"},
+        },
+    )
     monkeypatch.setattr(engine.forecaster, "get_market_insight", no_forecaster_insight)
 
+    ticker = f"KXHIGHNY-{now_ny.strftime('%y%b%d').upper()}-T70"
     result = engine.analyze_market(
         DummyMarket(
-            "KXHIGHNY-26JUN02-T70",
+            ticker,
             "Will the high temperature in NYC be above 70°F?",
             yes_price=0.55,
             no_price=0.45,
