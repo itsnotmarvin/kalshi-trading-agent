@@ -978,9 +978,17 @@ async def trading_loop():
                             continue
                             
                         # Stricter Tomorrow Rules
-                        if result["confidence"] < 0.80 or abs(result["edge"]) < 0.12:
+                        if (
+                            result["confidence"] < 0.80
+                            or abs(result["edge"]) < settings.weather_min_edge_threshold
+                        ):
                             if result["should_trade"]: 
-                                state.add_log("info", f"Skipping {market.id}: Resolves tomorrow. Conf={result['confidence']:.2f}, Edge={result['edge']:.2f} (Needs Conf>=0.80, Edge>=0.12)")
+                                state.add_log(
+                                    "info",
+                                    f"Skipping {market.id}: Resolves tomorrow. "
+                                    f"Conf={result['confidence']:.2f}, Edge={result['edge']:.2f} "
+                                    f"(Needs Conf>=0.80, Edge>={settings.weather_min_edge_threshold:.2f})",
+                                )
                             result["should_trade"] = False
                             result["direction"] = "HOLD"
 

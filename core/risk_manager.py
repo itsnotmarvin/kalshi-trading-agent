@@ -94,14 +94,16 @@ class RiskManager:
         self.daily_stats = self._load_daily_state() or DailyStats(date=self._today())
 
     def _load_category_stats(self) -> dict:
-        # Baseline from verified fills history (May 27, 2026) — only used if no file exists yet
+        # Fresh installations start empty. Historical results belong in the
+        # local runtime file and must come from auditable fill records; the
+        # old seeded May 2026 snapshot is documented in the README as legacy
+        # context, not operational state.
         default_stats = {
-            "Weather": {"trades": 12, "won": 4, "lost": 8, "pnl": -20.49},
-            "Sports": {"trades": 7, "won": 2, "lost": 5, "pnl": -78.34},
-            "Tech/AI": {"trades": 4, "won": 2, "lost": 2, "pnl": 199.65},
-            "Politics": {"trades": 0, "won": 0, "lost": 0, "pnl": 0.0},
-            "Crypto": {"trades": 0, "won": 0, "lost": 0, "pnl": 0.0},
-            "Economics": {"trades": 0, "won": 0, "lost": 0, "pnl": 0.0}
+            category: {"trades": 0, "won": 0, "lost": 0, "pnl": 0.0}
+            for category in (
+                "Weather", "Sports", "Tech/AI",
+                "Politics", "Crypto", "Economics",
+            )
         }
         if self.category_stats_file.exists():
             try:
@@ -307,7 +309,11 @@ class RiskManager:
         # executable Kalshi price. The gap must clear the required edge AFTER
         # the Kalshi trading fee — an edge smaller than the fee is not an edge.
         confidence_adjusted_gap = self.calculate_confidence_adjusted_probability_gap(proposal)
-        required_edge = 0.12 if proposal.category.lower() == "weather" else settings.min_edge_threshold
+        required_edge = (
+            settings.weather_min_edge_threshold
+            if proposal.category.lower() == "weather"
+            else settings.min_edge_threshold
+        )
         entry_fee_fraction = fee_fraction_per_contract(
             self.get_side_cost(proposal), maker=proposal.post_only
         )

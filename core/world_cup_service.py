@@ -1,6 +1,8 @@
 """
-Real-data-only World Cup Kalshi assistant service.
+Archived 2026 World Cup Kalshi assistant service.
 
+Retained for historical replay and regression tests; the HTTP route is
+default-off (WORLD_CUP_ENABLED) since the tournament ended 2026-07-19.
 This module deliberately does not call the generic TradingAgent. The World Cup
 route must fail visibly when required live inputs are unavailable.
 """

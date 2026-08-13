@@ -1,35 +1,30 @@
-"""
-Exploratory sizing engine for paper/shadow mode.
+"""Deterministic size ladder for explicitly indexed paper experiments.
 
-This module generates randomized trade sizes for the paper bot using a
-log-uniform distribution. This allows the bot to place exploratory trades across
-various orders of magnitude (e.g., $10, $100, $1,000, $10,000) with equal probability.
-The goal is to gather data at different balance and trade sizes to discover the
-mathematical break-point for liquidity, fees, and overall trade execution quality
-without risking real capital.
+This module is not wired into the normal paper-trading path (which uses the
+configured minimum stakes). Callers must supply a persisted observation index
+so an experiment can be reproduced exactly; randomized sizing would make
+experimental paper P&L unrepeatable.
 """
-import math
-import random
 
-def get_exploratory_size(min_usd: float = 5.0, max_usd: float = 10000.0) -> float:
-    """
-    Generates a log-uniformly distributed trade size between min_usd and max_usd.
-    Log-uniform ensures that smaller sizes (e.g., $10-$100) have the same
-    probability of being chosen as larger sizes (e.g., $1,000-$10,000).
-    
-    Rounded to two decimal places.
-    """
-    if min_usd <= 0:
-        min_usd = 1.0
-    if max_usd <= min_usd:
-        max_usd = min_usd * 10.0
-        
-    log_min = math.log(min_usd)
-    log_max = math.log(max_usd)
-    
-    # Pick uniform random log value
-    random_log = random.uniform(log_min, log_max)
-    
-    # Exponentiate back to linear scale and round
-    size = math.exp(random_log)
-    return round(size, 2)
+EXPLORATORY_SIZE_LADDER_USD = (
+    5.0, 10.0, 25.0, 50.0, 100.0, 250.0,
+    500.0, 1000.0, 2500.0, 5000.0, 10000.0,
+)
+
+
+def get_exploratory_size(
+    min_usd: float = 5.0,
+    max_usd: float = 10000.0,
+    *,
+    observation_index: int = 0,
+) -> float:
+    """Return the indexed ladder value within the requested inclusive bounds."""
+    if min_usd <= 0 or max_usd < min_usd:
+        raise ValueError("size bounds must satisfy 0 < min_usd <= max_usd")
+    ladder = tuple(
+        size for size in EXPLORATORY_SIZE_LADDER_USD
+        if min_usd <= size <= max_usd
+    )
+    if not ladder:
+        raise ValueError("no configured ladder size falls within the requested bounds")
+    return ladder[observation_index % len(ladder)]

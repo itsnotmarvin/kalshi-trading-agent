@@ -46,6 +46,9 @@ class Settings:
     # cannot accidentally leak placeholder recommendations into World Cup workflows.
     world_cup_claude_model: str = field(default_factory=lambda: os.getenv("WORLD_CUP_CLAUDE_MODEL", "claude-opus-5"))
     world_cup_claude_fallback_model: str = field(default_factory=lambda: os.getenv("WORLD_CUP_CLAUDE_FALLBACK_MODEL", ""))
+    # The 2026 tournament ended 2026-07-19; the route is archived and its
+    # HTTP surface is disabled unless explicitly re-enabled for replay.
+    world_cup_enabled: bool = field(default_factory=lambda: os.getenv("WORLD_CUP_ENABLED", "false").lower() == "true")
     world_cup_openai_enabled: bool = field(default_factory=lambda: os.getenv("WORLD_CUP_OPENAI_ENABLED", "false").lower() == "true")
     world_cup_both_mode_enabled: bool = field(default_factory=lambda: os.getenv("WORLD_CUP_BOTH_MODE_ENABLED", "false").lower() == "true")
     world_cup_both_combination_rule: str = field(default_factory=lambda: os.getenv("WORLD_CUP_BOTH_COMBINATION_RULE", ""))
@@ -81,6 +84,10 @@ class Settings:
     max_single_trade: float = field(default_factory=lambda: float(os.getenv("MAX_SINGLE_TRADE", "25")))
     max_daily_loss: float = field(default_factory=lambda: float(os.getenv("MAX_DAILY_LOSS", "50")))
     min_edge_threshold: float = field(default_factory=lambda: float(os.getenv("MIN_EDGE_THRESHOLD", "0.08")))
+    # Single source of truth for the weather edge requirement. The engine
+    # screens raw edge and the risk gate screens confidence/fee-adjusted
+    # edge, but both must quote the same number.
+    weather_min_edge_threshold: float = field(default_factory=lambda: float(os.getenv("WEATHER_MIN_EDGE_THRESHOLD", "0.12")))
     # Optional floor on the probability of the purchased side paying out.
     # Defaults to 0 so long-odds trades are not blocked solely for being
     # unlikely; calibration and the probability-gap gate control eligibility.

@@ -1,5 +1,7 @@
 {
   "tournament": "2026 FIFA Men's World Cup knockout",
+  "status": "archived",
+  "tournament_ended": "2026-07-19",
   "verified_as_of": "2026-07-03",
   "sources": [
     "Sky Sports bracket / route-to-final (fetched 2026-07-03): halves and quadrants",

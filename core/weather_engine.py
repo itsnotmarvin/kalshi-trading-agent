@@ -15,6 +15,7 @@ from zoneinfo import ZoneInfo
 from core.forecaster import ForecasterInsight
 from core.settlement_stations import station_for_city
 from config.paths import RUNTIME_DATA_DIR
+from config.settings import settings
 
 
 # ── City Coordinates ────────────────────────────────────────
@@ -833,7 +834,7 @@ class WeatherEngine:
         executable_price = market.yes_price if direction == "BUY_YES" else market.no_price if direction == "BUY_NO" else None
         should_trade = (
             direction in {"BUY_YES", "BUY_NO"}
-            and edge >= 0.08
+            and edge >= settings.weather_min_edge_threshold
             and not hrrr_veto
             and prob_result.confidence >= self.min_confidence
             and executable_price is not None
@@ -949,7 +950,10 @@ class WeatherEngine:
             "city": parsed.city,
             "variable": parsed.variable,
             "forecast_hour": "Override",
-            "should_trade": edge >= 0.08 and self.min_price <= executable_price < 0.99,
+            "should_trade": (
+                edge >= settings.weather_min_edge_threshold
+                and self.min_price <= executable_price < 0.99
+            ),
             "market_price": market_price,
             "executable_price": executable_price,
             "member_count": 0,
