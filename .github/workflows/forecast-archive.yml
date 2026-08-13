@@ -1,0 +1,61 @@
+# Forward forecast archive.
+#
+# Every four hours, snapshot the raw GFS ensemble at each settlement station,
+# the station's own NWS observation, and the full book of every open KXHIGH
+# market, then commit the snapshot to the `forecast-archive` branch.
+#
+# Lineage: git timestamps prove nothing (commit dates are author-settable).
+# The tamper-evident record is GitHub's server-side run history — each
+# snapshot embeds its GITHUB_RUN_ID and run URL, so any archived forecast can
+# be checked against logs the repository owner cannot edit.
+name: Forecast archive
+
+on:
+  schedule:
+    # Fixed UTC hours → fixed, comparable pre-resolution horizons.
+    - cron: "23 2,6,10,14,18,22 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forecast-archive
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+
+      - name: Check out archive branch
+        uses: actions/checkout@v4
+        with:
+          ref: forecast-archive
+          path: .archive-branch
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install httpx
+
+      - name: Collect snapshot
+        run: python scripts/archive_forecasts.py --out .archive-branch/archive
+
+      - name: Commit and push snapshot
+        working-directory: .archive-branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add archive
+          if git diff --cached --quiet; then
+            echo "no snapshot produced; nothing to commit"
+            exit 1
+          fi
+          git commit -m "snapshot: run ${GITHUB_RUN_ID} at $(date -u +%FT%TZ)"
+          git push origin forecast-archive
