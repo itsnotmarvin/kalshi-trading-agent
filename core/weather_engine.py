@@ -11,7 +11,9 @@ import httpx
 from datetime import datetime, timezone, timedelta
 from dataclasses import dataclass
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from core.forecaster import ForecasterInsight
+from core.settlement_stations import station_for_city
 from config.paths import RUNTIME_DATA_DIR
 
 
@@ -121,6 +123,13 @@ NON_WEATHER_TICKER_PREFIXES = [
 
 ENSEMBLE_API_URL = "https://ensemble-api.open-meteo.com/v1/ensemble"
 DETERMINISTIC_API_URL = "https://api.open-meteo.com/v1/forecast"
+NWS_OBSERVATION_URL = "https://api.weather.gov/stations/{station_id}/observations/latest"
+
+# An observation lock must clear the threshold by this margin. The settlement
+# number is the whole-°F maximum from a continuous sensor, while METAR-derived
+# observations arrive in °C and round through conversion; a sub-degree
+# clearance can still settle on the wrong side of a strict ">T" rule.
+LOCK_MARGIN_F = 1.0
 GFS_ENSEMBLE_MODEL = "gfs_seamless"
 HRRR_CONUS_MODEL = "ncep_hrrr_conus"
 NUM_MEMBERS = 31  # 1 control + 30 perturbed
@@ -244,6 +253,45 @@ class WeatherEngine:
             "retrieved_at": datetime.now(timezone.utc).isoformat(),
         }
         return payload
+
+    def get_station_observation(self, station) -> dict | None:
+        """Latest observation from the settlement station itself.
+
+        Settlement-quality data or nothing: on any error or missing
+        temperature this returns None, and the caller must fall back to model
+        probabilities rather than substitute a grid estimate.
+        """
+        url = NWS_OBSERVATION_URL.format(station_id=station.station_id)
+        try:
+            resp = self.client.get(
+                url,
+                headers={
+                    "User-Agent": "kalshi-trading-agent (github.com/itsnotmarvin/kalshi-trading-agent)",
+                    "Accept": "application/geo+json",
+                },
+            )
+            resp.raise_for_status()
+            props = resp.json().get("properties", {})
+            temp_c = (props.get("temperature") or {}).get("value")
+            observed_at = props.get("timestamp")
+            if temp_c is None or not observed_at:
+                return None
+            return {
+                "temperature_f": temp_c * 9.0 / 5.0 + 32.0,
+                "observed_at": observed_at,
+                "station_id": station.station_id,
+                "_provenance": {
+                    "source_type": "station_observation",
+                    "provider": "NWS",
+                    "station_id": station.station_id,
+                    "station_name": station.name,
+                    "url": url,
+                    "observed_at": observed_at,
+                    "retrieved_at": datetime.now(timezone.utc).isoformat(),
+                },
+            }
+        except Exception:
+            return None
 
     # ── Probability ──────────────────────────────────────────
 
@@ -444,7 +492,8 @@ class WeatherEngine:
             ticker_city_map = {
                 "NY": "new york", "LA": "los angeles", "CHI": "chicago",
                 "MIA": "miami", "HOU": "houston", "PHX": "phoenix",
-                "PHI": "philadelphia", "DAL": "dallas", "DEN": "denver",
+                "PHI": "philadelphia", "PHIL": "philadelphia",
+                "DAL": "dallas", "DEN": "denver", "LAX": "los angeles",
                 "SEA": "seattle", "BOS": "boston", "ATL": "atlanta",
                 "SF": "san francisco", "DC": "washington", "DET": "detroit",
                 "MIN": "minneapolis", "TPA": "tampa", "POR": "portland",
@@ -464,6 +513,13 @@ class WeatherEngine:
 
         if not city or lat is None:
             return None
+
+        # Kalshi temperature markets settle at one specific NWS station, not
+        # city center (docs/settlement-stations.md). Forecast at the station
+        # when its identity is verified; DIA vs downtown Denver is ~30 km.
+        station = station_for_city(city)
+        if station is not None:
+            lat, lon = station.lat, station.lon
 
         # Extract variable
         variable = "temperature_2m"  # default
@@ -515,9 +571,32 @@ class WeatherEngine:
         if "LOW" in ticker:
             above = False
 
-        # Try to extract target date
+        # Try to extract target date. The ticker encodes the settlement
+        # (climate) day exactly — KXHIGHNY-26AUG13-T92 → 2026-08-13 — so it
+        # outranks end_date, whose UTC calendar date can fall on the wrong
+        # local day.
         target_date = None
-        if "tomorrow" in question:
+        ticker_date = re.search(
+            r"-(\d{2})(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(\d{2})(?:-|$)",
+            ticker,
+        )
+        if ticker_date:
+            month_numbers = {
+                "JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
+                "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12,
+            }
+            try:
+                target_date = datetime(
+                    2000 + int(ticker_date.group(1)),
+                    month_numbers[ticker_date.group(2)],
+                    int(ticker_date.group(3)),
+                    tzinfo=timezone.utc,
+                )
+            except ValueError:
+                target_date = None
+        if target_date is not None:
+            pass
+        elif "tomorrow" in question:
             target_date = datetime.now(timezone.utc) + timedelta(days=1)
         elif "today" in question:
             target_date = datetime.now(timezone.utc)
@@ -606,19 +685,38 @@ class WeatherEngine:
             source for source in (ensemble_provenance, deterministic_provenance) if source
         ]
 
-        # 1. Real-Time Observation Override (METAR equivalent)
-        current_temp = det_data.get("current", {}).get(parsed.variable)
-        if current_temp is not None:
-            if "high" in parsed.raw_question.lower() or "HIGH" in market.id:
-                if parsed.above and current_temp >= parsed.threshold:
-                    # Target hit, it's 100% going to resolve YES.
-                    return self._build_override_result(parsed, market, 0.99, "BUY_YES", f"Current temp {current_temp}°F already hit threshold {parsed.threshold}°F", forecast_provenance)
-                if not parsed.above and current_temp >= parsed.threshold:
-                    # Target broken, it's 100% going to resolve NO.
-                    return self._build_override_result(parsed, market, 0.01, "BUY_NO", f"Current temp {current_temp}°F broke 'below {parsed.threshold}°F' limit", forecast_provenance)
-            if "low" in parsed.raw_question.lower() or "LOW" in market.id:
-                if not parsed.above and current_temp < parsed.threshold:
-                    return self._build_override_result(parsed, market, 0.99, "BUY_YES", f"Current temp {current_temp}°F already fell below {parsed.threshold}°F", forecast_provenance)
+        # 1. Real-Time Observation Override.
+        # A "locked outcome" claim may only come from the settlement station's
+        # own observations, on the market's own climate day. The grid-model
+        # "current" temperature is never consulted here: a 1-3°F grid/station
+        # gap, or a hot day before the target date, both manufacture false
+        # 99%-certainty signals. Only one-sided locks are valid — an
+        # observation proves the daily max is at least obs_temp, never that
+        # the temperature will stay below anything.
+        station = station_for_city(parsed.city)
+        obs = self.get_station_observation(station) if station is not None else None
+        if obs is not None and parsed.target_date is not None:
+            try:
+                observed_local = datetime.fromisoformat(obs["observed_at"]).astimezone(
+                    ZoneInfo(station.timezone)
+                )
+            except Exception:
+                observed_local = None
+            if observed_local is not None and observed_local.date() == parsed.target_date.date():
+                obs_temp = obs["temperature_f"]
+                obs_provenance = forecast_provenance + [obs["_provenance"]]
+                obs_note = f"{station.station_id} observed {obs_temp:.1f}°F at {obs['observed_at']}"
+                if "high" in parsed.raw_question.lower() or "HIGH" in market.id:
+                    if parsed.above and obs_temp >= parsed.threshold + LOCK_MARGIN_F:
+                        # Daily max already cleared the threshold at the settlement station.
+                        return self._build_override_result(parsed, market, 0.99, "BUY_YES", f"{obs_note}, clearing threshold {parsed.threshold}°F", obs_provenance)
+                    if not parsed.above and obs_temp >= parsed.threshold + LOCK_MARGIN_F:
+                        # Daily max already broke the "below" bound → resolves NO.
+                        return self._build_override_result(parsed, market, 0.01, "BUY_NO", f"{obs_note}, breaking 'below {parsed.threshold}°F'", obs_provenance)
+                elif "low" in parsed.raw_question.lower() or "LOW" in market.id:
+                    if not parsed.above and obs_temp <= parsed.threshold - LOCK_MARGIN_F:
+                        # Daily min is at most obs_temp → already under the threshold.
+                        return self._build_override_result(parsed, market, 0.99, "BUY_YES", f"{obs_note}, already under threshold {parsed.threshold}°F", obs_provenance)
 
         # Find the target hour index
         hourly_times = data.get("hourly", {}).get("time", [])
